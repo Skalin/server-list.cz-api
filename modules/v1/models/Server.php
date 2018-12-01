@@ -9,7 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $name
- * @property string $address
+ * @property string $ip
+ * @property integer $game_id
  * @property int $active
  */
 class Server extends \yii\db\ActiveRecord
@@ -29,12 +30,23 @@ class Server extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['description'], 'string'],
-            [['active'], 'integer'],
+			[['game_id'], 'integer'],
+			['game_id', 'validateGame'],
+            [['ip'], 'string'],
             [['name'], 'string', 'max' => 255],
 			['servers', 'safe']
         ];
     }
+
+
+    public function validateGame($attribute, $params, $validator)
+	{
+		if (!Server::findById($this->game_id))
+		{
+			$this->addError($attribute, 'The requested game was not found.');
+		}
+
+	}
 
     /**
      * {@inheritdoc}
@@ -52,5 +64,10 @@ class Server extends \yii\db\ActiveRecord
 	public function getGame()
 	{
 		return $this->hasOne(Game::className(), ['game_id' => 'id']);
+	}
+
+	public function findById($id)
+	{
+		return Server::find(['id' => $id])->one();
 	}
 }

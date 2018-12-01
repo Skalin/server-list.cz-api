@@ -19,7 +19,7 @@ class ApiController extends ActiveController
 
 	public function getParentParam()
 	{
-		return \Yii::$app->request->getQueryParams()['parent'] ?? null;
+		return isset(\Yii::$app->request->getQueryParams()['parent']) ? \Yii::$app->request->getQueryParams()['parent'] : null;
 	}
 
 
