@@ -2,8 +2,6 @@
 
 namespace app\modules\v1\models;
 
-use Yii;
-
 /**
  * This is the model class for table "game".
  *
@@ -53,5 +51,10 @@ class Game extends \yii\db\ActiveRecord
 	public function getServers()
 	{
 		return $this->hasMany(Server::className(), ['game_id' => 'id']);
+	}
+
+	public function findById($id)
+	{
+		return Game::findOne(['id' => $id]);
 	}
 }

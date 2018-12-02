@@ -2,7 +2,6 @@
 
 namespace app\modules\v1\models;
 
-use Yii;
 
 /**
  * This is the model class for table "server".
@@ -10,6 +9,9 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property string $ip
+ * @property string $domain
+ * @property integer $port
+ * @property integer $query_port
  * @property integer $game_id
  * @property int $active
  */
@@ -30,18 +32,19 @@ class Server extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-			[['game_id'], 'integer'],
+			[['game_id', 'query_port', 'port'], 'integer', 'integerOnly' => true],
 			['game_id', 'validateGame'],
-            [['ip'], 'string'],
+            [['ip'], 'ip'],
             [['name'], 'string', 'max' => 255],
-			['servers', 'safe']
+			['servers', 'safe'],
+			['pingStatistics', 'safe'],
         ];
     }
 
 
     public function validateGame($attribute, $params, $validator)
 	{
-		if (!Server::findById($this->game_id))
+		if (!Game::findById($this->game_id))
 		{
 			$this->addError($attribute, 'The requested game was not found.');
 		}
@@ -68,6 +71,11 @@ class Server extends \yii\db\ActiveRecord
 
 	public function findById($id)
 	{
-		return Server::find(['id' => $id])->one();
+		return Server::findOne(['id' => $id]);
+	}
+
+	public function getPingStatistics()
+	{
+		return PingStat::findAll(['server_id' => $this->id]);
 	}
 }

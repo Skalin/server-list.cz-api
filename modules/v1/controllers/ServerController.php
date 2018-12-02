@@ -94,4 +94,31 @@ class ServerController extends ApiController
 			return new ApiException(400, $server->errors);
 		}
 	}
+
+	public function actionUpdate()
+	{
+
+		$id = \Yii::$app->request->getQueryParams()['id'] ?? null;
+
+		if (!$id)
+		{
+			return new ApiException(400);
+		}
+
+		if (!($server = Server::findOne(['id' => $id])))
+		{
+			return new ApiException(404);
+		}
+
+		$server->attributes = \Yii::$app->request->post();
+		if ($server->validate())
+		{
+			$server->save();
+			return $server;
+		}
+		else
+		{
+			return new ApiException(400, $server->errors);
+		}
+	}
 }
