@@ -12,9 +12,14 @@ namespace app\modules\v1\controllers;
 use app\components\ApiException;
 use app\controllers\ApiController;
 use app\modules\admin\modules\FileModule\models\File;
+use app\modules\v1\models\Server;
+use Codeception\Template\Api;
 use yii\helpers\FileHelper;
 use yii\web\Response;
 
+/**
+ * @internal Find a way how to get only certain statistics for a given game because not all games will support all statistics
+ */
 class StatsController extends ApiController
 {
 
@@ -26,7 +31,7 @@ class StatsController extends ApiController
 
 	public $statModels;
 
-	public $modelClass = 'app\modules\v1\models\PingStat';
+	public $modelClass = 'app\models\StatModel';
 
 	public function behaviors()
 	{
@@ -61,6 +66,9 @@ class StatsController extends ApiController
 		$parentParam = $this->getParentParam();
 		if (!$parentParam)
 			return new ApiException(400);
+
+		if (!Server::findById($parentParam))
+			return new ApiException(404);
 
 		return $this->getAllStats($parentParam);
 	}

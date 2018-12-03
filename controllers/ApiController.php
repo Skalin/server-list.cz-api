@@ -25,13 +25,16 @@ class ApiController extends ActiveController
 		return "app\modules\\{$this->apiVersion}\models\\";
 	}
 
+	/**
+	 *
+	 *
+	 * @internal this function doesn't properly get all params, it gets only the last param from all params,
+	 * i must write a special url rest route controller to properly parse all parent params and pass them with
+	 * controllers (models) as return value
+	 *
+	 */
 	public function getParentParam()
 	{
 		return isset(\Yii::$app->request->getQueryParams()['parent']) ? \Yii::$app->request->getQueryParams()['parent'] : null;
 	}
-
-
-
-
-
 }
