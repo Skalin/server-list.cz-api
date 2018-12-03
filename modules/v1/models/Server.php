@@ -12,7 +12,7 @@ namespace app\modules\v1\models;
  * @property string $domain
  * @property integer $port
  * @property integer $query_port
- * @property integer $game_id
+ * @property integer $service_id
  * @property int $active
  */
 class Server extends \yii\db\ActiveRecord
@@ -32,8 +32,8 @@ class Server extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-			[['game_id', 'query_port', 'port'], 'integer', 'integerOnly' => true],
-			['game_id', 'validateGame'],
+			[['service_id', 'query_port', 'port'], 'integer', 'integerOnly' => true],
+			['service_id', 'validateService'],
             [['ip'], 'ip'],
             [['name'], 'string', 'max' => 255],
 			['servers', 'safe'],
@@ -42,9 +42,9 @@ class Server extends \yii\db\ActiveRecord
     }
 
 
-    public function validateGame($attribute, $params, $validator)
+    public function validateService($attribute, $params, $validator)
 	{
-		if (!Game::findById($this->game_id))
+		if (!Service::findById($this->service_id))
 		{
 			$this->addError($attribute, 'The requested game was not found.');
 		}
@@ -64,9 +64,9 @@ class Server extends \yii\db\ActiveRecord
         ];
     }
 
-	public function getGame()
+	public function getService()
 	{
-		return $this->hasOne(Game::className(), ['game_id' => 'id']);
+		return $this->hasOne(Service::className(), ['service_id' => 'id']);
 	}
 
 	public function findById($id)
@@ -78,4 +78,6 @@ class Server extends \yii\db\ActiveRecord
 	{
 		return PingStat::findAll(['server_id' => $this->id]);
 	}
+
+
 }

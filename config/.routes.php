@@ -11,7 +11,7 @@ return [
 		'class' => 'tunecino\nestedrest\UrlRule',
 		'resourceName' => 'v1/games',
 		'modulePrefix' => 'v1',
-		'modelClass' => 'app\modules\v1\models\Game',
+		'modelClass' => 'app\modules\v1\models\Service',
 		'relations' => ['servers'],
 	],
 	[

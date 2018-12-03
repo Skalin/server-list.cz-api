@@ -51,7 +51,7 @@ class ServerController extends ApiController
 			return Server::find()->all();
 		}
 
-		return Server::findAll(['game_id' => $this->getParentParam()]);
+		return Server::findAll(['service_id' => $this->getParentParam()]);
 	}
 
 	public function actionView()
@@ -73,7 +73,7 @@ class ServerController extends ApiController
 			return $server;
 		}
 
-		return $server->game_id != $this->getParentParam() ? new ApiException(404) : $server;
+		return $server->service_id != $this->getParentParam() ? new ApiException(404) : $server;
 	}
 
 	/**

@@ -11,14 +11,14 @@ namespace app\modules\v1\models;
  * @property int $position
  * @property int $active
  */
-class Game extends \yii\db\ActiveRecord
+class Service extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'game';
+        return 'service';
     }
 
     /**
@@ -53,8 +53,8 @@ class Game extends \yii\db\ActiveRecord
 		return $this->hasMany(Server::className(), ['game_id' => 'id']);
 	}
 
-	public function findById($id)
+	public static function findById($id)
 	{
-		return Game::findOne(['id' => $id]);
+		return Service::findOne(['id' => $id]);
 	}
 }

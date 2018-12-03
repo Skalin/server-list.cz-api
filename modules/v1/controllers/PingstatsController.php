@@ -1,17 +1,20 @@
 <?php
+/**
+ * Project: serverlist-api
+ * User: Dominik
+ * Date: 03.12.2018
+ * Time: 20:36
+ */
 
 namespace app\modules\v1\controllers;
 
-use app\controllers\ApiController;
-use yii\filters\auth\HttpBasicAuth;
-use yii\filters\auth\HttpBearerAuth;
-use yii\filters\Cors;
+
 use yii\web\Response;
 
-class GameController extends ApiController
+class PingstatsController extends StatsController
 {
 
-	public $modelClass = 'app\modules\v1\models\Game';
+	public $modelClass = 'app\modules\v1\models\PingStat';
 
 	public function behaviors()
 	{
@@ -19,10 +22,10 @@ class GameController extends ApiController
 		unset($behaviors['authenticator']);
 
 		$behaviors['contentNegotiator'] = [
-				'class' => 'yii\filters\ContentNegotiator',
-				'formats' => [
-					'application/json' => Response::FORMAT_JSON,
-				]
+			'class' => 'yii\filters\ContentNegotiator',
+			'formats' => [
+				'application/json' => Response::FORMAT_JSON,
+			]
 		];/*
 		$behaviors['authenticator'] = [
 				'class' => HttpBasicAuth::className(),
@@ -30,7 +33,6 @@ class GameController extends ApiController
 */
 		return $behaviors;
 	}
-
 	public function actions()
 	{
 		$actions = parent::actions();
@@ -39,5 +41,11 @@ class GameController extends ApiController
 		unset($actions['delete']);
 		return $actions;
 	}
+
+	public function actionView()
+	{
+		return $this->getParentParam();
+	}
+
 
 }
