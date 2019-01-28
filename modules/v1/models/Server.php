@@ -2,6 +2,7 @@
 
 namespace app\modules\v1\models;
 
+use app\modules\v1\models\PingStat;
 
 /**
  * This is the model class for table "server".
@@ -69,7 +70,7 @@ class Server extends \yii\db\ActiveRecord
 		return $this->hasOne(Service::className(), ['service_id' => 'id']);
 	}
 
-	public function findById($id)
+	public static function findById($id)
 	{
 		return Server::findOne(['id' => $id]);
 	}
@@ -77,6 +78,33 @@ class Server extends \yii\db\ActiveRecord
 	public function getPingStatistics()
 	{
 		return PingStat::findAll(['server_id' => $this->id]);
+	}
+
+	protected function getAvailableStatistics()
+	{
+		return Service::findById($this->service_id)->getStatistics();
+	}
+
+
+	public function destroyOldStatistics()
+	{
+		$stats = $this->getAvailableStatistics();
+
+		foreach ($stats as $stat)
+		{
+			$stat::destroyOldStatistics($this->id);
+		}
+	}
+
+	public function generateStatistics()
+	{
+		$stats = $this->getAvailableStatistics();
+
+		foreach ($stats as $stat)
+		{
+			echo "Generating {$stat} statistics for server {$this->id}: {$this->name}\n";
+			$stat::generateStat($this->id);
+		}
 	}
 
 

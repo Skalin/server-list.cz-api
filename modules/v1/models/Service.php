@@ -13,6 +13,7 @@ namespace app\modules\v1\models;
  */
 class Service extends \yii\db\ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -56,5 +57,13 @@ class Service extends \yii\db\ActiveRecord
 	public static function findById($id)
 	{
 		return Service::findOne(['id' => $id]);
+	}
+
+	public function getStatistics()
+	{
+		return [
+			PingStat::className(),
+			PlayersStat::className(),
+		];
 	}
 }
