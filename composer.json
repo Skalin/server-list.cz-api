@@ -19,7 +19,9 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "tunecino/yii2-nested-rest": "^0.3.0",
-        "xpaw/php-minecraft-query": "^2.0"
+        "xpaw/php-minecraft-query": "^2.0",
+        "Lukasss93/minecraft-server-status": "^2.0",
+        "xPaw/PHP-Source-Query-class": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

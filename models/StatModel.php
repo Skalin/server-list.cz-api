@@ -9,8 +9,9 @@
 namespace app\models;
 
 
+use app\components\BaseModel;
 use app\modules\v1\models\Server;
-use yii\db\ActiveRecord;
+use yii\helpers\VarDumper;
 
 /**
  * Class BasicStatModel
@@ -21,7 +22,7 @@ use yii\db\ActiveRecord;
  * @property datetime $date
  */
 
-class StatModel extends ActiveRecord
+class StatModel extends BaseModel
 {
 
 	const STAT_NAME = '';
@@ -62,7 +63,13 @@ class StatModel extends ActiveRecord
 			[':sid' => $server_id, ':date' => $date->format('Y-m-d H:i:s')]);
 	}
 
-	public function generateStat($server_id){}
+	public function generateStat($server_id, $value = NULL)
+	{
+		$className = get_called_class();
+		$stat = new $className;
+		$stat->server_id = $server_id;
+		return $stat;
+	}
 
 	public function getServer()
 	{

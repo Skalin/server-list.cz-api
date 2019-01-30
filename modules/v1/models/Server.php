@@ -2,7 +2,12 @@
 
 namespace app\modules\v1\models;
 
+use app\components\BaseModel;
+use app\components\queries\MCQuery;
+use app\components\queries\CSGOQuery;
 use app\modules\v1\models\PingStat;
+use app\modules\v1\models\PlayersStat;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "server".
@@ -16,8 +21,9 @@ use app\modules\v1\models\PingStat;
  * @property integer $service_id
  * @property int $active
  */
-class Server extends \yii\db\ActiveRecord
+class Server extends BaseModel
 {
+
     /**
      * {@inheritdoc}
      */
@@ -82,7 +88,7 @@ class Server extends \yii\db\ActiveRecord
 
 	protected function getAvailableStatistics()
 	{
-		return Service::findById($this->service_id)->getStatistics();
+		return Service::findById($this->service_id)->getStatisticsClasses();
 	}
 
 
@@ -92,20 +98,51 @@ class Server extends \yii\db\ActiveRecord
 
 		foreach ($stats as $stat)
 		{
-			$stat::destroyOldStatistics($this->id);
+			$className = $this->getClassPath().$stat;
+			$className::destroyOldStatistics($this->id);
 		}
 	}
 
 	public function generateStatistics()
 	{
 		$stats = $this->getAvailableStatistics();
+		$service = Service::findById($this->service_id);
+		$queryClass = $this->queryNamespace.'\\'.$service->getQueryClass();
+		$result = $queryClass::query($this);
 
 		foreach ($stats as $stat)
 		{
+			$className = $this->getClassPath().$stat;
 			echo "Generating {$stat} statistics for server {$this->id}: {$this->name}\n";
-			$stat::generateStat($this->id);
+			$className::generateStat($this->id, $result);
 		}
 	}
 
+	public function setTimeouts($timeout)
+	{
+		$this->timeout += $timeout;
+		if ($timeout > $this->maximumTimeouts)
+		{
+			$this->active = 0;
+		}
+	}
+
+	public function afterFind()
+	{
+		$this->oldAttributes = $this->attributes;
+	}
+
+	public function beforeSave($insert)
+	{
+		if (!$this->isNewRecord)
+		{
+			if ($this->oldAttributes->active < $this->active)
+			{
+				$this->timeout = 0;
+			}
+
+		}
+		parent::beforeSave($insert);
+	}
 
 }

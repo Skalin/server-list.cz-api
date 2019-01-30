@@ -2,16 +2,20 @@
 
 namespace app\modules\v1\models;
 
+use app\components\BaseModel;
+use app\components\queries;
+
 /**
  * This is the model class for table "game".
  *
  * @property int $id
  * @property string $name
  * @property string $description
+ * @property string $stats_list
  * @property int $position
  * @property int $active
  */
-class Service extends \yii\db\ActiveRecord
+class Service extends BaseModel
 {
 
     /**
@@ -32,6 +36,7 @@ class Service extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['position', 'active'], 'integer'],
             [['name'], 'string', 'max' => 255],
+			[['stats_list'], 'string'],
         ];
     }
 
@@ -59,11 +64,14 @@ class Service extends \yii\db\ActiveRecord
 		return Service::findOne(['id' => $id]);
 	}
 
-	public function getStatistics()
+	public function getQueryClass()
 	{
-		return [
-			PingStat::className(),
-			PlayersStat::className(),
-		];
+		return $this->shortcut.'Query';
+
+	}
+
+	public function getStatisticsClasses()
+	{
+		return empty($this->stats_list) ? [] : json_decode($this->stats_list, true);
 	}
 }

@@ -23,17 +23,17 @@ use yii\helpers\VarDumper;
  * @property integer $value
  */
 
-class PingStat extends StatModel
+class StatusStat extends StatModel
 {
-	public $modelName = 'PingStat';
-	private static $attribute = 'ping';
+	public $modelName = 'StatusStat';
+	private static $attribute = 'status';
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public static function tableName()
 	{
-		return 'statistic_ping';
+		return 'statistic_status';
 	}
 
 
@@ -41,8 +41,7 @@ class PingStat extends StatModel
 	{
 		$rules = parent::rules();
 		$newRules = [
-			[['value'], 'number', 'integerOnly' => true],
-			[['value'], 'required']
+			[['value'], 'number', 'integerOnly' => true]
 		];
 		$rules = array_merge($rules, $newRules);
 		return $rules;
