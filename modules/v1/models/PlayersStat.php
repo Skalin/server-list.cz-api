@@ -9,7 +9,6 @@
 namespace app\modules\v1\models;
 
 use \app\models\StatModel;
-use yii\helpers\VarDumper;
 
 class PlayersStat extends StatModel
 {
@@ -40,8 +39,8 @@ class PlayersStat extends StatModel
 		$stat = parent::generateStat($server_id, $value);
 		if ($value)
 		{
-			$stat->value = $value[self::$attribute];
-			$stat->maxValue = $value[self::$secondAttribute];
+			$stat->value = $value[self::$attribute] ?? '';
+			$stat->maxValue = $value[self::$secondAttribute] ?? '';
 		}
 		if (!$stat->validate())
 			return null;

@@ -3,7 +3,6 @@
 namespace app\modules\v1\models;
 
 use app\components\BaseModel;
-use app\components\queries;
 
 /**
  * This is the model class for table "game".

@@ -9,9 +9,6 @@
 namespace app\modules\v1\models;
 
 use \app\models\StatModel;
-use MCServerStatus\Exceptions\MCPingException;
-use MCServerStatus\MCPing;
-use yii\helpers\VarDumper;
 
 /**
  * Class PingStat
@@ -69,7 +66,7 @@ class StatusStat extends StatModel
 	{
 		$stat = parent::generateStat($server_id);
 		if ($value)
-			$stat->value = $value[self::$attribute];
+			$stat->value = $value[self::$attribute] ?? '';
 		if (!$stat->validate())
 			return null;
 		$stat->save();

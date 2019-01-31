@@ -5,9 +5,6 @@ namespace app\modules\v1\models;
 use app\components\BaseModel;
 use app\components\queries\MCQuery;
 use app\components\queries\CSGOQuery;
-use app\modules\v1\models\PingStat;
-use app\modules\v1\models\PlayersStat;
-use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "server".
