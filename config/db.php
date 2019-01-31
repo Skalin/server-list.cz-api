@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=serverlist.cz-API',
+    'dsn' => 'mysql:host=localhost;dbname=db',
     'username' => 'root',
-    'password' => '',
+    'password' => 'UsT5Rp4MhreSmd86',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
