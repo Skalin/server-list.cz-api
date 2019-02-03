@@ -36,7 +36,7 @@ class MCQuery extends Component
 				$queryResult['max_players'] = $query->max_players;
 			}
 			if (isset($query->online)) {
-				$queryResult['status'] = $query->online;
+				$queryResult['status'] = $query->online ? 1 : 0;
 			}
 		}
 
