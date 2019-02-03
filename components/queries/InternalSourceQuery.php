@@ -49,10 +49,7 @@ class InternalSourceQuery extends Component
 			{
 				$queryResult['max_players'] = $info['MaxPlayers'];
 			}
-			if ($ping)
-			{
-				$queryResult['status'] = $ping ? 1 : 0;
-			}
+			$queryResult['status'] = $ping ? 1 : 0;
 
 			$query->Disconnect();
 		}
