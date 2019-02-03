@@ -11,7 +11,6 @@ namespace app\components\queries;
 use xPaw\SourceQuery\SourceQuery;
 
 use yii\base\Component;
-use yii\helpers\VarDumper;
 
 class InternalSourceQuery extends Component
 {

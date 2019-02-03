@@ -11,7 +11,6 @@ namespace app\models;
 
 use app\components\BaseModel;
 use app\modules\v1\models\Server;
-use yii\helpers\VarDumper;
 
 /**
  * Class BasicStatModel
