@@ -51,7 +51,7 @@ class InternalSourceQuery extends Component
 			}
 			if ($ping)
 			{
-				$queryResult['status'] = $ping;
+				$queryResult['status'] = $ping ? 1 : 0;
 			}
 
 			$query->Disconnect();
