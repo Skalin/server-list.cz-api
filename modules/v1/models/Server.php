@@ -111,7 +111,10 @@ class Server extends BaseModel
 		{
 			$className = $this->getClassPath().$stat;
 			echo "Generating {$stat} statistics for server {$this->id}: {$this->name}\n";
-			$className::generateStat($this->id, $result);
+			if (is_null($className::generateStat($this->id, $result)))
+			{
+				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name}\n";
+			}
 		}
 	}
 
