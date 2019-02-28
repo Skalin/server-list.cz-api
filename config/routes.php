@@ -5,6 +5,14 @@ return [
 	'' => '/',
 	[
 		'class' => 'yii\rest\UrlRule',
+		'controller' => ['v1/user'],
+		'pluralize' => false,
+		'extraPatterns' => [
+			'POST login' => 'login',
+		]
+	],
+	[
+		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/service'],
 	],
 	[

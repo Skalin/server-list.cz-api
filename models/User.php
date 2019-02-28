@@ -2,103 +2,183 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use app\components\ApiException;
+use app\components\BaseModel;
+use yii\helpers\VarDumper;
+use yii\web\IdentityInterface;
+
+class User extends BaseModel implements IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+	public $registratorToken = null;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
+	/**
+	 * Name of class that should be used for logging using login token from website
+	 */
+	const WEB_LOGIN = 'LoginToken';
+
+	/**
+	 * Name of class that should be used for logging using API
+	 */
+	const API_LOGIN = 'RegistratorToken';
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function findIdentity($id)
-    {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
-    }
+	public $passwordCopy;
+	const WEAK = 0;
+	const STRONG = 1;
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
+	public static function tableName()
+	{
+		return 'user';
+	}
 
-        return null;
-    }
+	public static function findByUsername($username)
+	{
+		return static::findOne(['username' => $username]);
+	}
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
+	public function rules()
+	{
+		return [
+			[['username', 'mail', 'password'], 'required', 'on' => 'registration'],
+			[['name', 'surname', 'username', 'password', 'tos_agreement'], 'required'],
+			[['username'], 'unique'],
+			[['tos_agreement', 'gdpr_agreement'], 'integer', 'integerOnly' => true],
+			[['mail'], 'email'],
+			//[['password'], 'passwordStrength', 'strength'=>self::STRONG],
+		];
+	}
 
-        return null;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public static function findIdentity($id)
+	{
+		return static::findOne($id);
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public static function findIdentityByAccessToken($token, $type = null)
+	{
+		return static::findOne(['access_token' => $token]);
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getAuthKey()
+	{
+		return $this->auth_key;
+	}
 
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function validateAuthKey($authKey)
+	{
+		return $this->auth_key === $authKey;
+	}
+
+	public function hashPassword($password)
+	{
+		return hash('sha512', $password.$this->salt);
+	}
+
+	/**
+	 * Validates password
+	 *
+	 * @param string $password password to validate
+	 * @return bool if password provided is valid for current user
+	 */
+	public function validatePassword($password)
+	{
+		return $this->password === hash('sha512',$password.$this->salt);
+	}
+
+
+	public function passwordStrength($attribute,$params)
+	{
+		if ($params['strength'] === self::WEAK)
+			$pattern = '/^(?=.*[a-zA-Z0-9]).{5,}$/';
+		elseif ($params['strength'] === self::STRONG)
+			$pattern = '/^(?=.*\d(?=.*\d))(?=.*[a-zA-Z](?=.*[a-zA-Z])).{5,}$/';
+
+		if(!preg_match($pattern, $this->$attribute))
+			$this->addError($attribute, 'your password is not strong enough!');
+	}
+
+
+	public function beforeSave($insert)
+	{
+		if ($insert)
+		{
+			$this->auth_key = \Yii::$app->security->generateRandomString();
+			$this->salt = \Yii::$app->security->generateRandomString().time();
+			$this->password = hash('sha512', $this->password.$this->salt);
+		}
+		return parent::beforeSave($insert);
+	}
+
+	public function afterSave($insert, $changedAttributes) {
+		if (!$insert)
+		{
+			if (isset($changedAttributes['password']))
+			{
+				$this->updateAttributes(['password_changed' => date('Y-m-d H:i:s')]);
+			}
+			if (isset($changedAttributes['mail']))
+			{
+				$this->updateAttributes(['mail_changed' => date('Y-m-d H:i:s')]);
+			}
+		}
+		return parent::afterSave($insert, $changedAttributes);
+	}
+
+
+
+	public function getLoginTokens()
+	{
+		return $this->hasMany(LoginToken::className(), ['user_id' => 'id']);
+	}
+
+	public function fullName()
+	{
+		return $this->name.' '.$this->surname;
+	}
+
+	public function hasRole($role)
+	{
+		$authManager = \Yii::$app->getAuthManager();
+		return $authManager->getAssignment($role, $this->id) ? true : false;
+	}
+
+	public static function findByAccessToken($validationMethod, $data)
+	{
+		$modelName = '';
+		$model = null;
+
+		$modelName = self::getClassPath().$validationMethod;
+		$model = $modelName::findByToken($data);
+		if (!$model || $model->isExpired())
+		{
+			throw new ApiException(403);
+		}
+
+		if ($validationMethod === self::API_LOGIN)
+		{
+			// validate login data (ip address)
+			VarDumper::dump(\Yii::$app->request->ipHeaders);die;
+		}
+
+		return $model;
+	}
 }

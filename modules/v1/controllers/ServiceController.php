@@ -11,7 +11,7 @@ use yii\web\Response;
 class ServiceController extends ApiController
 {
 
-	public $modelClass = 'app\modules\v1\models\Stats';
+	public $modelClass = 'app\modules\v1\models\Service';
 
 	public function behaviors()
 	{

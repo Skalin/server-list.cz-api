@@ -16,10 +16,15 @@ use app\components\queries\CSGOQuery;
  * @property integer $port
  * @property integer $query_port
  * @property integer $service_id
+ * @property integer $registrator_id
+ * @property integer $user_id
  * @property int $active
  */
 class Server extends BaseModel
 {
+
+	const MC = 1;
+	const CSGO = 2;
 
     /**
      * {@inheritdoc}
@@ -35,22 +40,45 @@ class Server extends BaseModel
     public function rules()
     {
         return [
-            [['name'], 'required'],
-			[['service_id', 'query_port', 'port'], 'integer', 'integerOnly' => true],
-			['service_id', 'validateService'],
-            [['ip'], 'ip'],
-            [['name'], 'string', 'max' => 255],
-			['servers', 'safe'],
-			['pingStatistics', 'safe'],
+			[['name', 'service_id'], 'required'],
+			[['service_id', 'query_port', 'port', 'registrator_id', 'user_id'], 'integer', 'integerOnly' => true],
+			[['service_id'], 'validateService'],
+			[['ip'], 'ip'],
+			[['user', 'registrator'], 'safe'],
+			[['user_id', 'registrator_id'], 'validateUser'],
+			[['name'], 'string', 'max' => 100],
+			[['ip', 'domain'], 'validateIp'],
+			[['pingStatistics', 'availableStatistics', 'service'], 'safe']
         ];
     }
 
+
+    public function validateUser($attribute, $params, $validator)
+	{
+		if (empty($this->registrator_id) && $this->user_id)
+		{
+			$this->addError($attribute, 'User or registrator must be existing!');
+		}
+	}
+
+    public function validateIp($attribute, $params, $validator)
+	{
+		if (empty($this->ip) && empty($this->domain))
+		{
+			$this->addError($attribute, 'At least IP must be filled');
+		}
+
+		if (self::findByAddress($this->ip, $this->domain, $this->port))
+		{
+			$this->addError($attribute, 'Server already exists!');
+		}
+	}
 
     public function validateService($attribute, $params, $validator)
 	{
 		if (!Service::findById($this->service_id))
 		{
-			$this->addError($attribute, 'The requested game was not found.');
+			$this->addError($attribute, 'The requested service was not found.');
 		}
 
 	}
@@ -142,7 +170,22 @@ class Server extends BaseModel
 			}
 
 		}
-		parent::beforeSave($insert);
+		return parent::beforeSave($insert);
 	}
 
+	public static function findByAddress($ip, $domain, $port)
+	{
+		$server = null;
+
+		$server = static::findOne(['ip' => $ip, 'port' => $port]);
+		if ($server)
+			return $server;
+
+		$server = static::findOne(['domain' => $domain, 'port' => $port]);
+
+		if ($server)
+			return $server;
+
+		return false;
+	}
 }

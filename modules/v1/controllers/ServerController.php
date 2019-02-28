@@ -9,6 +9,7 @@ use Codeception\Template\Api;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
+use yii\helpers\VarDumper;
 use yii\web\Response;
 
 class ServerController extends ApiController
@@ -82,8 +83,12 @@ class ServerController extends ApiController
 	 */
 	public function actionCreate()
 	{
+		$user = $this->validateUser('Server');
+
 		$server = new Server;
 		$server->attributes = \Yii::$app->request->post();
+		$server->registrator_id = $user;
+		$server->service_id = Server::MC;
 		if ($server->validate())
 		{
 			$server->save();
@@ -97,6 +102,8 @@ class ServerController extends ApiController
 
 	public function actionUpdate()
 	{
+
+		$this->validateUser('Server');
 
 		$id = \Yii::$app->request->getQueryParams()['id'] ?? null;
 
