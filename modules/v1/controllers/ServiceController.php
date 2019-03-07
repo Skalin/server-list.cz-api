@@ -18,16 +18,23 @@ class ServiceController extends ApiController
 		$behaviors = parent::behaviors();
 		unset($behaviors['authenticator']);
 
+		// add CORS filter
+		$behaviors['corsFilter'] = [
+			'class' => Cors::className(),
+			'cors' => [
+				'Origin' => static::allowedDomains(),
+				'Access-Control-Request-Method' => ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+				'Access-Control-Request-Headers' => ['*'],
+				'Access-Control-Allow-Credentials' => true,
+			],
+		];
+
 		$behaviors['contentNegotiator'] = [
 				'class' => 'yii\filters\ContentNegotiator',
 				'formats' => [
 					'application/json' => Response::FORMAT_JSON,
 				]
-		];/*
-		$behaviors['authenticator'] = [
-				'class' => HttpBasicAuth::className(),
 		];
-*/
 		return $behaviors;
 	}
 

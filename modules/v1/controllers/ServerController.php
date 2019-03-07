@@ -23,16 +23,24 @@ class ServerController extends ApiController
 		$behaviors = parent::behaviors();
 		unset($behaviors['authenticator']);
 
+		// add CORS filter
+		$behaviors['corsFilter'] = [
+			'class' => Cors::className(),
+			'cors' => [
+				'Origin' => ['*'],
+				'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+				'Access-Control-Request-Headers' => ['*'],
+				'Access-Control-Allow-Credentials' => true,
+			],
+		];
+
 		$behaviors['contentNegotiator'] = [
 				'class' => 'yii\filters\ContentNegotiator',
 				'formats' => [
 					'application/json' => Response::FORMAT_JSON,
 				]
-		];/*
-		$behaviors['authenticator'] = [
-				'class' => HttpBasicAuth::className(),
 		];
-*/
+
 		return $behaviors;
 	}
 
@@ -42,6 +50,7 @@ class ServerController extends ApiController
 		unset($actions['index']);
 		unset($actions['view']);
 		unset($actions['create']);
+		unset($actions['delete']);
 		return $actions;
 	}
 
@@ -64,7 +73,7 @@ class ServerController extends ApiController
 			return new ApiException(400);
 		}
 
-		if (!($server = Server::findOne(['id' => $id])))
+		if (!($server = Server::findById($id)))
 		{
 			return new ApiException(404);
 		}
@@ -112,7 +121,7 @@ class ServerController extends ApiController
 			return new ApiException(400);
 		}
 
-		if (!($server = Server::findOne(['id' => $id])))
+		if (!($server = Server::findById($id)))
 		{
 			return new ApiException(404);
 		}
@@ -127,5 +136,29 @@ class ServerController extends ApiController
 		{
 			return new ApiException(400, $server->errors);
 		}
+	}
+
+	public function actionDelete()
+	{
+
+		$this->validateUser('Server');
+
+		$id = \Yii::$app->request->getQueryParams()['id'] ?? null;
+
+		if (!$id)
+		{
+			throw new ApiException(400);
+		}
+
+		if (!($server = Server::findById($id)))
+		{
+			throw new ApiException(404);
+		}
+
+		if ($server->delete())
+		{
+			return true;
+		}
+		throw new ApiException(400);
 	}
 }

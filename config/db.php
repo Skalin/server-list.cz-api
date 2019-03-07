@@ -2,10 +2,11 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=db',
+    'dsn' => 'mysql:host=localhost;dbname=serverlist.cz-api',
     'username' => 'root',
-    'password' => 'UsT5Rp4MhreSmd86',
+    'password' => '',
     'charset' => 'utf8',
+	'enableSchemaCache' => false, // <- disable schema cache
 
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,

@@ -7,8 +7,14 @@ return [
 		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/user'],
 		'pluralize' => false,
+		'patterns' => [
+			'' => 'options'
+		],
 		'extraPatterns' => [
 			'POST login' => 'login',
+			'POST server/<id>' => 'server/<id>',
+			'OPTIONS login' => 'options',
+			'OPTIONS server/<id>' => 'options',
 		]
 	],
 	[

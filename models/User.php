@@ -101,7 +101,7 @@ class User extends BaseModel implements IdentityInterface
 	 */
 	public function validatePassword($password)
 	{
-		return $this->password === hash('sha512',$password.$this->salt);
+		return $this->password == hash('sha512',$password.$this->salt);
 	}
 
 
@@ -180,5 +180,10 @@ class User extends BaseModel implements IdentityInterface
 		}
 
 		return $model;
+	}
+
+	public static function findById($id)
+	{
+		return User::findOne(['id' => $id]);
 	}
 }

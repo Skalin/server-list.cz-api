@@ -20,6 +20,13 @@ use yii\web\HttpException;
 class ApiController extends ActiveController
 {
 
+	public static function allowedDomains()
+	{
+		return [
+			'http://localhost:3000'
+		];
+	}
+
 	public $apiVersion = 'v1';
 
 	public $namespace;
@@ -87,4 +94,5 @@ class ApiController extends ActiveController
 
 		return $user->id;
 	}
+
 }
