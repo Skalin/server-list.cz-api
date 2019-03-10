@@ -23,7 +23,9 @@ class ApiController extends ActiveController
 	public static function allowedDomains()
 	{
 		return [
-			'http://localhost:3000'
+			'http://localhost:3000',
+			'http://192.168.0.105:3000',
+			'http://api.server-list.cz'
 		];
 	}
 
