@@ -21,25 +21,32 @@ class ServerController extends ApiController
 	public function behaviors()
 	{
 		$behaviors = parent::behaviors();
+		$auth = $behaviors['authenticator'];
 		unset($behaviors['authenticator']);
 
 		// add CORS filter
 		$behaviors['corsFilter'] = [
 			'class' => Cors::className(),
-			'cors' => [
-				'Origin' => ['*'],
-				'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
-				'Access-Control-Request-Headers' => ['*'],
+			'cors'  => [
+				// restrict access to domains:
+				'Origin' => static::allowedDomains(),
+				'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
 				'Access-Control-Allow-Credentials' => true,
+				'Access-Control-Request-Headers' => ['x-requested-with', 'content-type'],
+				'Access-Control-Max-Age' => 3600, // Cache (seconds)
 			],
 		];
 
 		$behaviors['contentNegotiator'] = [
-				'class' => 'yii\filters\ContentNegotiator',
-				'formats' => [
-					'application/json' => Response::FORMAT_JSON,
-				]
+			'class' => 'yii\filters\ContentNegotiator',
+			'formats' => [
+				'application/json' => Response::FORMAT_JSON,
+			]
 		];
+		// re-add authentication filter
+		$behaviors['authenticator'] = $auth;
+		// avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
+		$behaviors['authenticator']['except'] = ['options'];
 
 		return $behaviors;
 	}
