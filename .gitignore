@@ -33,6 +33,6 @@ tests/_support/_generated
 /.vagrant
 
 #database files
-./config/db*
+/.config/db.php
 
 db.php
