@@ -48,6 +48,18 @@ class User extends BaseModel implements IdentityInterface
 		];
 	}
 
+	public function fields()
+	{
+		$fields = parent::fields();
+
+
+		unset($fields['salt']);
+		unset($fields['auth_key']);
+		unset($fields['password']);
+
+		return $fields;
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */

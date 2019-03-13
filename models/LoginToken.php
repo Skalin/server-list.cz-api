@@ -15,6 +15,16 @@ class LoginToken extends BaseToken
 		return 'login_token';
 	}
 
+	public function __construct(array $config = ['user'])
+	{
+		$date = new \DateTime(date('Y-m-d H:i:s'));
+		$date->add(new \DateInterval('P30D'));
+		$this->expiration = $date->format('Y-m-d H:i:s');
+		$this->token = \Yii::$app->security->generateRandomString();
+		$this->link('user', $config['user']);
+
+	}
+
 	public function rules()
 	{
 
@@ -29,9 +39,20 @@ class LoginToken extends BaseToken
 		return $this->name.' '.$this->surname;
 	}
 
-	public function get()
+
+	public function fields()
 	{
-		$this->fields(['name' => $this->user->name, 'surname' => $this->user->surnae]);
-		return $this;
+		$fields = parent::fields();
+
+		$fields['name'] = function ($model) {
+			return $model->user->name;
+		};
+		$fields['surname'] = function ($model) {
+			return $model->user->surname;
+		};
+
+
+		return $fields;
 	}
+
 }

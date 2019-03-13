@@ -74,9 +74,6 @@ class UserController extends ApiController
 		if ($user->validate())
 		{
 			$user->save();
-			unset($user->salt);
-			unset($user->auth_key);
-			unset($user->password);
 			return $user;
 		}
 		else
@@ -103,17 +100,12 @@ class UserController extends ApiController
 		{
 			if (!$loginToken->isExpired())
 			{
-				return $loginToken->get();
+				return $loginToken;
 			}
 		}
-		$loginToken = new LoginToken();
-		$date = new \DateTime(date('Y-m-d H:i:s'));
-		$date->add(new \DateInterval('P30D'));
-		$loginToken->expiration = $date->format('Y-m-d H:i:s');
-		$loginToken->token = \Yii::$app->security->generateRandomString();
-		$loginToken->link('user', $user);
+		$loginToken = new LoginToken(['user' => $user]);
 		$loginToken->save();
-		return $loginToken->get();
+		return $loginToken;
 	}
 
 	public function actionServer($id)
