@@ -88,12 +88,12 @@ class UserController extends ApiController
 		$user = User::findByUsername($data['username']);
 		if (!$user)
 		{
-			throw new ApiException(404, 'Username not found');
+			throw new ApiException(401, 'Username not found');
 		}
 
 		if (!$user->validatePassword($data['password']))
 		{
-			throw new ApiException(403, 'Incorrect username or password.');
+			throw new ApiException(401, 'Incorrect username or password.');
 		}
 
 		foreach ($user->loginTokens as $loginToken)
@@ -113,7 +113,7 @@ class UserController extends ApiController
 
 		$user = $this->validateUser('Server');
 		if (!$user)
-			return false;
+			throw new ApiException(401, 'User not authorized.');
 
 		$criteria = ['id' => $id];
 		$server = Server::findOne($criteria);
@@ -122,7 +122,7 @@ class UserController extends ApiController
 
 		$server = Server::findOne(array_merge($criteria, ['user_id' => $user]));
 		if (!$server)
-			return false;
+			throw new ApiException(403, 'Not users server.');
 
 		return true;
 	}
