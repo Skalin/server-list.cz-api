@@ -32,6 +32,7 @@ class LoginToken extends BaseToken
 	public function get()
 	{
 		unset($this->id);
-		return array_merge($this->attributes, ['name' => $this->user->name, 'surname' => $this->user->surname]);
+		$this->fields(['name' => $this->user->name, 'surname' => $this->user->surnae]);
+		return $this;
 	}
 }
