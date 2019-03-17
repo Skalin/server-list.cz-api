@@ -53,6 +53,14 @@ class Service extends BaseModel
         ];
     }
 
+    public function fields()
+	{
+		$fields = parent::fields();
+		unset($fields['category_id']);
+		unset($fields['stats_list']);
+		return $fields;
+	}
+
 	public function getServers()
 	{
 		return $this->hasMany(Server::className(), ['game_id' => 'id']);

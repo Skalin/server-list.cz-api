@@ -101,7 +101,10 @@ class Server extends BaseModel
 	{
 		$fields = parent::fields();
 
+		unset($fields['service_id']);
 		unset($fields['password']);
+		unset($fields['user_id']);
+		unset($fields['registrator_id']);
 		return $fields;
 	}
 
