@@ -108,7 +108,7 @@ class Server extends BaseModel
 		unset($fields['registrator_id']);
 		if (!($this->image_url))
 			$fields['image_url'] = function($model) {
-				return $this->getQueryPath($this->service_id)::getImage($model);
+				return $this->getQueryPath($this->service_id)::getImage($model) ?? '';
 			};
 		return $fields;
 	}
