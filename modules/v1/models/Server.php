@@ -48,6 +48,7 @@ class Server extends BaseModel
 			[['user', 'registrator'], 'safe'],
 			[['user_id', 'registrator_id'], 'validateUser'],
 			[['name'], 'string', 'max' => 100],
+			[['image_url'], 'safe'],
 			[['ip', 'domain'], 'validateIp'],
 			[['pingStatistics', 'availableStatistics', 'service'], 'safe']
         ];
@@ -105,6 +106,10 @@ class Server extends BaseModel
 		unset($fields['password']);
 		unset($fields['user_id']);
 		unset($fields['registrator_id']);
+		if (!($this->image_url))
+			$fields['image_url'] = function($model) {
+				return $this->getQueryPath($this->service_id)::getImage($model);
+			};
 		return $fields;
 	}
 
