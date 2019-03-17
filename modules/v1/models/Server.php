@@ -14,6 +14,7 @@ use yii\helpers\VarDumper;
  * @property string $name
  * @property string $ip
  * @property string $domain
+ * @property string $image_url
  * @property integer $port
  * @property integer $query_port
  * @property integer $service_id
@@ -108,9 +109,19 @@ class Server extends BaseModel
 		unset($fields['registrator_id']);
 		if (!($this->image_url))
 			$fields['image_url'] = function($model) {
-				return $this->getQueryPath($this->service_id)::getImage($model) ?? '';
+				return $this->getImageUrl();
 			};
 		return $fields;
+	}
+
+	private function getImageUrl()
+	{
+		if (!$this->image_url)
+		{
+			$this->image_url = $this->getQueryPath($this->service_id)::getImage($this) ?? '';
+			$this->save();
+		}
+		return $this->image_url;
 	}
 
 	public function getService()
