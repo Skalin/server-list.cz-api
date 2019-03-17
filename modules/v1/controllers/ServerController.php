@@ -6,6 +6,7 @@ use app\components\ApiException;
 use app\controllers\ApiController;
 use app\modules\v1\models\Server;
 use Codeception\Template\Api;
+use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
@@ -65,10 +66,20 @@ class ServerController extends ApiController
 	{
 		if (!$this->getParentParam())
 		{
-			return Server::find()->all();
+			return new ActiveDataProvider([
+				'query' => Server::find()->all(),
+				'pagination' => [
+					'defaultPageSize' => 20
+				]
+			]);
 		}
 
-		return Server::findAll(['service_id' => $this->getParentParam()]);
+		return new ActiveDataProvider([
+			'query' => Server::findAll(['service_id' => $this->getParentParam()]),
+			'pagination' => [
+				'defaultPageSize' => 20
+			]
+		]);
 	}
 
 	public function actionView()
