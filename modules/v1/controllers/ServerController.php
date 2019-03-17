@@ -70,7 +70,7 @@ class ServerController extends ApiController
 			return new ActiveDataProvider([
 				'query' => Server::find(),
 				'pagination' => [
-					'defaultPageSize' => 10
+					'defaultPageSize' => 12
 				]
 			]);
 		}
@@ -78,7 +78,7 @@ class ServerController extends ApiController
 		return new ActiveDataProvider([
 			'query' => Server::find()->service(['service_id' => $this->getParentParam()]),
 			'pagination' => [
-				'defaultPageSize' => 10
+				'defaultPageSize' => 12
 			]
 		]);
 	}
