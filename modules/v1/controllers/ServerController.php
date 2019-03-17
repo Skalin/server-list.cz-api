@@ -68,7 +68,7 @@ class ServerController extends ApiController
 		if (!$this->getParentParam())
 		{
 			return new ActiveDataProvider([
-				'query' => Server::find()->all(),
+				'query' => Server::find(),
 				'pagination' => [
 					'defaultPageSize' => 20
 				]
@@ -76,7 +76,7 @@ class ServerController extends ApiController
 		}
 
 		return new ActiveDataProvider([
-			'query' => Server::find()->service(['service_id' => $this->getParentParam()])->all(),
+			'query' => Server::find()->service(['service_id' => $this->getParentParam()]),
 			'pagination' => [
 				'defaultPageSize' => 20
 			]
