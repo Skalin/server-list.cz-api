@@ -74,9 +74,6 @@ class UserController extends ApiController
 		if ($user->validate())
 		{
 			$user->save();
-			unset($user->salt);
-			unset($user->auth_key);
-			unset($user->password);
 			return $user;
 		}
 		else
@@ -91,29 +88,24 @@ class UserController extends ApiController
 		$user = User::findByUsername($data['username']);
 		if (!$user)
 		{
-			throw new ApiException(404, 'Username not found');
+			throw new ApiException(401, 'Username not found');
 		}
 
 		if (!$user->validatePassword($data['password']))
 		{
-			throw new ApiException(403, 'Incorrect username or password.');
+			throw new ApiException(401, 'Incorrect username or password.');
 		}
 
 		foreach ($user->loginTokens as $loginToken)
 		{
 			if (!$loginToken->isExpired())
 			{
-				return $loginToken->get();
+				return $loginToken;
 			}
 		}
-		$loginToken = new LoginToken();
-		$date = new \DateTime(date('Y-m-d H:i:s'));
-		$date->add(new \DateInterval('P30D'));
-		$loginToken->expiration = $date->format('Y-m-d H:i:s');
-		$loginToken->token = \Yii::$app->security->generateRandomString();
-		$loginToken->link('user', $user);
+		$loginToken = new LoginToken(['user' => $user]);
 		$loginToken->save();
-		return $loginToken->get();
+		return $loginToken;
 	}
 
 	public function actionServer($id)
@@ -121,7 +113,7 @@ class UserController extends ApiController
 
 		$user = $this->validateUser('Server');
 		if (!$user)
-			return false;
+			throw new ApiException(401, 'User not authorized.');
 
 		$criteria = ['id' => $id];
 		$server = Server::findOne($criteria);
@@ -130,7 +122,7 @@ class UserController extends ApiController
 
 		$server = Server::findOne(array_merge($criteria, ['user_id' => $user]));
 		if (!$server)
-			return false;
+			throw new ApiException(403, 'Not users server.');
 
 		return true;
 	}
