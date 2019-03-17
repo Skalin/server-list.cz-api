@@ -5,6 +5,8 @@ namespace app\modules\v1\models;
 use app\components\BaseModel;
 use app\components\queries\MCQuery;
 use app\components\queries\CSGOQuery;
+use app\models\User;
+use yii\data\ActiveDataProvider;
 use yii\helpers\VarDumper;
 
 /**
@@ -51,7 +53,10 @@ class Server extends BaseModel
 			[['name'], 'string', 'max' => 100],
 			[['image_url'], 'safe'],
 			[['ip', 'domain'], 'validateIp'],
-			[['pingStatistics', 'availableStatistics', 'service'], 'safe']
+			[['pingStatistics', 'availableStatistics', 'service'], 'safe'],
+			[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+			[['service_id'], 'exist', 'skipOnError' => true, 'targetClass' => Service::className(), 'targetAttribute' => ['service_id' => 'id']],
+			[['registrator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['registrator_id' => 'id']],
         ];
     }
 
@@ -96,6 +101,15 @@ class Server extends BaseModel
             'name' => 'Name',
             'description' => 'Description',
             'active' => 'Active',
+			'domain' => 'Domain',
+			'ip' => 'Ip',
+			'password' => 'Password',
+			'port' => 'Port',
+			'query_port' => 'Query Port',
+			'service_id' => 'Service ID',
+			'registrator_id' => 'Registrator ID',
+			'user_id' => 'User ID',
+			'image_url' => 'Image Url',
         ];
     }
 
@@ -215,5 +229,14 @@ class Server extends BaseModel
 			return $server;
 
 		return false;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @return ServerQuery the active query used by this AR class.
+	 */
+	public static function find()
+	{
+		return new ServerQuery(get_called_class());
 	}
 }
