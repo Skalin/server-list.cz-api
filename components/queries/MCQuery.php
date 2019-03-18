@@ -48,6 +48,6 @@ class MCQuery extends BaseQuery
 
 	public static function getImage($server)
 	{
-		return self::query($server)['image_url'];
+		return self::query($server)['image_url'] ?? '';
 	}
 }
