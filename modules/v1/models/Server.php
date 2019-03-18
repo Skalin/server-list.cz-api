@@ -27,6 +27,8 @@ use yii\helpers\VarDumper;
 class Server extends BaseModel
 {
 
+	public $status;
+
 	const MC = 1;
 	const CSGO = 2;
 
