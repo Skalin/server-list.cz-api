@@ -15,7 +15,7 @@ class BaseQuery extends Component
 {
 	public static function query($server)
 	{
-
+		return $server;
 	}
 
 	public static function getStatus($server)
