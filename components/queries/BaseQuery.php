@@ -13,6 +13,10 @@ use yii\base\Component;
 
 class BaseQuery extends Component
 {
+	public static function query($server)
+	{
+
+	}
 
 	public static function getStatus($server)
 	{
