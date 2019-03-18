@@ -10,10 +10,7 @@ namespace app\components\queries;
 
 use MCServerStatus\MCPing;
 use MCServerStatus\Exceptions\MCPingException;
-use yii\base\Component;
-use yii\helpers\VarDumper;
-
-class MCQuery extends Component
+class MCQuery extends BaseQuery
 {
 	public static function query($server)
 	{
@@ -39,6 +36,11 @@ class MCQuery extends Component
 			if (isset($query->online)) {
 				$queryResult['status'] = $query->online ? 1 : 0;
 			}
+
+			if (isset($query->favicon))
+			{
+				$queryResult['image_url'] = $query->favicon;
+			}
 		}
 
 		return $queryResult;
@@ -46,20 +48,6 @@ class MCQuery extends Component
 
 	public static function getImage($server)
 	{
-		$query = null;
-		$queryResult = [];
-
-		try {
-			$query = MCPing::check($server->ip, $server->port, 5);
-		} catch (MCPingException $e) {
-			$Exception = $e;
-		} finally {
-			if (isset($query->favicon))
-			{
-				return $query->favicon;
-			}
-			return '';
-		}
-
+		return self::query($server)['image_url'];
 	}
 }

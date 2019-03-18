@@ -6,6 +6,7 @@ use app\controllers\ApiController;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
+use yii\helpers\VarDumper;
 use yii\web\Response;
 
 class ServiceController extends ApiController
@@ -23,7 +24,7 @@ class ServiceController extends ApiController
 			'class' => Cors::className(),
 			'cors' => [
 				'Origin' => static::allowedDomains(),
-				'Access-Control-Request-Method' => ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+				'Access-Control-Request-Method' => ['GET', 'HEAD'],
 				'Access-Control-Request-Headers' => ['*'],
 				'Access-Control-Allow-Credentials' => true,
 			],
@@ -46,5 +47,7 @@ class ServiceController extends ApiController
 		unset($actions['delete']);
 		return $actions;
 	}
+
+	//todo create a view function that will parse a shortcut and treat it as ID or create special action that will grant all IDs and shortcuts
 
 }

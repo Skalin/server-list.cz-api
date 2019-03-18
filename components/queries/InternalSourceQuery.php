@@ -10,9 +10,7 @@ namespace app\components\queries;
 
 use xPaw\SourceQuery\SourceQuery;
 
-use yii\base\Component;
-
-class InternalSourceQuery extends Component
+class InternalSourceQuery extends BaseQuery
 {
 
 	public static function query($server)
@@ -55,5 +53,6 @@ class InternalSourceQuery extends Component
 
 		return $queryResult;
 	}
+
 
 }

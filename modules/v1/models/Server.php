@@ -125,6 +125,7 @@ class Server extends BaseModel
 			$fields['image_url'] = function($model) {
 				return $this->getImageUrl();
 			};
+		$fields['status'] = $this->getQueryPath($this->service_id)::getStatus();
 		return $fields;
 	}
 
@@ -132,7 +133,7 @@ class Server extends BaseModel
 	{
 		if (!$this->image_url)
 		{
-			$this->image_url = method_exists($this->getQueryPath($this->service_id), 'getImage') ? $this->getQueryPath($this->service_id)::getImage($this) : '';
+			$this->image_url = method_exists($this->getQueryPath($this->service_id), 'getImage') ? $this->getQueryPath($this->service_id)::getImage($this) : null;
 			$this->save();
 		}
 		return $this->image_url;
