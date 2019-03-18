@@ -20,6 +20,6 @@ class BaseQuery extends Component
 
 	public static function getStatus($server)
 	{
-		return self::query($server)['status'];
+		return get_called_class()::query($server)['status'];
 	}
 }
