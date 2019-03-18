@@ -16,7 +16,7 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
 	'modules' => [
-		'v1' => 'app\modules\v1\v1Module'
+		'v1' => 'app\modules\v1\v1Module',
 	],
 	'language' => 'cs',
     'components' => [
