@@ -125,7 +125,9 @@ class Server extends BaseModel
 			$fields['image_url'] = function($model) {
 				return $this->getImageUrl();
 			};
-		$fields['status'] = $this->getQueryPath($this->service_id)::getStatus();
+		$fields['status'] = function($model) {
+				return $this->getQueryPath($this->service_id)::getStatus($model);
+			};
 		return $fields;
 	}
 
