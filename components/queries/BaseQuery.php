@@ -22,4 +22,14 @@ class BaseQuery extends Component
 	{
 		return get_called_class()::query($server)['status'];
 	}
+
+	public static function getPlayers($server)
+	{
+		return get_called_class()::query($server)['players'] ?? null;
+	}
+
+	public static function getMaxPlayers($server)
+	{
+		return get_called_class()::query($server)['max_players'] ?? null;
+	}
 }

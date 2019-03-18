@@ -28,6 +28,9 @@ class Server extends BaseModel
 {
 
 	public $status;
+	public $players;
+	public $maxPlayers;
+	public $imageUrl;
 
 	const MC = 1;
 	const CSGO = 2;
@@ -124,12 +127,20 @@ class Server extends BaseModel
 		unset($fields['user_id']);
 		unset($fields['registrator_id']);
 		if (!($this->image_url))
-			$fields['image_url'] = function($model) {
+			$fields['imageUrl'] = function($model) {
 				return $this->getImageUrl();
 			};
+		unset($fields['image_url']);
+
 		$fields['status'] = function($model) {
 				return $this->getStatus();
 			};
+		$fields['players'] = function($model) {
+				return $this->getPlayers();
+			};
+		$fields['maxPlayers'] = function ($model) {
+			return $this->getMaxPlayers();
+		};
 		return $fields;
 	}
 
@@ -138,6 +149,23 @@ class Server extends BaseModel
 	{
 		if (method_exists($this->getQueryPath($this->service_id), 'getStatus'))
 			return $this->getQueryPath($this->service_id)::getStatus($this);
+
+		return null;
+	}
+
+	private function getPlayers()
+	{
+		if (method_exists($this->getQueryPath($this->service_id), 'getPlayers'))
+			return $this->getQueryPath($this->service_id)::getPlayers($this);
+
+		return 0;
+	}
+
+
+	private function getMaxPlayers()
+	{
+		if (method_exists($this->getQueryPath($this->service_id), 'getMaxPlayers'))
+			return $this->getQueryPath($this->service_id)::getMaxPlayers($this);
 
 		return null;
 	}
