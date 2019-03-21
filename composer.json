@@ -21,7 +21,8 @@
         "tunecino/yii2-nested-rest": "^0.3.0",
         "xpaw/php-minecraft-query": "^2.0",
         "Lukasss93/minecraft-server-status": "^2.0",
-        "xPaw/PHP-Source-Query-class": "^1.0"
+        "xPaw/PHP-Source-Query-class": "^1.0",
+        "firebase/php-jwt": "^5.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

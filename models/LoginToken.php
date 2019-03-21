@@ -3,12 +3,18 @@
 namespace app\models;
 
 use app\components\BaseToken;
+use Firebase\JWT\JWT;
 
 class LoginToken extends BaseToken
 {
 
 	public $name;
 	public $surname;
+
+	public $iss;
+	public $aud;
+	public $iat;
+
 
 	public static function tableName()
 	{
@@ -51,8 +57,15 @@ class LoginToken extends BaseToken
 			return $model->user->surname;
 		};
 
+		$fields['iss'] = 'http://api.server-list.cz';
+		$fields['aud'] = 'http://server-list.cz';
+		$fields['iat'] = date('U');
 
-		return $fields;
+		unset($fields['id']);
+
+		$key = 'fjkajkfwaf2/r2*/q42q-*r42498f498a4f89z1x65z1vz-*z-v*s5z+wr42wt[g=p;][/';
+
+		return JWT::encode($fields, $key);
 	}
 
 }
