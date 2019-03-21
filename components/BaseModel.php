@@ -8,6 +8,7 @@
 
 namespace app\components;
 
+use app\modules\v1\models\Service;
 use yii\db\ActiveRecord;
 
 class BaseModel extends ActiveRecord
@@ -24,4 +25,10 @@ class BaseModel extends ActiveRecord
 		$path = implode('\\', $path);
 		return $path .= '\\';
 	}
+
+	public function getQueryPath($service)
+	{
+		return $this->queryNamespace.'\\'.Service::findById($service)->getQueryClass();
+	}
+
 }

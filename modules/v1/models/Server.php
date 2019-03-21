@@ -5,6 +5,9 @@ namespace app\modules\v1\models;
 use app\components\BaseModel;
 use app\components\queries\MCQuery;
 use app\components\queries\CSGOQuery;
+use app\models\User;
+use yii\data\ActiveDataProvider;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "server".
@@ -13,6 +16,7 @@ use app\components\queries\CSGOQuery;
  * @property string $name
  * @property string $ip
  * @property string $domain
+ * @property string $image_url
  * @property integer $port
  * @property integer $query_port
  * @property integer $service_id
@@ -22,6 +26,11 @@ use app\components\queries\CSGOQuery;
  */
 class Server extends BaseModel
 {
+
+	public $status;
+	public $players;
+	public $maxPlayers;
+	public $imageUrl;
 
 	const MC = 1;
 	const CSGO = 2;
@@ -47,8 +56,12 @@ class Server extends BaseModel
 			[['user', 'registrator'], 'safe'],
 			[['user_id', 'registrator_id'], 'validateUser'],
 			[['name'], 'string', 'max' => 100],
+			[['image_url'], 'safe'],
 			[['ip', 'domain'], 'validateIp'],
-			[['pingStatistics', 'availableStatistics', 'service'], 'safe']
+			[['pingStatistics', 'availableStatistics', 'service'], 'safe'],
+			[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+			[['service_id'], 'exist', 'skipOnError' => true, 'targetClass' => Service::className(), 'targetAttribute' => ['service_id' => 'id']],
+			[['registrator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['registrator_id' => 'id']],
         ];
     }
 
@@ -93,8 +106,79 @@ class Server extends BaseModel
             'name' => 'Name',
             'description' => 'Description',
             'active' => 'Active',
+			'domain' => 'Domain',
+			'ip' => 'Ip',
+			'password' => 'Password',
+			'port' => 'Port',
+			'query_port' => 'Query Port',
+			'service_id' => 'Service ID',
+			'registrator_id' => 'Registrator ID',
+			'user_id' => 'User ID',
+			'image_url' => 'Image Url',
         ];
     }
+
+    public function fields()
+	{
+		$fields = parent::fields();
+
+		unset($fields['service_id']);
+		unset($fields['password']);
+		unset($fields['user_id']);
+		unset($fields['registrator_id']);
+		if (!($this->image_url))
+			$fields['imageUrl'] = function($model) {
+				return $this->getImageUrl();
+			};
+		unset($fields['image_url']);
+
+		$fields['status'] = function($model) {
+				return $this->getStatus();
+			};
+		$fields['players'] = function($model) {
+				return $this->getPlayers();
+			};
+		$fields['maxPlayers'] = function ($model) {
+			return $this->getMaxPlayers();
+		};
+		return $fields;
+	}
+
+
+	private function getStatus()
+	{
+		if (method_exists($this->getQueryPath($this->service_id), 'getStatus'))
+			return $this->getQueryPath($this->service_id)::getStatus($this);
+
+		return null;
+	}
+
+	private function getPlayers()
+	{
+		if (method_exists($this->getQueryPath($this->service_id), 'getPlayers'))
+			return $this->getQueryPath($this->service_id)::getPlayers($this);
+
+		return 0;
+	}
+
+
+	private function getMaxPlayers()
+	{
+		if (method_exists($this->getQueryPath($this->service_id), 'getMaxPlayers'))
+			return $this->getQueryPath($this->service_id)::getMaxPlayers($this);
+
+		return null;
+	}
+
+	private function getImageUrl()
+	{
+		if (!$this->image_url)
+		{
+			$this->image_url = method_exists($this->getQueryPath($this->service_id), 'getImage') ? $this->getQueryPath($this->service_id)::getImage($this) : null;
+			$this->save();
+		}
+		return $this->image_url;
+	}
 
 	public function getService()
 	{
@@ -187,5 +271,14 @@ class Server extends BaseModel
 			return $server;
 
 		return false;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @return ServerQuery the active query used by this AR class.
+	 */
+	public static function find()
+	{
+		return new ServerQuery(get_called_class());
 	}
 }
