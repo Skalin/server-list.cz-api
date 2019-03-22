@@ -4,9 +4,19 @@ namespace app\models;
 
 use app\components\ApiException;
 use app\components\BaseModel;
+use Firebase\JWT\JWT;
 use yii\helpers\VarDumper;
 use yii\web\IdentityInterface;
 
+
+/**
+ * Class User
+ *
+ * @property string $name
+ * @property string $surname
+ *
+ * @package app\models
+ */
 class User extends BaseModel implements IdentityInterface
 {
 	public $registratorToken = null;
@@ -31,6 +41,11 @@ class User extends BaseModel implements IdentityInterface
 		return 'user';
 	}
 
+	public static function findByMail($mail)
+	{
+		return static::findOne(['mail' => $mail]);
+	}
+
 	public static function findByUsername($username)
 	{
 		return static::findOne(['username' => $username]);
@@ -39,8 +54,8 @@ class User extends BaseModel implements IdentityInterface
 	public function rules()
 	{
 		return [
-			[['username', 'mail', 'password'], 'required', 'on' => 'registration'],
-			[['name', 'surname', 'username', 'password', 'tos_agreement'], 'required'],
+			//[['username', 'mail', 'password'], 'required', 'on' => 'registration'],
+			[['username', 'name', 'surname', 'mail', 'password', 'tos_agreement'], 'required'],
 			[['username'], 'unique'],
 			[['tos_agreement', 'gdpr_agreement'], 'integer', 'integerOnly' => true],
 			[['mail'], 'email'],
@@ -184,6 +199,10 @@ class User extends BaseModel implements IdentityInterface
 	{
 		$modelName = '';
 		$model = null;
+
+		$token = JWT::decode($data, LoginToken::LOGIN_TOKEN_KEY);
+
+		VarDumper::dump($token);die;
 
 		$modelName = self::getClassPath().$validationMethod;
 		$model = $modelName::findByToken($data);

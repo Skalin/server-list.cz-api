@@ -96,16 +96,9 @@ class UserController extends ApiController
 			throw new ApiException(401, 'Incorrect username or password.');
 		}
 
-		foreach ($user->loginTokens as $loginToken)
-		{
-			if (!$loginToken->isExpired())
-			{
-				return $loginToken;
-			}
-		}
 		$loginToken = new LoginToken(['user' => $user]);
 		$loginToken->save();
-		return $loginToken;
+		return $loginToken->getAsJWTToken();
 	}
 
 	public function actionServer($id)
