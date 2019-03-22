@@ -66,15 +66,15 @@ class UserController extends ApiController
 		return $actions;
 	}
 
-	public function actionCreate()
+	public function actionRegister()
 	{
 		$user = new User();
-		$user->attributes = \Yii::$app->request->post();
+		$user->attributes = \Yii::$app->request->post('user');
 
 		if ($user->validate())
 		{
 			$user->save();
-			return $user;
+			return $user->generateLoginToken();
 		}
 		else
 		{

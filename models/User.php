@@ -76,6 +76,13 @@ class User extends BaseModel implements IdentityInterface
 		return static::findOne(['access_token' => $token]);
 	}
 
+	public function generateLoginToken()
+	{
+		$lt = new LoginToken(['user' => $this]);
+		$lt->save();
+		return $lt->getAsJWTToken();
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */

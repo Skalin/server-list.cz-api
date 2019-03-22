@@ -57,15 +57,25 @@ class LoginToken extends BaseToken
 			return $model->user->surname;
 		};
 
+		unset($fields['id']);
+
+		return $fields;
+	}
+
+
+	public function getAsJWTToken()
+	{
+		$fields = $this;
 		$fields['iss'] = 'http://api.server-list.cz';
 		$fields['aud'] = 'http://server-list.cz';
 		$fields['iat'] = date('U');
+		$fields['name'] = $this->user->name;
+		$fields['surname'] = $this->user->surname;
+		$fields['expiration'] = $this->expiration;
 
-		unset($fields['id']);
 
 		$key = 'fjkajkfwaf2/r2*/q42q-*r42498f498a4f89z1x65z1vz-*z-v*s5z+wr42wt[g=p;][/';
 
 		return JWT::encode($fields, $key);
 	}
-
 }

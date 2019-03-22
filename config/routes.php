@@ -23,6 +23,19 @@ return [
 			'' => 'options'
 		],
 		'extraPatterns' => [
+			'POST register' => 'register',
+			'OPTIONS register' => 'register',
+
+		]
+	],
+	[
+		'class' => 'yii\rest\UrlRule',
+		'controller' => ['v1/user'],
+		'pluralize' => false,
+		'patterns' => [
+			'' => 'options'
+		],
+		'extraPatterns' => [
 			'POST login' => 'login',
 			'OPTIONS login' => 'login',
 
