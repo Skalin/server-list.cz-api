@@ -12,7 +12,7 @@ class m190321_201649_update_login_token extends Migration
      */
     public function safeUp()
     {
-    	$this->addColumn('{{login_token}}', 'issue_date', 'datetime');
+    	$this->addColumn('{{login_token}}', 'issue_date', 'datetime DEFAULT CURRENT_TIMESTAMP');
 	}
 
     /**
