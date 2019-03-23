@@ -98,12 +98,11 @@ class LoginToken extends BaseToken
 	{
 		if ($this->isNewRecord)
 		{
-
 			$date = new \DateTime(date('Y-m-d H:i:s'));
+			$this->issue_date = $date->format('Y-m-d H:i:s');
 			$date->add(new \DateInterval('P30D'));
 			$this->expiration = $date->format('Y-m-d H:i:s');
 			$this->token = \Yii::$app->security->generateRandomString();
-			$this->issue_date = $date->format('Y-m-d H:i:s');
 		}
 
 		return parent::beforeSave($insert);
