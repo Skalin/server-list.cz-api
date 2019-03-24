@@ -24,8 +24,7 @@ class ApiController extends ActiveController
 	{
 		return [
 			'http://localhost:3000',
-			'http://192.168.0.105:3000',
-			'http://server-list.cz'
+			'https://server-list.cz'
 		];
 	}
 
