@@ -10,6 +10,7 @@ namespace app\models;
 
 
 use app\components\BaseModel;
+use app\modules\admin\modules\FileModule\models\StatModelQuery;
 use app\modules\v1\models\Server;
 
 /**
@@ -73,5 +74,26 @@ class StatModel extends BaseModel
 	public function getServer()
 	{
 		return Server::findOne(['id' => $this->server_id]);
+	}
+
+
+	public function fields()
+	{
+		$fields = parent::fields();
+
+		unset($fields['id']);
+		unset($fields['server_id']);
+
+		return $fields;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 * @return StatModelQuery the active query used by this AR class.
+	 */
+	public static function find()
+	{
+		$name = get_called_class().'Query';
+		return new $name(get_called_class());
 	}
 }

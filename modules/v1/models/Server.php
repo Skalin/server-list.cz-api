@@ -27,9 +27,7 @@ use yii\helpers\VarDumper;
 class Server extends BaseModel
 {
 
-	public $status;
-	public $players;
-	public $maxPlayers;
+	public $stats;
 	public $imageUrl;
 
 	const MC = 1;
@@ -132,43 +130,27 @@ class Server extends BaseModel
 			};
 		unset($fields['image_url']);
 
-		$fields['status'] = function($model) {
-				return $this->getStatus();
-			};
-		$fields['players'] = function($model) {
-				return $this->getPlayers();
-			};
-		$fields['maxPlayers'] = function ($model) {
-			return $this->getMaxPlayers();
-		};
+		$fields['stats'] = function($model) {
+					return $this->getLatestStatistics();
+				};
+
 		return $fields;
 	}
 
 
-	private function getStatus()
+	private function getLatestStatistics()
 	{
-		if (method_exists($this->getQueryPath($this->service_id), 'getStatus'))
-			return $this->getQueryPath($this->service_id)::getStatus($this);
-
-		return null;
+		$availableStatistics = $this->getAvailableStatistics();
+		$stats = [];
+		foreach ($availableStatistics as $availableStatistic)
+		{
+			$statClass = $this->getClassPath().$availableStatistic;
+			$stat = $statClass::find()->server($this->id)->latest()->one();
+			$stats[$availableStatistic] = $stat;
+		}
+		return $stats;
 	}
 
-	private function getPlayers()
-	{
-		if (method_exists($this->getQueryPath($this->service_id), 'getPlayers'))
-			return $this->getQueryPath($this->service_id)::getPlayers($this);
-
-		return 0;
-	}
-
-
-	private function getMaxPlayers()
-	{
-		if (method_exists($this->getQueryPath($this->service_id), 'getMaxPlayers'))
-			return $this->getQueryPath($this->service_id)::getMaxPlayers($this);
-
-		return null;
-	}
 
 	private function getImageUrl()
 	{
@@ -218,6 +200,7 @@ class Server extends BaseModel
 		$service = Service::findById($this->service_id);
 		$queryClass = $this->queryNamespace.'\\'.$service->getQueryClass();
 		$result = $queryClass::query($this);
+		$failedGeneration = 0;
 
 		foreach ($stats as $stat)
 		{
@@ -226,8 +209,15 @@ class Server extends BaseModel
 			if (is_null($className::generateStat($this->id, $result)))
 			{
 				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name}\n";
+				$failedGeneration++;
 			}
 		}
+
+		if ($failedGeneration == count($stats))
+			return false;
+
+
+		return true;
 	}
 
 	public function setTimeouts($timeout)
