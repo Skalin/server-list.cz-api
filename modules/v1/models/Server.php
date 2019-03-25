@@ -124,10 +124,10 @@ class Server extends BaseModel
 		unset($fields['password']);
 		unset($fields['user_id']);
 		unset($fields['registrator_id']);
-		if (!($this->image_url))
+		/*if (!($this->image_url))
 			$fields['imageUrl'] = function($model) {
 				return $this->getImageUrl();
-			};
+			};*/
 		unset($fields['image_url']);
 
 		$fields['stats'] = function($model) {

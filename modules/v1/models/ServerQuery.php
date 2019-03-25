@@ -9,10 +9,6 @@ namespace app\modules\v1\models;
  */
 class ServerQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
 
 	public function service($service_id)
 	{
