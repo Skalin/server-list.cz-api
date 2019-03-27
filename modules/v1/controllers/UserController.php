@@ -96,7 +96,8 @@ class UserController extends ApiController
 			throw new ApiException(401, 'Incorrect username or password.');
 		}
 
-		$loginToken = new LoginToken(['user' => $user]);
+		$loginToken = new LoginToken();
+		$loginToken->user = $user;
 		$loginToken->save();
 		return $loginToken->getAsJWTToken();
 	}
@@ -119,5 +120,16 @@ class UserController extends ApiController
 
 		return true;
 	}
+
+	public function actionServers()
+	{
+		$user = $this->validateUser('Server');
+		if (!$user)
+			throw new ApiException(401, 'User not authorzied.');
+
+
+		return Server::findAll(['user_id' => $user]);
+	}
+
 
 }

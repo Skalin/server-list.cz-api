@@ -30,14 +30,14 @@ class BaseToken extends BaseModel
 		return (strtotime(date('Y-m-d H:i:s')) > strtotime($this->expiration));
 	}
 
-
-	public static function findByToken($data)
-	{
-		return static::findOne(['token' => $data]);
-	}
-
 	public function getUser()
 	{
 		return $this->hasOne(User::className(), ['id' => 'user_id']);
+	}
+
+
+	public static function findByToken($token)
+	{
+		return get_called_class()::findOne(['token' => $token]);
 	}
 }

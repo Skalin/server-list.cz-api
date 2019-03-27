@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\components\ApiException;
 use app\components\BaseModel;
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use yii\helpers\VarDumper;
 use yii\web\IdentityInterface;
@@ -93,7 +94,8 @@ class User extends BaseModel implements IdentityInterface
 
 	public function generateLoginToken()
 	{
-		$lt = new LoginToken(['user' => $this]);
+		$lt = new LoginToken();
+		$lt->user = $this;
 		$lt->save();
 		return $lt->getAsJWTToken();
 	}
@@ -178,6 +180,10 @@ class User extends BaseModel implements IdentityInterface
 	}
 
 
+	public function getServers()
+	{
+		return $this->hasMany(Server::class, ['user_id' => 'id']);
+	}
 
 	public function getLoginTokens()
 	{
@@ -200,15 +206,13 @@ class User extends BaseModel implements IdentityInterface
 		$modelName = '';
 		$model = null;
 
-		$token = JWT::decode($data, LoginToken::LOGIN_TOKEN_KEY);
-
-		VarDumper::dump($token);die;
+		$token = JWT::decode($data, LoginToken::LOGIN_TOKEN_KEY, array("HS256"));
 
 		$modelName = self::getClassPath().$validationMethod;
-		$model = $modelName::findByToken($data);
-		if (!$model || $model->isExpired())
+		$model = $modelName::findByToken($token->token);
+		if (!$model || $model->isExpired() || $model->isAfterIssueTime())
 		{
-			throw new ApiException(403);
+			throw new ApiException(403, 'Token is expired.');
 		}
 
 		if ($validationMethod === self::API_LOGIN)

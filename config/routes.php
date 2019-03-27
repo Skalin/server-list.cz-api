@@ -43,6 +43,18 @@ return [
 	],
 	[
 		'class' => 'yii\rest\UrlRule',
+		'controller' => ['v1/user'],
+		'pluralize' => false,
+		'patterns' => [
+			'' => 'options'
+		],
+		'extraPatterns' => [
+			'POST servers' => 'servers',
+			'OPTIONS servers' => 'servers',
+		]
+	],
+	[
+		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/service'],
 	],
 	[

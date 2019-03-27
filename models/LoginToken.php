@@ -4,6 +4,8 @@ namespace app\models;
 
 use app\components\BaseToken;
 use Firebase\JWT\JWT;
+use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
 
 /**
  * Class LoginToken
@@ -41,17 +43,12 @@ class LoginToken extends BaseToken
 	public function rules()
 	{
 
-		return [
+		$rules = parent::rules();
+		return ArrayHelper::merge($rules, [
 			[['id', 'user_id'], 'number', 'integerOnly' => true],
 			[['expiration', 'token', 'name', 'surname', 'issue_date'], 'safe'],
-		];
-	}
-
-	public function __construct(array $config = [])
-	{
-
-		$this->link('user', $config['user']);
-		return parent::__construct();
+			[['expiration', 'issue_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s']
+		]);
 	}
 
 
@@ -107,4 +104,11 @@ class LoginToken extends BaseToken
 
 		return parent::beforeSave($insert);
 	}
+
+
+	public function isAfterIssueTime()
+	{
+		return (strtotime(date('Y-m-d H:i:s')) < strtotime($this->issue_date));
+	}
+
 }
