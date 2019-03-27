@@ -97,9 +97,10 @@ class UserController extends ApiController
 		}
 
 		$loginToken = new LoginToken();
-		$loginToken->user = $user;
-		$loginToken->save();
-		return $loginToken->getAsJWTToken();
+		$loginToken->user_id = $user->id;
+		if ($loginToken->save())
+			return $loginToken->getAsJWTToken();
+		throw new ApiException(401, 'Couldn\'t generate login token.');
 	}
 
 	public function actionServer($id)

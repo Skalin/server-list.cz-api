@@ -42,13 +42,13 @@ class LoginToken extends BaseToken
 
 	public function rules()
 	{
-
-		$rules = parent::rules();
-		return ArrayHelper::merge($rules, [
+		return
+		[
+			[['user_id'], 'required'],
 			[['id', 'user_id'], 'number', 'integerOnly' => true],
 			[['expiration', 'token', 'name', 'surname', 'issue_date'], 'safe'],
-			[['expiration', 'issue_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s']
-		]);
+			[['expiration', 'issue_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
+		];
 	}
 
 
@@ -79,15 +79,13 @@ class LoginToken extends BaseToken
 	{
 		$fields['iss'] = 'http://api.server-list.cz';
 		$fields['aud'] = 'http://server-list.cz';
-		$fields['iat'] = $this->issue_date;
 		$fields['name'] = $this->user->name;
 		$fields['surname'] = $this->user->surname;
-		$fields['exp'] = $this->expiration;
+		$fields['iat'] = strtotime($this->issue_date);
+		$fields['exp'] = strtotime($this->expiration);
 		$fields['token'] = $this->token;
 
-		$key = 'fjkajkfwaf2/r2*/q42q-*r42498f498a4f89z1x65z1vz-*z-v*s5z+wr42wt[g=p;][/';
-
-		return JWT::encode($fields, $key);
+		return JWT::encode($fields, self::LOGIN_TOKEN_KEY);
 	}
 
 

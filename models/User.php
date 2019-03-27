@@ -95,7 +95,7 @@ class User extends BaseModel implements IdentityInterface
 	public function generateLoginToken()
 	{
 		$lt = new LoginToken();
-		$lt->user = $this;
+		$lt->user_id = $this->id;
 		$lt->save();
 		return $lt->getAsJWTToken();
 	}
