@@ -205,6 +205,7 @@ class User extends BaseModel implements IdentityInterface
 	{
 		$modelName = '';
 		$model = null;
+		VarDumper::dump($data);die;
 
 		$token = JWT::decode($data, LoginToken::LOGIN_TOKEN_KEY, array("HS256"));
 
