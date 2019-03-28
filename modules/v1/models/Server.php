@@ -3,6 +3,7 @@
 namespace app\modules\v1\models;
 
 use app\components\BaseModel;
+use app\models\StatModel;
 use app\components\queries\MCQuery;
 use app\components\queries\CSGOQuery;
 use app\models\User;
@@ -57,9 +58,9 @@ class Server extends BaseModel
 			[['image_url'], 'safe'],
 			[['ip', 'domain'], 'validateIp'],
 			[['pingStatistics', 'availableStatistics', 'service'], 'safe'],
-			[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-			[['service_id'], 'exist', 'skipOnError' => true, 'targetClass' => Service::className(), 'targetAttribute' => ['service_id' => 'id']],
-			[['registrator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['registrator_id' => 'id']],
+			[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+			[['service_id'], 'exist', 'skipOnError' => true, 'targetClass' => Service::class, 'targetAttribute' => ['service_id' => 'id']],
+			[['registrator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['registrator_id' => 'id']],
         ];
     }
 
@@ -163,7 +164,7 @@ class Server extends BaseModel
 
 	public function getService()
 	{
-		return $this->hasOne(Service::className(), ['service_id' => 'id']);
+		return $this->hasOne(Service::className(), ['id' => 'service_id']);
 	}
 
 	public static function findById($id)
@@ -269,5 +270,18 @@ class Server extends BaseModel
 	public static function find()
 	{
 		return new ServerQuery(get_called_class());
+	}
+
+	public function getAllStats()
+	{
+		$stats = [];
+		$statsClasses = $this->service->getStatisticsClasses();
+		foreach ($statsClasses as $statsClass)
+		{
+			$className = $this->getClassPath().$statsClass;
+			$statistics = $className::find()->server($this->id)->all();
+			$stats[$statsClass] = $statistics;
+		}
+		return $stats;
 	}
 }

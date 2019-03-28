@@ -23,12 +23,6 @@ use yii\web\Response;
 class StatsController extends ApiController
 {
 
-	public static $tableKeys = [
-		'ping',
-		'players',
-		//'status',
-	];
-
 	public $statModels;
 
 	public $modelClass = 'app\models\StatModel';
@@ -67,29 +61,12 @@ class StatsController extends ApiController
 		if (!$parentParam)
 			return new ApiException(400);
 
-		if (!Server::findById($parentParam))
+		if (!$server = Server::findById($parentParam))
 			return new ApiException(404);
 
-		return $this->getAllStats($parentParam);
+		return $server->getAllStats();
 	}
 
-	protected function getAllStatModels()
-	{
-		return self::$tableKeys;
-	}
 
-	protected function getAllStats($parentParm)
-	{
-
-		$data = [];
-		foreach ($this->getAllStatModels() as $name)
-		{
-			$tableName = $this->getNamespace().ucfirst($name).'Stat';
-			$tableName = $tableName::className();
-
-			$data[$name] = $tableName::findAll(['server_id' => $parentParm]);
-		}
-		return $data;
-	}
 
 }

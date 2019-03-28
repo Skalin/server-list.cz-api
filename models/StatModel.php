@@ -12,6 +12,7 @@ namespace app\models;
 use app\components\BaseModel;
 use app\modules\admin\modules\FileModule\models\StatModelQuery;
 use app\modules\v1\models\Server;
+use yii\helpers\VarDumper;
 
 /**
  * Class BasicStatModel
@@ -24,6 +25,8 @@ use app\modules\v1\models\Server;
 
 class StatModel extends BaseModel
 {
+	const STAT_NAMESPACE = 'app\modules\v1\models\\';
+
 
 	const STAT_NAME = '';
 

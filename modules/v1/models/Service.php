@@ -63,7 +63,7 @@ class Service extends BaseModel
 
 	public function getServers()
 	{
-		return $this->hasMany(Server::className(), ['game_id' => 'id']);
+		return $this->hasMany(Server::className(), ['service_id' => 'id']);
 	}
 
 	public static function findById($id)

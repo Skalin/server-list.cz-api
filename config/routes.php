@@ -67,10 +67,5 @@ return [
 		'controller' => ['stats' => 'v1/stats'],
 		'prefix' => 'v1/services/<service_id:\d+>/servers/<parent:\d+>',
 	],
-	[
-		'class' => 'yii\rest\UrlRule',
-		'controller' => ['ping-stats' => 'v1/pingStats'],
-		'prefix' => 'v1/services/<service_id:\d+>/servers/<parent:\d+>',
-	],
 	'<controller>/<action>' => '<controller>/<action>',
 ];
