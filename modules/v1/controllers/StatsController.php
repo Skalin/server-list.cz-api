@@ -14,6 +14,7 @@ use app\controllers\ApiController;
 use app\modules\admin\modules\FileModule\models\File;
 use app\modules\v1\models\Server;
 use Codeception\Template\Api;
+use yii\filters\Cors;
 use yii\helpers\FileHelper;
 use yii\web\Response;
 
@@ -31,6 +32,15 @@ class StatsController extends ApiController
 	{
 		$behaviors = parent::behaviors();
 		unset($behaviors['authenticator']);
+		$behaviors['corsFilter'] = [
+			'class' => Cors::className(),
+			'cors' => [
+				'Origin' => static::allowedDomains(),
+				'Access-Control-Request-Method' => ['GET', 'HEAD'],
+				'Access-Control-Request-Headers' => ['*'],
+				'Access-Control-Allow-Credentials' => true,
+			],
+		];
 
 		$behaviors['contentNegotiator'] = [
 			'class' => 'yii\filters\ContentNegotiator',
