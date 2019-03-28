@@ -128,9 +128,6 @@ class UserController extends ApiController
 		if (!$user)
 			throw new ApiException(401, 'User not authorzied.');
 
-
-		VarDumper::dump($user);
-		VarDumper::dump(Server::findAll(['user_id' => $user]));die;
 		return Server::findAll(['user_id' => $user]);
 	}
 
