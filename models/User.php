@@ -221,7 +221,7 @@ class User extends BaseModel implements IdentityInterface
 			VarDumper::dump(\Yii::$app->request->ipHeaders);die;
 		}
 
-		return $model;
+		return $model->user;
 	}
 
 	public static function findById($id)
