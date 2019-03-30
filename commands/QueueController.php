@@ -32,7 +32,7 @@ class QueueController extends Controller
 				$failedServers[] = $server;
 		}
 
-		echo "Waiting for 120 seconds until another testing of failed servers.";
+		echo "Waiting for 120 seconds until another testing of failed servers.\n";
 		sleep(120);
 
 
@@ -46,7 +46,7 @@ class QueueController extends Controller
 				$failedServers[] = $server;
 		}
 
-		echo "Waiting for 120 seconds until last testing of failed servers.";
+		echo "Waiting for 120 seconds until last testing of failed servers.\n";
 		sleep(120);
 
 		foreach ($failedServers as $server)
