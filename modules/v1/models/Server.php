@@ -194,7 +194,7 @@ class Server extends BaseModel
 		}
 	}
 
-	public function generateStatistics()
+	public function generateStatistics($overrideSaving = false)
 	{
 		$stats = $this->getAvailableStatistics();
 		$service = Service::findById($this->service_id);
@@ -207,10 +207,10 @@ class Server extends BaseModel
 		{
 			$className = $this->getClassPath().$stat;
 			echo "Generating {$stat} statistics for server {$this->id}: {$this->name}\n";
-			if ($failedGeneration < StatModel::STAT_FAILED_AMOUNT_THRESHOLD && isset($result['status']) && $result['status'] == 0)
+			if (!$overrideSaving && isset($result['status']) && $result['status'] == 0)
 			{
-				echo "Stat: {$stat} could not be generrated for server {$this->id}: {$this->name} because server is OFFLINE.\n";
-				$failedGeneration++;
+				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name} because server is OFFLINE.\n";
+				return false;
 			}
 			else if (is_null($className::generateStat($this->id, $result)))
 			{

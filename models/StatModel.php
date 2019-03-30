@@ -24,7 +24,7 @@ use app\modules\v1\models\Server;
 class StatModel extends BaseModel
 {
 	const STAT_NAMESPACE = 'app\modules\v1\models\\';
-	const STAT_FAILED_AMOUNT_THRESHOLD = 1;
+	const STAT_FAILED_AMOUNT_THRESHOLD = 3;
 
 	const STAT_NAME = '';
 

@@ -36,24 +36,23 @@ class QueueController extends Controller
 		sleep(120);
 
 
-		$failedServerArray = $failedServers;
-		$failedServers = [];
-		foreach ($failedServerArray as $server)
+		$failedServerArray = [];
+		foreach ($failedServers as $server)
 		{
 			$server->destroyOldStatistics();
 
 			if (!$server->generateStatistics())
-				$failedServers[] = $server;
+				$failedServerArray = $server;
 		}
 
 		echo "Waiting for 120 seconds until last testing of failed servers.\n";
 		sleep(120);
 
-		foreach ($failedServers as $server)
+		foreach ($failedServerArray as $server)
 		{
 
 			$server->destroyOldStatistics();
-			$server->generateStatistics();
+			$server->generateStatistics(true);
 		}
 
 		return ExitCode::OK;
