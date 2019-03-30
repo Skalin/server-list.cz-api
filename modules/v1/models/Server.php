@@ -202,11 +202,17 @@ class Server extends BaseModel
 		$result = $queryClass::query($this);
 		$failedGeneration = 0;
 
+
 		foreach ($stats as $stat)
 		{
 			$className = $this->getClassPath().$stat;
 			echo "Generating {$stat} statistics for server {$this->id}: {$this->name}\n";
-			if (is_null($className::generateStat($this->id, $result)))
+			if ($failedGeneration < StatModel::STAT_FAILED_AMOUNT_THRESHOLD && isset($result['status']) && $result['status'] == 0)
+			{
+				echo "Stat: {$stat} could not be generrated for server {$this->id}: {$this->name} because server is OFFLINE.\n";
+				$failedGeneration++;
+			}
+			else if (is_null($className::generateStat($this->id, $result)))
 			{
 				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name}\n";
 				$failedGeneration++;
@@ -251,11 +257,11 @@ class Server extends BaseModel
 	{
 		$server = null;
 
-		$server = static::findOne(['ip' => $ip, 'port' => $port]);
+		$server = self::findOne(['ip' => $ip, 'port' => $port]);
 		if ($server)
 			return $server;
 
-		$server = static::findOne(['domain' => $domain, 'port' => $port]);
+		$server = self::findOne(['domain' => $domain, 'port' => $port]);
 
 		if ($server)
 			return $server;

@@ -10,9 +10,7 @@ namespace app\models;
 
 
 use app\components\BaseModel;
-use app\modules\admin\modules\FileModule\models\StatModelQuery;
 use app\modules\v1\models\Server;
-use yii\helpers\VarDumper;
 
 /**
  * Class BasicStatModel
@@ -26,7 +24,7 @@ use yii\helpers\VarDumper;
 class StatModel extends BaseModel
 {
 	const STAT_NAMESPACE = 'app\modules\v1\models\\';
-
+	const STAT_FAILED_AMOUNT_THRESHOLD = 1;
 
 	const STAT_NAME = '';
 
@@ -92,7 +90,7 @@ class StatModel extends BaseModel
 
 	/**
 	 * {@inheritdoc}
-	 * @return StatModelQuery the active query used by this AR class.
+	 * @return \app\models\StatModelQuery the active query used by this AR class.
 	 */
 	public static function find()
 	{

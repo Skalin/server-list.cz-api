@@ -59,9 +59,8 @@ class PingStat extends StatModel
 	/**
 	 * Function generates automatically the value of stat depending on service of which the server is
 	 *
-	 *
 	 * @param $server_id
-	 * @return $stat
+	 * @return StatModel|null
 	 */
 	public function generateStat($server_id, $value = NULL)
 	{
@@ -70,7 +69,6 @@ class PingStat extends StatModel
 			$stat->value = $value[self::$attribute] ?? '';
 		if (!$stat->validate())
 			return null;
-		$stat->save();
 		return $stat;
 	}
 

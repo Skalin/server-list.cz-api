@@ -22,8 +22,36 @@ class QueueController extends Controller
 		if (!$servers)
 			return ExitCode::NOINPUT;
 
+		$failedServers = [];
+
 		foreach ($servers as $server)
 		{
+			$server->destroyOldStatistics();
+
+			if (!$server->generateStatistics())
+				$failedServers[] = $server;
+		}
+
+		echo "Waiting for 120 seconds until another testing of failed servers.";
+		sleep(120);
+
+
+		$failedServerArray = $failedServers;
+		$failedServers = [];
+		foreach ($failedServerArray as $server)
+		{
+			$server->destroyOldStatistics();
+
+			if (!$server->generateStatistics())
+				$failedServers[] = $server;
+		}
+
+		echo "Waiting for 120 seconds until last testing of failed servers.";
+		sleep(120);
+
+		foreach ($failedServers as $server)
+		{
+
 			$server->destroyOldStatistics();
 			$server->generateStatistics();
 		}
