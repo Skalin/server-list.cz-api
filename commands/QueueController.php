@@ -42,7 +42,7 @@ class QueueController extends Controller
 			$server->destroyOldStatistics();
 
 			if (!$server->generateStatistics())
-				$failedServerArray = $server;
+				$failedServerArray[] = $server;
 		}
 
 		echo "Waiting for 120 seconds until last testing of failed servers.\n";
