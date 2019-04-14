@@ -145,14 +145,24 @@ class UserController extends ApiController
 
 
 		$model = User::findAccessToken($this->getValidationMethod(), $token->token);
-		$model->expiration = date('Y-m-d h:i:s');
-
-		$model->save();
+		if (!$model->expire())
+			throw new ApiException(500, 'Something went wrong at saving tokens');
 		return true;
 	}
 
 	public function actionLogoutAll()
 	{
 
+		$user = $this->validateUser('User');
+		if (!$user)
+			throw new ApiException(401, 'User not authorized');
+
+		$user = User::findById($user);
+
+		foreach ($user->loginTokens as $token)
+		{
+			$token->expire();
+		}
+		return true;
 	}
 }

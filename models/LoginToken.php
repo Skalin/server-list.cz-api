@@ -113,4 +113,10 @@ class LoginToken extends BaseToken
 	{
 		return ($this->isExpired() || $this->isAfterIssueTime());
 	}
+
+	public function expire()
+	{
+		$this->expiration = date('Y-m-d h:i:s');
+		return $this->save() ? true : false;
+	}
 }
