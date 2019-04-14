@@ -86,12 +86,12 @@ class ApiController extends ActiveController
 
 		if (!$validationMethod = $this->getValidationMethod())
 		{
-			throw new ApiException(403);
+			throw new ApiException(401, 'Validation method not specified');
 		}
 
 		$user = User::findByAccessToken($this->getValidationMethod(), $this->getValidationData());
 		if (!$user)
-			throw new ApiException(403);
+			throw new ApiException(401, 'User not found');
 
 		return $user->id;
 	}
