@@ -14,6 +14,8 @@ use app\controllers\ApiController;
 use app\models\LoginToken;
 use app\models\User;
 use app\modules\v1\models\Server;
+use Firebase\JWT\JWT;
+use yii\db\Expression;
 use yii\filters\Cors;
 use yii\helpers\VarDumper;
 use yii\web\Response;
@@ -126,10 +128,31 @@ class UserController extends ApiController
 	{
 		$user = $this->validateUser('Server');
 		if (!$user)
-			throw new ApiException(401, 'User not authorzied.');
+			throw new ApiException(401, 'User not authorized.');
 
 		return Server::findAll(['user_id' => $user]);
 	}
 
 
+
+	public function actionLogout()
+	{
+		$user = $this->validateUser('User');
+		if (!$user)
+			throw new ApiException(401, 'User not authorized');
+
+		$token = JWT::decode($this->getValidationData(), LoginToken::LOGIN_TOKEN_KEY, array("HS256"));
+
+
+		$model = User::findAccessToken($this->getValidationMethod(), $token->token);
+		$model->expiration = date('Y-m-d h:i:s');
+
+		$model->save();
+		return true;
+	}
+
+	public function actionLogoutAll()
+	{
+
+	}
 }

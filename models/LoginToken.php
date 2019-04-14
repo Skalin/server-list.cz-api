@@ -109,4 +109,8 @@ class LoginToken extends BaseToken
 		return (strtotime(date('Y-m-d H:i:s')) < strtotime($this->issue_date));
 	}
 
+	public function isInvalid()
+	{
+		return ($this->isExpired() || $this->isAfterIssueTime());
+	}
 }

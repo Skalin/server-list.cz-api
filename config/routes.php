@@ -27,6 +27,18 @@ return [
 			'OPTIONS register' => 'register',
 
 		]
+	],[
+		'class' => 'yii\rest\UrlRule',
+		'controller' => ['v1/user'],
+		'pluralize' => false,
+		'patterns' => [
+			'' => 'options'
+		],
+		'extraPatterns' => [
+			'POST logout' => 'logout',
+			'OPTIONS logout' => 'logout',
+
+		]
 	],
 	[
 		'class' => 'yii\rest\UrlRule',

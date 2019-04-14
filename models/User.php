@@ -201,6 +201,19 @@ class User extends BaseModel implements IdentityInterface
 		return $authManager->getAssignment($role, $this->id) ? true : false;
 	}
 
+
+	/**
+	 * @param $validationMethod
+	 * @param $token
+	 * @return LoginToken|RegistratorToken
+	 */
+	public static function findAccessToken($validationMethod, $token)
+	{
+		$modelName = self::getClassPath().$validationMethod;
+		$model = $modelName::findByToken($token);
+		return $model;
+	}
+
 	public static function findByAccessToken($validationMethod, $data)
 	{
 		$modelName = '';
@@ -208,9 +221,8 @@ class User extends BaseModel implements IdentityInterface
 
 		$token = JWT::decode($data, LoginToken::LOGIN_TOKEN_KEY, array("HS256"));
 
-		$modelName = self::getClassPath().$validationMethod;
-		$model = $modelName::findByToken($token->token);
-		if (!$model || $model->isExpired() || $model->isAfterIssueTime())
+		$model = self::findAccessToken($validationMethod, $token->token);
+		if (!$model || $model->isInvalid())
 		{
 			throw new ApiException(403, 'Token is expired.');
 		}
