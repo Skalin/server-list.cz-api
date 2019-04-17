@@ -141,13 +141,20 @@ class UserController extends ApiController
 		if (!$user)
 			throw new ApiException(401, 'User not authorized');
 
+		$this->logout();
+
+		return true;
+	}
+
+
+	private function logout()
+	{
 		$token = JWT::decode($this->getValidationData(), LoginToken::LOGIN_TOKEN_KEY, array("HS256"));
 
 
 		$model = User::findAccessToken($this->getValidationMethod(), $token->token);
 		if (!$model->expire())
 			throw new ApiException(500, 'Something went wrong at saving tokens');
-		return true;
 	}
 
 	public function actionRelogin()
@@ -156,6 +163,9 @@ class UserController extends ApiController
 		$user = $this->validateUser('Server');
 		if (!$user)
 			throw new ApiException(401, 'User not authorized.');
+
+		// log out user -> expire the token
+		$this->logout();
 
 		$loginToken = new LoginToken();
 		$loginToken->user_id = $user;
