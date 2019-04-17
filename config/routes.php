@@ -67,6 +67,18 @@ return [
 	],
 	[
 		'class' => 'yii\rest\UrlRule',
+		'controller' => ['v1/user'],
+		'pluralize' => false,
+		'patterns' => [
+			'' => 'options'
+		],
+		'extraPatterns' => [
+			'POST relogin' => 'relogin',
+			'OPTIONS relogin' => 'relogin',
+		]
+	],
+	[
+		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/service'],
 	],
 	[

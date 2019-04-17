@@ -150,6 +150,20 @@ class UserController extends ApiController
 		return true;
 	}
 
+	public function actionRelogin()
+	{
+
+		$user = $this->validateUser('Server');
+		if (!$user)
+			throw new ApiException(401, 'User not authorized.');
+
+		$loginToken = new LoginToken();
+		$loginToken->user_id = $user->id;
+		if ($loginToken->save())
+			return $loginToken->getAsJWTToken();
+		throw new ApiException(401, 'Couldn\'t generate login token.');
+	}
+
 	public function actionLogoutAll()
 	{
 
