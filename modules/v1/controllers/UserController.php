@@ -158,7 +158,7 @@ class UserController extends ApiController
 			throw new ApiException(401, 'User not authorized.');
 
 		$loginToken = new LoginToken();
-		$loginToken->user_id = $user->id;
+		$loginToken->user_id = $user;
 		if ($loginToken->save())
 			return $loginToken->getAsJWTToken();
 		throw new ApiException(401, 'Couldn\'t generate login token.');
