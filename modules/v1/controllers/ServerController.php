@@ -118,7 +118,6 @@ class ServerController extends ApiController
 		$user = $this->validateUser('Server');
 
 		$server = new Server;
-		VarDumper::dump(\Yii::$app->request->post());die;
 		$server->attributes = \Yii::$app->request->post("server");
 		$server->registrator_id = $user;
 		$server->service_id = \Yii::$app->request->post("server");
