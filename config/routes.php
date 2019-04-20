@@ -88,6 +88,10 @@ return [
 		'patterns' => [
 			'' => 'options'
 		],
+		'extraPatterns' => [
+			'POST' => 'POST',
+			'OPTIONS' => 'OPTIONS'
+		]
 	],
 	[
 		'class' => 'yii\rest\UrlRule',
