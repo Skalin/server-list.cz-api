@@ -67,7 +67,7 @@ class ServerController extends ApiController
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => Server::find()
-				->join('LEFT JOIN', '{{statistic_status}} as ss', 'server.id = ss.server_id')
+				->with('{{statistic_status}} as ss')
 				->orderBy('ss.date, ss.value DESC')
 				->groupBy('ss.server_id'),
 			'pagination' => [
