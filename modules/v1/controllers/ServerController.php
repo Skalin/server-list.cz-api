@@ -67,19 +67,14 @@ class ServerController extends ApiController
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => Server::find()
-				->join('RIGHT JOIN', '{{statistic_players}} as sp', 'server.id = sp.server_id'),
+				->join('RIGHT JOIN', '{{statistic_players}} as sp', 'server.id = sp.server_id')->orderBy('sp.date DESC, sp.value DESC'),
 			'pagination' => [
 				'defaultPageSize' => 12,
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
 				'pageSizeLimit' => [2, 24], //to set range for pageSize
 			]
 		]);
-		$dataProvider->sort->attributes['date'] = [
-			'desc' => ['sp.date' => SORT_DESC],
-		];
-		$dataProvider->sort->attributes['value'] = [
-			'desc' => ['sp.value' => SORT_DESC],
-		];
+		$dataProvider->sort->sortParam = true;
 
 
 		if (!$this->getParentParam())
