@@ -89,8 +89,8 @@ return [
 			'' => 'options'
 		],
 		'extraPatterns' => [
-			'POST /' => 'POST',
-			'OPTIONS /' => 'OPTIONS'
+			'POST create' => 'create',
+			'OPTIONS create' => 'create'
 		]
 	],
 	[
