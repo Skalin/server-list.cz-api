@@ -120,7 +120,6 @@ class ServerController extends ApiController
 		$server = new Server;
 		$server->attributes = \Yii::$app->request->post("server");
 		$server->registrator_id = $user;
-		$server->service_id = \Yii::$app->request->post("server");
 		if ($server->validate())
 		{
 			$server->save();
@@ -128,7 +127,7 @@ class ServerController extends ApiController
 		}
 		else
 		{
-			throw new ApiException(400, ["Error while saving server", $server->errors]);
+			throw new ApiException(400, $server->errors);
 		}
 	}
 
