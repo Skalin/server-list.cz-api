@@ -5,6 +5,7 @@ namespace app\modules\v1\controllers;
 use app\components\ApiException;
 use app\controllers\ApiController;
 use app\modules\v1\models\Server;
+use app\modules\v1\models\StatusStat;
 use Codeception\Template\Api;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBasicAuth;
@@ -66,6 +67,13 @@ class ServerController extends ApiController
 	{
 
 		$dataProvider = new ActiveDataProvider([
+			'query' => StatusStat::find()
+				->joinWith('server as s')
+				->orderBy('date, value DESC')
+				->groupBy('server_id'),
+		]);
+		/*
+		$dataProvider = new ActiveDataProvider([
 			'query' => Server::find()
 				->joinWith('statusStatistics as ss')
 				->orderBy('ss.date, ss.value DESC')
@@ -76,7 +84,7 @@ class ServerController extends ApiController
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
 				'pageSizeLimit' => [2, 24], //to set range for pageSize
 			]
-		]);
+		]);*/
 		$dataProvider->sort->sortParam = true;
 
 
