@@ -278,6 +278,11 @@ class Server extends BaseModel
 		return new ServerQuery(get_called_class());
 	}
 
+	public function setService($id)
+	{
+		$this->service_id = $id;
+	}
+
 	public function getAllStats()
 	{
 		$stats = [];
