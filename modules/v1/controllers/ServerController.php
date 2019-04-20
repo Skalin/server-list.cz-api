@@ -67,8 +67,10 @@ class ServerController extends ApiController
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => Server::find()
-				->with('statistic_status')
-				->orderBy('statistic_status.date, statistic_status.value DESC'),
+				->joinWith('statusStatistics as ss')
+				->orderBy('ss.date, ss.value DESC')
+				->joinWith('playersStatistics as ps')
+				->addOrderBy('ps.value DESC'),
 			'pagination' => [
 				'defaultPageSize' => 12,
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
