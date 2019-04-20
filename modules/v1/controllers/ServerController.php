@@ -69,8 +69,7 @@ class ServerController extends ApiController
 			'query' => Server::find()
 				->join('LEFT JOIN', '{{statistic_status}} as ss', 'server.id = ss.server_id')
 				->orderBy('ss.date, ss.value DESC')
-				->groupBy('server_id')
-				->distinct(true),
+				->groupBy('ss.server_id'),
 			'pagination' => [
 				'defaultPageSize' => 12,
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
