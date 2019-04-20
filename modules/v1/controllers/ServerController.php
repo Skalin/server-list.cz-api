@@ -77,7 +77,8 @@ class ServerController extends ApiController
 			ORDER BY `stat` DESC, `players` DESC
 			
 			) t1
-			ON `server`.`id` = `t1`.`server_id`";
+			ON `server`.`id` = `t1`.`server_id`
+			LIMIT 12";
 		$servers = Server::findBySql($sql);
 		$dataProvider = new ActiveDataProvider([
 			'query' => $servers]);
