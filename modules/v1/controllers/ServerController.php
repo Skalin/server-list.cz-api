@@ -31,7 +31,7 @@ class ServerController extends ApiController
 			'cors'  => [
 				// restrict access to domains:
 				'Origin' => static::allowedDomains(),
-				'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
+				'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS'],
 				'Access-Control-Allow-Credentials' => true,
 				'Access-Control-Request-Headers' => ['x-requested-with', 'content-type'],
 				'Access-Control-Max-Age' => 3600, // Cache (seconds)
