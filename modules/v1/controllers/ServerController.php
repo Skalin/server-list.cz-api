@@ -119,7 +119,8 @@ class ServerController extends ApiController
 
 		$server = new Server;
 		$server->attributes = \Yii::$app->request->post("server");
-		$server->registrator_id = $user;
+		$server->registrator_id = 1;
+		$server->user_id = $user;
 		if ($server->validate())
 		{
 			$server->save();
