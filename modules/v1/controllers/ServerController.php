@@ -72,7 +72,7 @@ class ServerController extends ApiController
 			
 			SELECT DISTINCT `ss`.`server_id`, `ss`.`value` as stat, `sp`.`value` AS players
 			FROM `statistic_status` as ss
-			LEFT OUTER JOIN `statistic_players` sp ON sp.`server_id` = ss.`server_id`
+			RIGHT OUTER JOIN `statistic_players` sp ON sp.`server_id` = ss.`server_id`
 			WHERE `ss`.`date` > (NOW() - INTERVAL 12 MINUTE) AND `sp`.`date` > (NOW() - INTERVAL 12 MINUTE)
 			ORDER BY `stat` DESC, `players` DESC
 			
