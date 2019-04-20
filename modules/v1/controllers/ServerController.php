@@ -127,7 +127,7 @@ class ServerController extends ApiController
 		}
 		else
 		{
-			throw new ApiException(400, $server->errors);
+			throw new ApiException(400,VarDumper::dump($server));
 		}
 	}
 
