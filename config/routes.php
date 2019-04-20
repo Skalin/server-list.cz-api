@@ -85,6 +85,9 @@ return [
 		'class' => 'yii\rest\UrlRule',
 		'controller' => ['servers' => 'v1/server'],
 		'prefix' => 'v1/services/<parent:\d+>',
+		'patterns' => [
+			'' => 'options'
+		],
 	],
 	[
 		'class' => 'yii\rest\UrlRule',
