@@ -66,12 +66,21 @@ class ServerController extends ApiController
 	public function actionIndex()
 	{
 
+		$sql = "SELECT * 
+			FROM `server`
+			RIGHT JOIN (
+			
+			SELECT DISTINCT `ss`.`server_id`, `ss`.`value` as stat, `sp`.`value` AS players
+			FROM `statistic_status` as ss
+			LEFT OUTER JOIN `statistic_players` sp ON sp.`server_id` = ss.`server_id`
+			WHERE `ss`.`date` > (NOW() - INTERVAL 12 MINUTE) AND `sp`.`date` > (NOW() - INTERVAL 12 MINUTE)
+			ORDER BY `stat` DESC, `players` DESC
+			
+			) t1
+			ON `server`.`id` = `t1`.`server_id`";
+		$servers = Server::findBySql($sql);
 		$dataProvider = new ActiveDataProvider([
-			'query' => StatusStat::find()
-				->joinWith('server as s')
-				->orderBy('date, value DESC')
-				->groupBy('server_id'),
-		]);
+			'query' => $servers]);
 		/*
 		$dataProvider = new ActiveDataProvider([
 			'query' => Server::find()
