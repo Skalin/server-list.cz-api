@@ -39,8 +39,8 @@ class PlayersStat extends StatModel
 		$stat = parent::generateStat($server_id, $value);
 		if ($value)
 		{
-			$stat->value = $value[self::$attribute] ?? '';
-			$stat->maxValue = $value[self::$secondAttribute] ?? '';
+			$stat->value = $value[self::$attribute] ?? 0;
+			$stat->maxValue = $value[self::$secondAttribute] ?? 0;
 		}
 		if (!$stat->validate())
 			return null;
