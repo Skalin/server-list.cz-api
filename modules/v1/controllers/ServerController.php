@@ -128,7 +128,7 @@ class ServerController extends ApiController
 		}
 		else
 		{
-			throw new ApiException(400, "Error while saving server".$server->errors);
+			throw new ApiException(400, ["Error while saving server", $server->errors]);
 		}
 	}
 
