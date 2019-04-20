@@ -118,7 +118,7 @@ class ServerController extends ApiController
 		$user = $this->validateUser('Server');
 
 		$server = new Server;
-		$server->attributes = \Yii::$app->request->post();
+		$server->attributes = \Yii::$app->request->post("server");
 		$server->registrator_id = $user;
 		$server->service_id = Server::MC;
 		if ($server->validate())
@@ -128,7 +128,7 @@ class ServerController extends ApiController
 		}
 		else
 		{
-			return new ApiException(400, $server->errors);
+			return new ApiException(400, $server->validate());
 		}
 	}
 
