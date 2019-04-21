@@ -64,7 +64,7 @@ class StatusStat extends StatModel
 	 * @param int $value
 	 * @return mixed|null
 	 */
-	public function generateStat($date, $server_id, $value = 0)
+	public function generateStat($date, $server_id, $value = NULL)
 	{
 		$stat = parent::generateStat($date, $server_id);
 		if ($value)

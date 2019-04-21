@@ -63,11 +63,11 @@ class PingStat extends StatModel
 	 * @param $server_id
 	 * @return StatModel|null
 	 */
-	public function generateStat($date, $server_id, $value = 0)
+	public function generateStat($date, $server_id, $value = NULL)
 	{
 		$stat = parent::generateStat($date, $server_id);
 		if ($value)
-			$stat->value = $value[self::$attribute] ?? null;
+			$stat->value = $value[self::$attribute] ?? 0;
 		if (!$stat->validate())
 		{
 			return null;

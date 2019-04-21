@@ -64,7 +64,7 @@ class StatModel extends BaseModel
 			[':sid' => $server_id, ':date' => $date->format('Y-m-d H:i:s')]);
 	}
 
-	public function generateStat($date, $server_id, $value = 0)
+	public function generateStat($date, $server_id, $value = NULL)
 	{
 		$className = get_called_class();
 		$stat = new $className;
