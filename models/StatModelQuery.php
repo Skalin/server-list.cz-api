@@ -21,7 +21,7 @@ class StatModelQuery extends ActiveQuery
 
 	public function latest()
 	{
-		return $this->orderBy(['date' => 'desc']);
+		return $this->orderBy(['id' => 'desc']);
 	}
 
 	public function server($serverId)
