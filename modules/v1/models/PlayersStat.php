@@ -9,6 +9,7 @@
 namespace app\modules\v1\models;
 
 use \app\models\StatModel;
+use yii\helpers\VarDumper;
 
 class PlayersStat extends StatModel
 {
@@ -44,7 +45,7 @@ class PlayersStat extends StatModel
 		}
 		if (!$stat->validate())
 		{
-			print_r($stat->errors);
+			VarDumper::dump($stat->errors);
 			return null;
 		}
 		$stat->save();
