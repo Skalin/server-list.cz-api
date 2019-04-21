@@ -70,12 +70,10 @@ class ServerController extends ApiController
 			FROM `server`
 			RIGHT JOIN (
 			
-			SELECT DISTINCT `ss`.`server_id`, `ss`.`value` as stat, `sp`.`value` AS players
-			FROM `statistic_status` as ss
-			RIGHT OUTER JOIN `statistic_players` sp ON sp.`server_id` = ss.`server_id`
-			WHERE `ss`.`date` > (NOW() - INTERVAL 12 MINUTE) AND `sp`.`date` > (NOW() - INTERVAL 12 MINUTE)
-			ORDER BY `stat` DESC, `players` DESC
-			
+			SELECT DISTINCT `sp`.`server_id`,`sp`.`value` AS players
+			FROM `statistic_players` sp 
+			WHERE `sp`.`date` > (NOW() - INTERVAL 12 MINUTE) AND `sp`.`date` > (NOW() - INTERVAL 12 MINUTE)
+			ORDER BY `players` DESC
 			) t1
 			ON `server`.`id` = `t1`.`server_id`
 			LIMIT 12";
