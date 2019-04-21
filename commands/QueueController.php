@@ -42,7 +42,7 @@ class QueueController extends Controller
 		{
 			$server->destroyOldStatistics();
 
-			if (!$server->generateStatistics())
+			if (!$server->generateStatistics($startDate))
 				$failedServerArray[] = $server;
 		}
 
@@ -52,7 +52,7 @@ class QueueController extends Controller
 		foreach ($failedServerArray as $server)
 		{
 
-			$server->destroyOldStatistics();
+			$server->destroyOldStatistics($startDate);
 			$server->generateStatistics(true);
 		}
 
