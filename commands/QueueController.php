@@ -12,13 +12,14 @@ use app\modules\v1\models\Server;
 use app\modules\v1\models\PingStat;
 use yii\console\Controller;
 use yii\console\ExitCode;
+use yii\db\Expression;
 
 class QueueController extends Controller
 {
 
 	public function actionGenerate()
 	{
-		$startDate = date('Y-m-d H:i:s');
+		$startDate = new Expression('NOW()');
 		$servers = Server::find()->all();
 		if (!$servers)
 			return ExitCode::NOINPUT;
