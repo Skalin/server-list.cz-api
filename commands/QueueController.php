@@ -19,7 +19,9 @@ class QueueController extends Controller
 
 	public function actionGenerate()
 	{
-		$startDate = (new \DateTime())->format('Y-m-d H:i:s');
+		$startDate = (new \DateTime());
+		$startDate->add(new \DateInterval("PT2H"));
+		$startDate = $startDate->format('Y-m-d H:i:s');
 		$servers = Server::find()->all();
 		if (!$servers)
 			return ExitCode::NOINPUT;
