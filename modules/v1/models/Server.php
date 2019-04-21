@@ -229,6 +229,7 @@ class Server extends BaseModel
 				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name}\n";
 				$failedGeneration++;
 			}
+			echo print_r($result);
 		}
 
 		if ($failedGeneration == count($stats))
