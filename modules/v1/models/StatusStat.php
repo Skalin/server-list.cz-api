@@ -62,11 +62,11 @@ class StatusStat extends StatModel
 	 * @param $server_id
 	 * @return $stat
 	 */
-	public function generateStat($date, $server_id, $value = NULL)
+	public function generateStat($date, $server_id, $value = 0)
 	{
 		$stat = parent::generateStat($date, $server_id);
 		if ($value)
-			$stat->value = $value[self::$attribute] ?? '';
+			$stat->value = $value[self::$attribute] ?? 0;
 		if (!$stat->validate())
 			return null;
 		$stat->save();

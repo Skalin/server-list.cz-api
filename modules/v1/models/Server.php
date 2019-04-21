@@ -224,7 +224,7 @@ class Server extends BaseModel
 				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name} because server is OFFLINE.\n";
 				return false;
 			}
-			else if (is_null($className::generateStat($startDate, $this->id, $result)))
+			else if (is_null($result = $className::generateStat($startDate, $this->id, $result)))
 			{
 				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name}\n";
 				$failedGeneration++;
