@@ -69,7 +69,8 @@ class ServerController extends ApiController
 			'query' => Server::find()
 				->distinct(true)
 				->rightJoin('{{statistic_players}} AS ps', 'ps.server_id = server.id')
-				->addOrderBy('ps.date DESC, ps.value DESC'),
+				->addOrderBy('ps.date DESC, ps.value DESC')
+				->andWhere('date > NOW() - INTERVAL 10 MINUTE'),
 			'pagination' => [
 				'defaultPageSize' => 12,
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
