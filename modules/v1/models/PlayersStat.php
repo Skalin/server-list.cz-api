@@ -36,7 +36,7 @@ class PlayersStat extends StatModel
 
 	public function generateStat($date, $server_id, $value = NULL)
 	{
-		$stat = parent::generateStat($server_id, $value);
+		$stat = parent::generateStat($date, $server_id, $value);
 		if ($value)
 		{
 			$stat->value = $value[self::$attribute] ?? 0;
