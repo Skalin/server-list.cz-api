@@ -34,7 +34,7 @@ class PlayersStat extends StatModel
 		return $rules;
 	}
 
-	public function generateStat($server_id, $value = NULL)
+	public function generateStat($date, $server_id, $value = NULL)
 	{
 		$stat = parent::generateStat($server_id, $value);
 		if ($value)

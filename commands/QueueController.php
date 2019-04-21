@@ -18,6 +18,7 @@ class QueueController extends Controller
 
 	public function actionGenerate()
 	{
+		$startDate = date('Y-m-d H:i:s');
 		$servers = Server::find()->all();
 		if (!$servers)
 			return ExitCode::NOINPUT;
@@ -28,7 +29,7 @@ class QueueController extends Controller
 		{
 			$server->destroyOldStatistics();
 
-			if (!$server->generateStatistics())
+			if (!$server->generateStatistics($startDate))
 				$failedServers[] = $server;
 		}
 

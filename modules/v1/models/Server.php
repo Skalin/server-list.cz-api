@@ -206,7 +206,7 @@ class Server extends BaseModel
 		}
 	}
 
-	public function generateStatistics($overrideSaving = false)
+	public function generateStatistics($startDate, $overrideSaving = false)
 	{
 		$stats = $this->getAvailableStatistics();
 		$service = Service::findById($this->service_id);
