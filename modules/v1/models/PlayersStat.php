@@ -43,7 +43,10 @@ class PlayersStat extends StatModel
 			$stat->maxValue = $value[self::$secondAttribute] ?? 0;
 		}
 		if (!$stat->validate())
+		{
+			print_r($stat->errors);
 			return null;
+		}
 		$stat->save();
 		return $stat;
 	}

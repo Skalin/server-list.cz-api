@@ -58,9 +58,10 @@ class StatusStat extends StatModel
 	/**
 	 * Function generates automatically the value of stat depending on service of which the server is
 	 *
-	 *
+	 * @param $date
 	 * @param $server_id
-	 * @return $stat
+	 * @param int $value
+	 * @return mixed|null
 	 */
 	public function generateStat($date, $server_id, $value = 0)
 	{
@@ -68,7 +69,10 @@ class StatusStat extends StatModel
 		if ($value)
 			$stat->value = $value[self::$attribute] ?? 0;
 		if (!$stat->validate())
+		{
+			print_r($stat->errors);
 			return null;
+		}
 		$stat->save();
 		return $stat;
 	}
