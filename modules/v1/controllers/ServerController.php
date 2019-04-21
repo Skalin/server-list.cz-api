@@ -65,34 +65,16 @@ class ServerController extends ApiController
 
 	public function actionIndex()
 	{
-
-		$sql = "SELECT * 
-			FROM `server`
-			RIGHT JOIN (
-			
-			SELECT DISTINCT `sp`.`server_id`,`sp`.`value` AS players
-			FROM `statistic_players` sp 
-			WHERE `sp`.`date` > (NOW() - INTERVAL 12 MINUTE) AND `sp`.`date` > (NOW() - INTERVAL 12 MINUTE)
-			ORDER BY `players` DESC
-			) t1
-			ON `server`.`id` = `t1`.`server_id`
-			LIMIT 12";
-		$servers = Server::findBySql($sql);
-		$dataProvider = new ActiveDataProvider([
-			'query' => $servers]);
-		/*
 		$dataProvider = new ActiveDataProvider([
 			'query' => Server::find()
-				->joinWith('statusStatistics as ss')
-				->orderBy('ss.date, ss.value DESC')
 				->joinWith('playersStatistics as ps')
-				->addOrderBy('ps.value DESC'),
+				->addOrderBy('ps.date DESC, ps.value DESC'),
 			'pagination' => [
 				'defaultPageSize' => 12,
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
 				'pageSizeLimit' => [2, 24], //to set range for pageSize
 			]
-		]);*/
+		]);
 		$dataProvider->sort->sortParam = true;
 
 
@@ -101,7 +83,7 @@ class ServerController extends ApiController
 			return $dataProvider;
 		}
 
-		$dataProvider->query = $dataProvider->query->service(['service_id' => $this->getParentParam()]);
+		$dataProvider->query = $dataProvider->query->service($this->getParentParam());
 
 		return $dataProvider;
 	}
