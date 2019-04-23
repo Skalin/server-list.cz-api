@@ -49,7 +49,7 @@ class Server extends BaseModel
     public function rules()
     {
         return [
-			[['name', 'service_id', 'ip', 'port', 'domain'], 'required'],
+			[['name', 'service_id', 'ip', 'port'], 'required'],
 			[['service_id', 'query_port', 'port', 'registrator_id', 'user_id'], 'integer', 'integerOnly' => true],
 			[['service_id'], 'validateService'],
 			[['ip'], 'ip'],
