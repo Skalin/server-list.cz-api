@@ -12,7 +12,7 @@ class m190317_161649_update_server_add_image extends Migration
      */
     public function safeUp()
     {
-    	$this->addColumn('{{server}}', 'image_url', 'blob');
+    	$this->addColumn('{{server}}', 'image_url', 'string');
 	}
 
     /**
