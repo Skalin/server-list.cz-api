@@ -9,6 +9,7 @@
 namespace app\modules\v1\models;
 
 use \app\models\StatModel;
+use yii\helpers\VarDumper;
 
 class PlayersStat extends StatModel
 {
@@ -34,16 +35,19 @@ class PlayersStat extends StatModel
 		return $rules;
 	}
 
-	public function generateStat($server_id, $value = NULL)
+	public function generateStat($date, $server_id, $value = NULL)
 	{
-		$stat = parent::generateStat($server_id, $value);
+		$stat = parent::generateStat($date, $server_id, $value);
 		if ($value)
 		{
-			$stat->value = $value[self::$attribute] ?? '';
-			$stat->maxValue = $value[self::$secondAttribute] ?? '';
+			$stat->value = $value[self::$attribute] ?? 0;
+			$stat->maxValue = $value[self::$secondAttribute] ?? 0;
 		}
 		if (!$stat->validate())
+		{
+			VarDumper::dump($stat->errors);
 			return null;
+		}
 		$stat->save();
 		return $stat;
 	}

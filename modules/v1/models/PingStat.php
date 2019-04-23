@@ -9,6 +9,7 @@
 namespace app\modules\v1\models;
 
 use \app\models\StatModel;
+use yii\helpers\VarDumper;
 
 /**
  * Class PingStat
@@ -62,13 +63,16 @@ class PingStat extends StatModel
 	 * @param $server_id
 	 * @return StatModel|null
 	 */
-	public function generateStat($server_id, $value = NULL)
+	public function generateStat($date, $server_id, $value = NULL)
 	{
-		$stat = parent::generateStat($server_id);
+		$stat = parent::generateStat($date, $server_id);
 		if ($value)
-			$stat->value = $value[self::$attribute] ?? '';
+			$stat->value = $value[self::$attribute] ?? 0;
 		if (!$stat->validate())
+		{
 			return null;
+		}
+
 		return $stat;
 	}
 

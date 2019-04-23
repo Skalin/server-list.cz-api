@@ -7,6 +7,7 @@ use app\models\StatModel;
 use app\components\queries\MCQuery;
 use app\components\queries\CSGOQuery;
 use app\models\User;
+use phpDocumentor\Reflection\Types\This;
 use yii\data\ActiveDataProvider;
 use yii\helpers\VarDumper;
 
@@ -48,7 +49,7 @@ class Server extends BaseModel
     public function rules()
     {
         return [
-			[['name', 'service_id'], 'required'],
+			[['name', 'service_id', 'ip', 'port', 'domain'], 'required'],
 			[['service_id', 'query_port', 'port', 'registrator_id', 'user_id'], 'integer', 'integerOnly' => true],
 			[['service_id'], 'validateService'],
 			[['ip'], 'ip'],
@@ -58,6 +59,7 @@ class Server extends BaseModel
 			[['image_url'], 'safe'],
 			[['ip', 'domain'], 'validateIp'],
 			[['pingStatistics', 'availableStatistics', 'service'], 'safe'],
+			[['statusStatistics', 'availableStatistics', 'service'], 'safe'],
 			[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
 			[['service_id'], 'exist', 'skipOnError' => true, 'targetClass' => Service::class, 'targetAttribute' => ['service_id' => 'id']],
 			[['registrator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['registrator_id' => 'id']],
@@ -162,6 +164,16 @@ class Server extends BaseModel
 		return $this->image_url;
 	}
 
+	public function getStatusStatistics()
+	{
+		return $this->hasMany(StatusStat::class, ['server_id' => 'id']);
+	}
+
+	public function getPlayersStatistics()
+	{
+		return $this->hasMany(StatusStat::class, ['server_id' => 'id']);
+	}
+
 	public function getService()
 	{
 		return $this->hasOne(Service::className(), ['id' => 'service_id']);
@@ -194,7 +206,7 @@ class Server extends BaseModel
 		}
 	}
 
-	public function generateStatistics($overrideSaving = false)
+	public function generateStatistics($startDate, $overrideSaving = false)
 	{
 		$stats = $this->getAvailableStatistics();
 		$service = Service::findById($this->service_id);
@@ -212,7 +224,7 @@ class Server extends BaseModel
 				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name} because server is OFFLINE.\n";
 				return false;
 			}
-			else if (is_null($className::generateStat($this->id, $result)))
+			else if (is_null($status = $className::generateStat($startDate, $this->id, $result)))
 			{
 				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name}\n";
 				$failedGeneration++;
@@ -276,6 +288,11 @@ class Server extends BaseModel
 	public static function find()
 	{
 		return new ServerQuery(get_called_class());
+	}
+
+	public function setService($id)
+	{
+		$this->service_id = $id;
 	}
 
 	public function getAllStats()

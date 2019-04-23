@@ -5,6 +5,7 @@ namespace app\modules\v1\controllers;
 use app\components\ApiException;
 use app\controllers\ApiController;
 use app\modules\v1\models\Server;
+use app\modules\v1\models\StatusStat;
 use Codeception\Template\Api;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBasicAuth;
@@ -31,7 +32,7 @@ class ServerController extends ApiController
 			'cors'  => [
 				// restrict access to domains:
 				'Origin' => static::allowedDomains(),
-				'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
+				'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS', 'DELETE'],
 				'Access-Control-Allow-Credentials' => true,
 				'Access-Control-Request-Headers' => ['x-requested-with', 'content-type'],
 				'Access-Control-Max-Age' => 3600, // Cache (seconds)
@@ -64,27 +65,29 @@ class ServerController extends ApiController
 
 	public function actionIndex()
 	{
-
-		if (!$this->getParentParam())
-		{
-			return new ActiveDataProvider([
-				'query' => Server::find(),
-				'pagination' => [
-					'defaultPageSize' => 12,
-					'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
-					'pageSizeLimit' => [2, 24], //to set range for pageSize
-				]
-			]);
-		}
-
-		return new ActiveDataProvider([
-			'query' => Server::find()->service(['service_id' => $this->getParentParam()]),
+		$dataProvider = new ActiveDataProvider([
+			'query' => Server::find()
+				->distinct(true)
+				->rightJoin('{{statistic_players}} AS ps', 'ps.server_id = server.id')
+				->addOrderBy('ps.date DESC, ps.value DESC')
+				->andWhere('date > NOW() - INTERVAL 10 MINUTE'),
 			'pagination' => [
 				'defaultPageSize' => 12,
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
-			 	'pageSizeLimit' => [2, 24], //to set range for pageSize
+				'pageSizeLimit' => [2, 24], //to set range for pageSize
 			]
 		]);
+		$dataProvider->sort->sortParam = true;
+
+
+		if (!$this->getParentParam())
+		{
+			return $dataProvider;
+		}
+
+		$dataProvider->query = $dataProvider->query->service($this->getParentParam());
+
+		return $dataProvider;
 	}
 
 	public function actionView()
@@ -118,9 +121,9 @@ class ServerController extends ApiController
 		$user = $this->validateUser('Server');
 
 		$server = new Server;
-		$server->attributes = \Yii::$app->request->post();
-		$server->registrator_id = $user;
-		$server->service_id = Server::MC;
+		$server->attributes = \Yii::$app->request->post("server");
+		$server->registrator_id = 1;
+		$server->user_id = $user;
 		if ($server->validate())
 		{
 			$server->save();
@@ -128,7 +131,7 @@ class ServerController extends ApiController
 		}
 		else
 		{
-			return new ApiException(400, $server->errors);
+			throw new ApiException(400, $server->errors);
 		}
 	}
 
