@@ -36,6 +36,7 @@ class Service extends BaseModel
             [['position', 'active'], 'integer'],
             [['name'], 'string', 'max' => 255],
 			[['stats_list'], 'string'],
+	        [['image_url', 'thumbnail_image_url'], 'safe'],
         ];
     }
 
@@ -49,6 +50,8 @@ class Service extends BaseModel
             'name' => 'Name',
             'description' => 'Description',
             'position' => 'Position',
+	        'image_url' => 'Image',
+	        'thumbnail_image_url' => 'Thumbnail',
             'active' => 'Active',
         ];
     }

@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-	'dsn' => 'mysql:host=127.0.0.1;dbname=server-list-api',
+	'dsn' => 'mysql:host=127.0.0.1;dbname=serverlist.cz-api',
 	'username' => 'root',
 	'password' => '',
     'charset' => 'utf8',
