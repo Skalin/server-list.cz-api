@@ -67,6 +67,8 @@ class Service extends BaseModel
 		$fields['imageUrl'] = function ($model) {
 			return $model->image_url;
 		};
+		unset($fields['image_url']);
+		unset($fields['thumbnail_image_url']);
 		return $fields;
 	}
 
