@@ -61,6 +61,12 @@ class Service extends BaseModel
 		$fields = parent::fields();
 		unset($fields['category_id']);
 		unset($fields['stats_list']);
+		$fields['thumbnailImageUrl'] = function ($model) {
+			return $model->thumbnail_image_url;
+		};
+		$fields['imageUrl'] = function ($model) {
+			return $model->image_url;
+		};
 		return $fields;
 	}
 
