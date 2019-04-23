@@ -69,6 +69,10 @@ class Service extends BaseModel
 		};
 		unset($fields['image_url']);
 		unset($fields['thumbnail_image_url']);
+		$fields['count'] = function ($model)
+		{
+			return count($model->servers);
+		};
 		return $fields;
 	}
 
