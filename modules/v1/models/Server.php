@@ -9,6 +9,7 @@ use app\components\queries\CSGOQuery;
 use app\models\User;
 use phpDocumentor\Reflection\Types\This;
 use yii\data\ActiveDataProvider;
+use yii\db\Expression;
 use yii\helpers\VarDumper;
 
 /**
@@ -258,6 +259,7 @@ class Server extends BaseModel
 				$this->timeout = 0;
 			}
 
+			$this->updated_at = new Expression('NOW()');
 		}
 		return parent::beforeSave($insert);
 	}
