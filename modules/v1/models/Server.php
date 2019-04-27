@@ -56,7 +56,7 @@ class Server extends BaseModel
 			[['user', 'registrator'], 'safe'],
 			[['user_id', 'registrator_id'], 'validateUser'],
 			[['name'], 'string', 'max' => 100],
-			[['image_url'], 'safe'],
+			[['image_url', 'description'], 'safe'],
 			[['ip', 'domain'], 'validateIp'],
 			[['pingStatistics', 'availableStatistics', 'service'], 'safe'],
 			[['statusStatistics', 'availableStatistics', 'service'], 'safe'],
@@ -221,20 +221,17 @@ class Server extends BaseModel
 			echo "Generating {$stat} statistics for server {$this->id}: {$this->name}\n";
 			if (!$overrideSaving && isset($result['status']) && $result['status'] == 0)
 			{
-				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name} because server is OFFLINE.\n";
+				\Yii::debug("Stat: {$stat} could not be generated for server {$this->id}: {$this->name} because server is OFFLINE.");
 				return false;
 			}
 			else if (is_null($status = $className::generateStat($startDate, $this->id, $result)))
 			{
-				echo "Stat: {$stat} could not be generated for server {$this->id}: {$this->name}\n";
+				\Yii::debug("Stat: {$stat} could not be generated for server {$this->id}: {$this->name}");
 				$failedGeneration++;
 			}
 		}
-
 		if ($failedGeneration == count($stats))
 			return false;
-
-
 		return true;
 	}
 
