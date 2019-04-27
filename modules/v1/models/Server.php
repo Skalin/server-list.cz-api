@@ -57,7 +57,7 @@ class Server extends BaseModel
 			[['user', 'registrator'], 'safe'],
 			[['user_id', 'registrator_id'], 'validateUser'],
 			[['name'], 'string', 'max' => 100],
-			[['image_url', 'description'], 'safe'],
+			[['image_url', 'description', 'created_at', 'updated_at'], 'safe'],
 			[['ip', 'domain'], 'validateIp'],
 			[['pingStatistics', 'availableStatistics', 'service'], 'safe'],
 			[['statusStatistics', 'availableStatistics', 'service'], 'safe'],
@@ -127,6 +127,17 @@ class Server extends BaseModel
 		unset($fields['password']);
 		unset($fields['user_id']);
 		unset($fields['registrator_id']);
+
+		$fields['createdAt'] = function($model) {
+				return $model->created_at;
+			};
+		unset($fields['created_at']);
+
+		$fields['updatedAt'] = function($model) {
+			return $model->updated_at;
+		};
+		unset($fields['updated_at']);
+
 		if ($this->image_url)
 			$fields['imageUrl'] = function($model) {
 				return $model->image_url;
