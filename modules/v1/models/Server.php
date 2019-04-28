@@ -325,7 +325,7 @@ class Server extends BaseModel
 		}
 		else {*/
 			$title = "Novinka!";
-			if ($insert)
+			if (!$insert)
 				$message = "Server {$this->name} byl upraven. Podívejte se na novinky!";
 			else
 				$message = "Server {$this->name} byl právě přidán! Mrkněte oč se jedná!";
