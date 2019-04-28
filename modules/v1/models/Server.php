@@ -321,14 +321,14 @@ class Server extends BaseModel
 	}
 
 	public function afterSave($insert, $changedAttributes)
-	{
+	{/*
 		$pid = pcntl_fork();
 		if ($pid == -1)
 			return;
 		else if ($pid) {
 
 		}
-		else {
+		else {*/
 			if ($insert)
 				$message = "Server {$this->name} byl upraven. Podívejte se na novinky!";
 			else
@@ -337,6 +337,6 @@ class Server extends BaseModel
 			$data = "{\"services\": {$this->service_id}, \"servers\": {$this->id}";
 			if (!empty($changedAttributes))
 				UserNotification::notify([], $message, $data);
-		}
+		/*}*/
 	}
 }
