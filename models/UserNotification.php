@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\conditions\InCondition;
 use yii\db\Expression;
 use yii\helpers\VarDumper;
 
@@ -82,8 +83,15 @@ class UserNotification extends \yii\db\ActiveRecord
 		{
 			$userIds = new ActiveDataProvider([
 				'query' => User::find()
+					->select('id'),
+			]);
+		}
+
+		else {
+			$userIds = new ActiveDataProvider([
+				'query' => User::find()
 					->select('id')
-					->all(),
+					->andWhere(new InCondition('id', 'IN', $userIds)),
 			]);
 		}
 
