@@ -200,7 +200,7 @@ class UserController extends ApiController
 		$dataProvider = new ActiveDataProvider([
 			'query' => UserNotification::find()
 				->user($user)
-				->orderBy('date'),
+				->orderBy('date DESC'),
 			'pagination' => [
 				'defaultPageSize' => 5,
 				'pageSize' => 5, //to set count items on one page, if not set will be set from defaultPageSize
