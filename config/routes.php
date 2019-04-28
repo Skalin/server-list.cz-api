@@ -23,11 +23,37 @@ return [
 			'' => 'options'
 		],
 		'extraPatterns' => [
+			'POST notificationRead/<id>' => 'notificationRead',
+			'OPTIONS notificationRead/<id>' => 'notificationRead',
+		]
+	],
+	[
+		'class' => 'yii\rest\UrlRule',
+		'controller' => ['v1/user'],
+		'pluralize' => false,
+		'patterns' => [
+			'' => 'options'
+		],
+		'extraPatterns' => [
+			'POST notifications' => 'notifications',
+			'OPTIONS notifications' => 'notifications',
+
+		]
+	],
+	[
+		'class' => 'yii\rest\UrlRule',
+		'controller' => ['v1/user'],
+		'pluralize' => false,
+		'patterns' => [
+			'' => 'options'
+		],
+		'extraPatterns' => [
 			'POST register' => 'register',
 			'OPTIONS register' => 'register',
 
 		]
-	],[
+	],
+	[
 		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/user'],
 		'pluralize' => false,
@@ -76,11 +102,6 @@ return [
 			'POST relogin' => 'relogin',
 			'OPTIONS relogin' => 'relogin',
 		]
-	],
-	[
-		'class' => 'yii\rest\UrlRule',
-		'controller' => ['notification' => 'v1/notification'],
-		'prefix' => 'v1/user',
 	],
 	[
 		'class' => 'yii\rest\UrlRule',

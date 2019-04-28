@@ -13,6 +13,7 @@ use app\components\ApiException;
 use app\controllers\ApiController;
 use app\models\LoginToken;
 use app\models\User;
+use app\models\UserNotification;
 use app\modules\v1\models\Server;
 use Firebase\JWT\JWT;
 use yii\db\Expression;
@@ -189,4 +190,34 @@ class UserController extends ApiController
 		}
 		return true;
 	}
+
+	public function actionNotifications()
+	{
+		$user = $this->validateUser('UserNotification');
+		if (!$user)
+			throw new ApiException(401, 'User not authorized.');
+
+		$notifications = UserNotification::find()->user($user)->all();
+
+		return $notifications;
+	}
+
+	public function actionNotificationRead($notification)
+	{
+
+		$user = $this->validateUser('UserNotification');
+		if (!$user)
+			throw new ApiException(401, 'User not authorized.');
+
+
+		$notification = UserNotification::find()->user($user)->andWhere(['id' => $notification]);
+		if (!$notification)
+			throw new ApiException(403, 'Not your notification.');
+
+		$notification->read = 1;
+		if ($notification->save())
+			return $notification;
+		return $notification->errors;
+	}
+
 }
