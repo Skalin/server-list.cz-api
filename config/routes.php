@@ -23,8 +23,8 @@ return [
 			'' => 'options'
 		],
 		'extraPatterns' => [
-			'POST notification/<notification>' => 'notification',
-			'OPTIONS notification/<notification>' => 'notification',
+			'PATCH notification/<id>' => 'notification',
+			'OPTIONS notification/<id>' => 'notification',
 		]
 	],
 	[

@@ -38,7 +38,7 @@ class UserController extends ApiController
 			'cors'  => [
 				// restrict access to domains:
 				'Origin' => static::allowedDomains(),
-				'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
+				'Access-Control-Request-Method' => ['PUT', 'PATCH', 'POST', 'OPTIONS'],
 				'Access-Control-Allow-Credentials' => true,
 				'Access-Control-Request-Headers' => ['x-requested-with', 'content-type'],
 				'Access-Control-Max-Age' => 3600, // Cache (seconds)
@@ -200,7 +200,7 @@ class UserController extends ApiController
 		return $notifications;
 	}
 
-	public function actionNotification($notification)
+	public function actionNotification($id)
 	{
 
 		$user = $this->validateUser('UserNotification');
@@ -208,7 +208,7 @@ class UserController extends ApiController
 			throw new ApiException(401, 'User not authorized.');
 
 
-		$notification = UserNotification::find()->user($user)->andWhere(['id' => $notification]);
+		$notification = UserNotification::find()->user($user)->andWhere(['id' => $id]);
 		if (!$notification)
 			throw new ApiException(403, 'Not your notification.');
 
