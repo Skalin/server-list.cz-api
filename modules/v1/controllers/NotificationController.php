@@ -12,6 +12,7 @@ use app\components\ApiException;
 use app\controllers\ApiController;
 use app\models\UserNotification;
 use yii\filters\Cors;
+use yii\helpers\VarDumper;
 use yii\web\Response;
 
 class NotificationController extends ApiController
@@ -68,6 +69,7 @@ class NotificationController extends ApiController
 	public function actionIndex()
 	{
 
+		VarDumper::dump(\Yii::$app->request);die;
 		$user = $this->validateUser('Server');
 		if (!$user)
 			throw new ApiException(401, 'User not authorized.');
