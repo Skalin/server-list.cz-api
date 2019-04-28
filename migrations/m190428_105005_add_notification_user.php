@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `server`.
  */
-class m190418_105005_add_notification extends Migration
+class m190428_105005_add_notification_user extends Migration
 {
     /**
      * {@inheritdoc}
