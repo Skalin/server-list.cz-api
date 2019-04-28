@@ -83,25 +83,21 @@ class UserNotification extends \yii\db\ActiveRecord
 		{
 			$userIds = new ActiveDataProvider([
 				'query' => User::find()
-					->select('id'),
 			]);
 		}
 
 		else {
 			$userIds = new ActiveDataProvider([
 				'query' => User::find()
-					->select('id')
 					->andWhere(new InCondition('id', 'IN', $userIds)),
 			]);
 		}
 
-		VarDumper::dump($userIds->getModels());die;
 
-		foreach ($userIds->getModels() as $id)
+		foreach ($userIds->getModels() as $user)
 		{
-			VarDumper::dump($id);die;
 			$n = new UserNotification;
-			$n->user_id = $id;
+			$n->user_id = $user->id;
 			$n->content = $message;
 			$n->date = new Expression('NOW()');
 			$n->title = $title;
