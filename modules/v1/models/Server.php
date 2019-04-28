@@ -285,11 +285,6 @@ class Server extends BaseModel
 		if ($server)
 			return $server;
 
-		$server = self::findOne(['domain' => $domain, 'port' => $port]);
-
-		if ($server)
-			return $server;
-
 		return false;
 	}
 
