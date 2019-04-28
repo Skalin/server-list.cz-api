@@ -32,7 +32,8 @@ class UserNotification extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'integer'],
-            [['read', 'content', 'objectArray'], 'string'],
+            [['content', 'objectArray'], 'string'],
+			[['read'], 'boolean'],
             [['date'], 'safe'],
             [['title'], 'string', 'max' => 255],
         ];
