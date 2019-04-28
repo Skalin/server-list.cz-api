@@ -79,6 +79,11 @@ return [
 	],
 	[
 		'class' => 'yii\rest\UrlRule',
+		'controller' => ['notification' => 'v1/notification'],
+		'prefix' => 'v1/user',
+	],
+	[
+		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/service'],
 	],
 	[
