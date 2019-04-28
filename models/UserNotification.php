@@ -4,6 +4,8 @@ namespace app\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\Expression;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "user_notification".
@@ -73,7 +75,7 @@ class UserNotification extends \yii\db\ActiveRecord
         return new UserNotificationQuery(get_called_class());
     }
 
-    public static function notify($userIds = [], $message, $data)
+    public static function notify($userIds = [], $title, $message, $data)
 	{
 
 		if (empty($userIds))
@@ -86,9 +88,12 @@ class UserNotification extends \yii\db\ActiveRecord
 
 		foreach ($userIds as $id)
 		{
+			VarDumper::dump($id);die;
 			$n = new UserNotification;
 			$n->user_id = $id;
 			$n->content = $message;
+			$n->date = new Expression('NOW()');
+			$n->title = $title;
 			$n->objectArray = $data;
 			$n->save();
 		}

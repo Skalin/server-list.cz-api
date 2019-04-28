@@ -329,6 +329,7 @@ class Server extends BaseModel
 
 		}
 		else {*/
+			$title = "Novinka!";
 			if ($insert)
 				$message = "Server {$this->name} byl upraven. Podívejte se na novinky!";
 			else
@@ -336,7 +337,7 @@ class Server extends BaseModel
 
 			$data = "{\"services\": {$this->service_id}, \"servers\": {$this->id}";
 			if (!empty($changedAttributes))
-				UserNotification::notify([], $message, $data);
+				UserNotification::notify([], $title, $message, $data);
 		/*}*/
 	}
 }
