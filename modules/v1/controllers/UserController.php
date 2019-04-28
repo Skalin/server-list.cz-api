@@ -16,9 +16,7 @@ use app\models\User;
 use app\models\UserNotification;
 use app\modules\v1\models\Server;
 use Firebase\JWT\JWT;
-use yii\db\Expression;
 use yii\filters\Cors;
-use yii\helpers\VarDumper;
 use yii\web\Response;
 
 class UserController extends ApiController
@@ -202,7 +200,7 @@ class UserController extends ApiController
 		return $notifications;
 	}
 
-	public function actionNotificationRead($notification)
+	public function actionNotification($notification)
 	{
 
 		$user = $this->validateUser('UserNotification');
