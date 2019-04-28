@@ -87,9 +87,9 @@ class UserNotification extends \yii\db\ActiveRecord
 			]);
 		}
 
-		VarDumper::dump($userIds);die;
+		VarDumper::dump($userIds->getModels());die;
 
-		foreach ($userIds as $id)
+		foreach ($userIds->getModels() as $id)
 		{
 			VarDumper::dump($id);die;
 			$n = new UserNotification;
