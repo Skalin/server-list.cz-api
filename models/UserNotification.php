@@ -82,7 +82,8 @@ class UserNotification extends \yii\db\ActiveRecord
 		{
 			$userIds = new ActiveDataProvider([
 				'query' => User::find()
-					->select('id'),
+					->select('id')
+					->all(),
 			]);
 		}
 
