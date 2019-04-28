@@ -208,7 +208,7 @@ class UserController extends ApiController
 			throw new ApiException(401, 'User not authorized.');
 
 
-		$notification = UserNotification::find()->user($user)->andWhere(['id' => $id]);
+		$notification = UserNotification::find()->user($user)->andWhere(['id' => $id])->one();
 		if (!$notification)
 			throw new ApiException(403, 'Not your notification.');
 
