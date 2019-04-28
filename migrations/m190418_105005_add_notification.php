@@ -15,7 +15,7 @@ class m190418_105005_add_notification extends Migration
     	$this->createTable('{{user_notification}}', [
     		'id' => $this->primaryKey(),
 		    'user_id' => $this->integer(),
-		    'read' => $this->binary()->null()->defaultValue(null),
+		    'read' => $this->tinyInteger()->defaultValue(0),
 		    'title' => $this->string(),
 		    'date' => $this->dateTime(),
 		    'content' => $this->text(),
