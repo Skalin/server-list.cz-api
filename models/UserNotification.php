@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "user_notification".
@@ -71,4 +72,26 @@ class UserNotification extends \yii\db\ActiveRecord
     {
         return new UserNotificationQuery(get_called_class());
     }
+
+    public static function notify($userIds = [], $message, $data)
+	{
+
+		if (empty($userIds))
+		{
+			$userIds = new ActiveDataProvider([
+				'query' => User::find()
+					->select('id'),
+			]);
+		}
+
+		foreach ($userIds as $id)
+		{
+			$n = new UserNotification;
+			$n->user_id = $id;
+			$n->content = $message;
+			$n->objectArray = $data;
+			$n->save();
+		}
+
+	}
 }

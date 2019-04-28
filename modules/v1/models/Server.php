@@ -8,6 +8,8 @@ use app\components\queries\MCQuery;
 use app\components\queries\CSGOQuery;
 use app\models\User;
 use phpDocumentor\Reflection\Types\This;
+use app\models\UserNotification;
+use Codeception\Lib\Notification;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
 use yii\helpers\VarDumper;
@@ -316,5 +318,25 @@ class Server extends BaseModel
 			$stats[$statsClass] = $statistics;
 		}
 		return $stats;
+	}
+
+	public function afterSave($insert, $changedAttributes)
+	{
+		$pid = pcntl_fork();
+		if ($pid == -1)
+			return;
+		else if ($pid) {
+
+		}
+		else {
+			if ($insert)
+				$message = "Server {$this->name} byl upraven. Podívejte se na novinky!";
+			else
+				$message = "Server {$this->name} byl právě přidán! Mrkněte oč se jedná!";
+
+			$data = "{\"services\": {$this->service_id}, \"servers\": {$this->id}";
+			if (!empty($changedAttributes))
+				UserNotification::notify([], $message, $data);
+		}
 	}
 }
