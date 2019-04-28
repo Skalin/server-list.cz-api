@@ -16,6 +16,7 @@ use app\models\User;
 use app\models\UserNotification;
 use app\modules\v1\models\Server;
 use Firebase\JWT\JWT;
+use yii\data\ActiveDataProvider;
 use yii\filters\Cors;
 use yii\web\Response;
 
@@ -195,9 +196,20 @@ class UserController extends ApiController
 		if (!$user)
 			throw new ApiException(401, 'User not authorized.');
 
-		$notifications = UserNotification::find()->user($user)->all();
 
-		return $notifications;
+		$dataProvider = new ActiveDataProvider([
+			'query' => UserNotification::find()
+				->user($user)
+				->orderBy('date'),
+			'pagination' => [
+				'defaultPageSize' => 5,
+				'pageSize' => 5, //to set count items on one page, if not set will be set from defaultPageSize
+			]
+		]);
+
+
+
+		return $dataProvider;
 	}
 
 	public function actionNotification($id)
