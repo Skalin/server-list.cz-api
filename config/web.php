@@ -25,7 +25,8 @@ $config = [
 			'enableCsrfCookie' => false,
 			'parsers' => [
 				'application/json' => 'yii\web\JsonParser',
-			]
+			],
+			'cookieValidationKey' => 'a54f65wa4fa987fz9c11z89'
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -33,7 +34,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
-			'enableSession' => false,
+			'enableSession' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
