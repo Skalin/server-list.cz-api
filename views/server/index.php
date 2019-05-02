@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'domain',
             'ip',
-            'password',
+            'port',
             //'port',
             //'query_port',
             //'service_id',
