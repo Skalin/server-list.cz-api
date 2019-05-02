@@ -22,11 +22,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'query_port')->textInput() ?>
 
-    <?= $form->field($model, 'service_id')->textInput() ?>
+    <?php $services = \app\modules\v1\models\Service::find()->asArray()->all(); ?>
+    <?= $form->field($model, 'service_id')->dropDownList(\yii\helpers\ArrayHelper::map($services, 'id', 'name'), ['prompt' => 'Select service']) ?>
 
-    <?= $form->field($model, 'registrator_id')->textInput() ?>
+    <?= $form->field($model, 'registrator_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\User::find()->asArray()->all(), 'id', 'username')) ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+    <?= $form->field($model, 'user_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\User::find()->asArray()->all(), 'id', 'username')) ?>
 
     <?= $form->field($model, 'image_url')->textInput() ?>
 
