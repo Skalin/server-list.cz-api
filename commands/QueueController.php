@@ -13,6 +13,7 @@ use app\modules\v1\models\PingStat;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\db\Expression;
+use yii\helpers\VarDumper;
 
 class QueueController extends Controller
 {
@@ -22,7 +23,7 @@ class QueueController extends Controller
 		$startDate = (new \DateTime());
 		$startDate->add(new \DateInterval("PT2H"));
 		$startDate = $startDate->format('Y-m-d H:i:s');
-		$servers = Server::find()->all();
+        $servers = Server::find()->all();
 		if (!$servers)
 			return ExitCode::NOINPUT;
 
@@ -43,8 +44,6 @@ class QueueController extends Controller
 		$failedServerArray = [];
 		foreach ($failedServers as $server)
 		{
-			$server->destroyOldStatistics();
-
 			if (!$server->generateStatistics($startDate))
 				$failedServerArray[] = $server;
 		}
@@ -54,9 +53,7 @@ class QueueController extends Controller
 
 		foreach ($failedServerArray as $server)
 		{
-
-			$server->destroyOldStatistics($startDate);
-			$server->generateStatistics(true);
+			$server->generateStatistics($startDate, true);
 		}
 
 		return ExitCode::OK;
