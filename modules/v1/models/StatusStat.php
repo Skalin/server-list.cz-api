@@ -71,7 +71,6 @@ class StatusStat extends StatModel
 			$stat->value = $value[self::$attribute] ?? 0;
 		if (!$stat->validate())
 		{
-			VarDumper::dump($stat->errors);
 			return null;
 		}
 		$stat->save();
