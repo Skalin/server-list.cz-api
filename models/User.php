@@ -219,18 +219,37 @@ class User extends BaseModel implements IdentityInterface
 		$modelName = '';
 		$model = null;
 
-		$token = JWT::decode($data, LoginToken::LOGIN_TOKEN_KEY, array("HS256"));
-
-		$model = self::findAccessToken($validationMethod, $token->token);
-		if (!$model || $model->isInvalid())
-		{
-			throw new ApiException(403, 'Token is expired.');
-		}
-
 		if ($validationMethod === self::API_LOGIN)
 		{
 			// validate login data (ip address)
-			VarDumper::dump(\Yii::$app->request->ipHeaders);die;
+			$model = RegistratorToken::findByToken($data);
+			if (!$model)
+			{
+				throw new ApiException(401, 'User not existing');
+			}
+
+			if ($model->isExpired())
+			{
+				throw new ApiException(403, 'Token expired');
+			}
+
+			$ip = \Yii::$app->request->getUserIP();
+			if (!$model->checkIPAddress($ip))
+			{
+				throw new ApiException(412, 'Not allowed from this location');
+			}
+		}
+		else
+		{
+
+			$token = JWT::decode($data, LoginToken::LOGIN_TOKEN_KEY, array("HS256"));
+
+			$model = self::findAccessToken($validationMethod, $token->token);
+			if (!$model || $model->isInvalid())
+			{
+				throw new ApiException(403, 'Token is expired.');
+			}
+
 		}
 
 		return $model->user;

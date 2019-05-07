@@ -27,7 +27,9 @@ class BaseToken extends BaseModel
 
 	public function isExpired()
 	{
-		return (strtotime(date('Y-m-d H:i:s')) > strtotime($this->expiration));
+		if ($this->expiration === null)
+			return false;
+		return ($this->expiration && strtotime(date('Y-m-d H:i:s')) > strtotime($this->expiration));
 	}
 
 	public function getUser()

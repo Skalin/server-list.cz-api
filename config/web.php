@@ -8,7 +8,7 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'documentation'],
 	'defaultRoute' => 'site/index',
 	'name' => 'serverlist-api',
     'aliases' => [
@@ -17,6 +17,7 @@ $config = [
     ],
 	'modules' => [
 		'v1' => 'app\modules\v1\v1Module',
+		'documentation' => 'nostop8\yii2\rest_api_doc\Module',
 	],
 	'language' => 'cs',
     'components' => [

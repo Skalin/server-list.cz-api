@@ -9,6 +9,7 @@
 namespace app\models;
 
 use app\components\BaseToken;
+use yii\helpers\VarDumper;
 
 class RegistratorToken extends BaseToken
 {
@@ -27,5 +28,22 @@ class RegistratorToken extends BaseToken
 		];
 		$rules = array_merge($rules, $newRules);
 		return $rules;
+	}
+
+
+
+	public function checkIPAddress($address)
+	{
+
+		$ipsArray = explode(',', $this->ip_list);
+		$ips = [];
+		foreach ($ipsArray as $ip)
+		{
+			$val = trim($ip);
+			if (!empty($val))
+				$ips[] = $val;
+		}
+
+		return in_array($address, $ips);
 	}
 }
