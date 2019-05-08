@@ -221,7 +221,6 @@ class User extends BaseModel implements IdentityInterface
 
 		if ($validationMethod === self::API_LOGIN)
 		{
-			// validate login data (ip address)
 			$model = RegistratorToken::findByToken($data);
 			if (!$model)
 			{
@@ -249,7 +248,6 @@ class User extends BaseModel implements IdentityInterface
 			{
 				throw new ApiException(403, 'Token is expired.');
 			}
-
 		}
 
 		return $model->user;

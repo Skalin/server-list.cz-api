@@ -4,6 +4,7 @@
 
 $this->title = 'My Yii Application';
 ?>
+
 <div class="site-index">
 
     <div class="jumbotron">
@@ -15,90 +16,160 @@ $this->title = 'My Yii Application';
 
     <div class="body-content">
 
-        <div class="row">
-
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h2>User</h2>
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseUser" aria-expanded="false" aria-controls="collapseUser">
-                            Více
-                        </button>
-                    </div>
-                </div>
-                <div class="collapse" id="collapseUser">
-                    <div class="card card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-12">
-                <hr/>
-                <div class="card">
-                    <div class="card-body">
-                        <h2>Services</h2>
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseServices" aria-expanded="false" aria-controls="collapseServices">
-                            Více
-                        </button>
-                    </div>
-                </div>
-                <div class="collapse" id="collapseServices">
-                    <div class="card card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-12">
-                <hr/>
-                <div class="card">
-                    <div class="card-body">
-                        <h2>Servers</h2>
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseServers" aria-expanded="false" aria-controls="collapseServers">
-                            Více
-                        </button>
-                    </div>
-                </div>
-                <div class="collapse" id="collapseServers">
-                    <div class="card card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                    </div>
-                </div>
-            </div>
-<?php if (1): ?>
-    <div class="col-lg-4">
-        <h2>Heading</h2>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-            fugiat nulla pariatur.</p>
-
-        <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-    </div>
-    <div class="col-lg-4">
-        <h2>Heading</h2>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-            fugiat nulla pariatur.</p>
-
-        <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-    </div>
-    <div class="col-lg-4">
-        <h2>Heading</h2>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-            fugiat nulla pariatur.</p>
-
-        <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-    </div>
-            <?php endif; ?>
+    <!-- NAVBAR -->
+    <!-- END NAVBAR -->
+    <!-- LEFT SIDEBAR -->
+    <div id="sidebar-nav" class="sidebar">
+        <div class="sidebar-scroll">
+            <nav>
+                <ul class="nav">
+                    <li><a href="#" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
+                    <li>
+                        <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>User</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="subPages" class="collapse ">
+                            <ul class="nav">
+                                <li><a href="#" class="">Register &nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Login&nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Relogin&nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Logout&nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Servers&nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Server/<id>&nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Notifications &nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Refresh Token &nbsp; <span class="label label-warning">PUT</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Services</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="subPages2" class="collapse ">
+                            <ul class="nav">
+                                <li><a href="#" class="">Register &nbsp; <span class="label label-success">POST</span></a></li>
+                                <li><a href="#" class="">Login&nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Relogin&nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Logout&nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Servers&nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Server/<id>&nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Notifications &nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Refresh Token &nbsp; <span class="label label-warning">PUT</span></a></li>
+                                <li><a href="#" class="">Delete Token &nbsp; <span class="label label-danger">DELETE</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#subPages3" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Servers</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="subPages3" class="collapse ">
+                            <ul class="nav">
+                                <li><a href="#" class="">Check Token &nbsp; <span class="label label-success">GET</span></a></li>
+                                <li><a href="#" class="">Generate Token &nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Refresh Token &nbsp; <span class="label label-warning">PUT</span></a></li>
+                                <li><a href="#" class="">Delete Token &nbsp; <span class="label label-danger">DELETE</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#subPages4" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Stats</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="subPages4" class="collapse ">
+                            <ul class="nav">
+                                <li><a href="#" class="">Check Token &nbsp; <span class="label label-success">GET</span></a></li>
+                                <li><a href="#" class="">Generate Token &nbsp; <span class="label label-primary">POST</span></a></li>
+                                <li><a href="#" class="">Refresh Token &nbsp; <span class="label label-warning">PUT</span></a></li>
+                                <li><a href="#" class="">Delete Token &nbsp; <span class="label label-danger">DELETE</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
         </div>
-
+    </div>
+    <!-- END LEFT SIDEBAR -->
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid" id="#">
+                <h3 class="page-title">Generate Token</h3>
+                <h4 class="page-title">Lorem ipsum dolor sit amet, <code>consectetur</code> adipiscing elit. Quisque nec venenatis est. Aliquam scelerisque bibendum volutpat. Donec vehicula tincidunt arcu, nec pellentesque neque dignissim eu. Duis a pretium sapien. Suspendisse efficitur eu metus ultrices suscipit. Mauris eget nulla a urna fermentum vulputate. Fusce ac leo rhoncus, convallis sem vel, blandit velit. Vestibulum pharetra dapibus nisi fermentum pretium. </h4>
+                <div class="row">
+                    <div class="col-md-7">
+                        <!-- TABLE HOVER -->
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Request</h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Position</th>
+                                        <th>#</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Authorization</td>
+                                        <td><code>string</code></td>
+                                        <td><code>Body</code></td>
+                                        <td><code>Required</code></td>
+                                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </td>
+                                    </tr>
+                                    <tr>
+                                        <td>username</td>
+                                        <td><code>string</code></td>
+                                        <td><code>Body</code></td>
+                                        <td><code>Required</code></td>
+                                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nec venenatis est. Aliquam scelerisque bibendum volutpat. Donec vehicula tincidunt arcu, nec pellentesque neque dignissim eu. </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- END TABLE HOVER -->
+                    </div>
+                    <div class="col-md-5">
+                        <!-- TABLE HOVER -->
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Response</h3>
+                            </div>
+                            <div class="panel-body">
+								<pre>{
+                                    "status": true,
+                                    "result_code": 200,
+                                    "message": "Success!",
+                                    "values": {
+                                        "name": "Kiddy",
+                                        "email": "kiddydhana@gmail.com",
+                                        "token": "9WUzKE7kCI1vSuQAbrmOwc2m2dk1NbPR",
+                                        "account_status": "1"
+                                    }
+                                }</pre>
+                            </div>
+                        </div>
+                        <!-- END TABLE HOVER -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
     </div>
 </div>
+<!-- END WRAPPER -->
+<!-- Javascript -->
+<script>
+    $(document).ready(function() {
+        $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+    });
+</script>
+<script src="assets/vendor/jquery/jquery.min.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="assets/scripts/klorofil-common.js"></script>
+

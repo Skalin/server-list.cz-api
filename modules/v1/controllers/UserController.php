@@ -68,16 +68,6 @@ class UserController extends ApiController
 		return $actions;
 	}
 
-	/**
-	 * @ApiDescription(section="...", description="...")
-	 * @ApiMethod(type="(get|post|put|delete|patch")
-	 * @ApiRoute(name="...")
-	 * @ApiParams(name="...", type="...", nullable=..., description="...", [sample=".."])
-	 * @ApiHeaders(name="...", type="...", nullable=..., description="...")
-	 * @ApiReturnHeaders(sample="...")
-	 * @ApiReturn(type="...", sample="...")
-	 * @ApiBody(sample="...")
-	 */
 	public function actionRegister()
 	{
 		$user = new User();
