@@ -68,17 +68,17 @@ class ServerController extends ApiController
 	{
 
 		$sql = '
-				SELECT * FROM `server`
+				SELECT * FROM `{{server}}`
 				JOIN (SELECT *
-				FROM `statistic_players`
-					WHERE `statistic_players`.id IN (
-						SELECT MAX(`statistic_players`.id)
-						FROM statistic_players
-						GROUP BY server_id
+				FROM `{{statistic_players}}`
+					WHERE `{{statistic_players}}`.`id` IN (
+						SELECT MAX(`{{statistic_players}}`.`id`)
+						FROM `{{statistic_players}}`
+						GROUP BY `server_id`
 					)
 				) AS t
-				ON t.server_id = `server`.id
-				ORDER BY t.value DESC
+				ON t.`server_id` = `{{server}}`.`id`
+				ORDER BY t.`value` DESC
 			';
 
 		$query = Server::findBySql($sql);
