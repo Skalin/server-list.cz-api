@@ -82,7 +82,6 @@ class ServerController extends ApiController
 			';
 
 		$query = Server::findBySql($sql);
-		VarDumper::dump($query);die;
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => $query,
