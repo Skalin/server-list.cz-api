@@ -67,51 +67,21 @@ class ServerController extends ApiController
 
 	public function actionIndex()
 	{
-		$params = [];
-		$service = "";
+		$subSubQuery = PlayersStat::find()
+			->select(['MAX(id)'])
+			->groupBy('server_id');
 
-		$innerSql = "SELECT `date`, `value`, `server_id`
-				FROM `statistic_players`
-					WHERE `statistic_players`.`id` IN (
-						SELECT MAX(`statistic_players`.`id`)
-						FROM `statistic_players`
-						GROUP BY `server_id`
-					)
-				";
-		if ($this->getParentParam())
-		{
 
-			$params = [":service" => $this->getParentParam()];
-			$sql = "
-				SELECT * FROM `server`
-				JOIN (".$innerSql.") AS stats
-				ON stats.`server_id` = `server`.`id`
-				WHERE `server`.`service_id` = :service
-				ORDER BY stats.value DESC
-				";
-			$count = \Yii::$app->db->createCommand("SELECT COUNT(*) FROM server JOIN (".$innerSql.") AS stats
-				ON stats.`server_id` = `server`.`id`
-				WHERE `server`.`service_id` = :service
-				", $params);
-		}
-		else
-		{
-			$sql = "
-				SELECT * FROM `server`
-				JOIN (".$innerSql.") AS stats
-				ON stats.`server_id` = `server`.`id`
-				ORDER BY stats.value DESC
-				";
-			$count = \Yii::$app->db->createCommand("SELECT COUNT(*) FROM server JOIN (".$innerSql.") AS stats
-				ON stats.`server_id` = `server`.`id`
-				");
-		}
+		$subQuery = PlayersStat::find()
+			->select(['date', 'value', 'server_id'])
+			->andWhere(['id' => $subSubQuery]);
 
-		$query = Server::findBySql($sql, $params);
+		$query = Server::find()
+			->rightJoin(['s' => $subQuery], 's.server_id = id')
+			->orderBy('s.value DESC');
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => $query,
-			'totalCount' => $count->queryScalar(),
 			'pagination' => [
 				'defaultPageSize' => 12,
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
@@ -119,6 +89,12 @@ class ServerController extends ApiController
 			]
 		]);
 		$dataProvider->sort->sortParam = true;
+
+		if ($this->getParentParam())
+		{
+			$dataProvider->query = $dataProvider->query->service($this->getParentParam());
+		}
+
 
 		return $dataProvider;
 	}
