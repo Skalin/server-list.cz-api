@@ -120,7 +120,7 @@ class ServerController extends ApiController
 		]);
 		$dataProvider->sort->sortParam = true;
 
-		return $dataProvider->getModels();
+		return $dataProvider;
 	}
 
 	public function actionView()
