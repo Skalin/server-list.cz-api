@@ -67,24 +67,45 @@ class ServerController extends ApiController
 
 	public function actionIndex()
 	{
+		$params = [];
+		$service = "";
+		if ($this->getParentParam())
+		{
 
-		$sql = '
-SELECT * FROM `server`
-JOIN (SELECT *
-FROM `statistic_players`
-	WHERE `statistic_players`.`id` IN (
-		SELECT MAX(`statistic_players`.`id`)
-		FROM `statistic_players`
-		GROUP BY `server_id`
-	)
-) AS stats
-ON stats.`server_id` = `server`.`id`
-ORDER BY stats.value DESC
-';
-
-		VarDumper::dump($query = \Yii::$app->db->createCommand($sql)->queryAll());die;
-
-		$query = Server::findBySql($sql);
+			$sql = "
+				SELECT * FROM `server`
+				JOIN (SELECT `date`, `value`, `server_id`
+				FROM `statistic_players`
+					WHERE `statistic_players`.`id` IN (
+						SELECT MAX(`statistic_players`.`id`)
+						FROM `statistic_players`
+						GROUP BY `server_id`
+					)
+				) AS stats
+				ON stats.`server_id` = `server`.`id`
+				WHERE `server`.`service_id` = :service
+				ORDER BY stats.value DESC
+				";
+			$params = [":service" => $this->getParentParam()];
+			$query = Server::findBySql($sql, $params);
+		}
+		else
+		{
+			$sql = "
+				SELECT * FROM `server`
+				JOIN (SELECT `date`, `value`, `server_id`
+				FROM `statistic_players`
+					WHERE `statistic_players`.`id` IN (
+						SELECT MAX(`statistic_players`.`id`)
+						FROM `statistic_players`
+						GROUP BY `server_id`
+					)
+				) AS stats
+				ON stats.`server_id` = `server`.`id`
+				ORDER BY stats.value DESC
+				";
+			$query = Server::findBySql($sql);
+		}
 
 
 		$dataProvider = new ActiveDataProvider([
@@ -96,6 +117,12 @@ ORDER BY stats.value DESC
 			]
 		]);
 		$dataProvider->sort->sortParam = true;
+
+		if ($this->getParentParam())
+		{
+			$dataProvider->query = $dataProvider->query->service($this->getParentParam());
+		}
+
 
 		return $dataProvider;
 	}
