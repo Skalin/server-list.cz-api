@@ -71,8 +71,8 @@ class ServerController extends ApiController
 				SELECT * FROM `server`
 				JOIN (SELECT *
 				FROM `statistic_players`
-					WHERE id IN (
-						SELECT MAX(id)
+					WHERE `statistic_players`.id IN (
+						SELECT MAX(`statistic_players`.id)
 						FROM statistic_players
 						GROUP BY server_id
 					)
