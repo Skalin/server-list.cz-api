@@ -107,10 +107,10 @@ class ServerController extends ApiController
 				");
 		}
 
+		$query = Server::findBySql($sql, $params);
 
-		$dataProvider = new SqlDataProvider([
-			'sql' => $sql,
-			'params' => $params,
+		$dataProvider = new ActiveDataProvider([
+			'query' => $query,
 			'totalCount' => $count->queryScalar(),
 			'pagination' => [
 				'defaultPageSize' => 12,
