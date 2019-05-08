@@ -67,8 +67,8 @@ class ServerController extends ApiController
 	public function actionIndex()
 	{
 
-		$sql = '
-				SELECT * FROM `{{server}}`
+		$sql = "
+				SELECT * FROM `{server}`
 				JOIN (SELECT *
 				FROM `{{statistic_players}}`
 					WHERE `{{statistic_players}}`.`id` IN (
@@ -79,7 +79,7 @@ class ServerController extends ApiController
 				) AS t
 				ON t.`server_id` = `{{server}}`.`id`
 				ORDER BY t.`value` DESC
-			';
+			";
 
 		$query = Server::findBySql($sql);
 
