@@ -69,47 +69,49 @@ class ServerController extends ApiController
 	{
 		$params = [];
 		$service = "";
-		if ($this->getParentParam())
-		{
 
-			$sql = "
-				SELECT * FROM `server`
-				JOIN (SELECT `date`, `value`, `server_id`
+		$innerSql = "SELECT `date`, `value`, `server_id`
 				FROM `statistic_players`
 					WHERE `statistic_players`.`id` IN (
 						SELECT MAX(`statistic_players`.`id`)
 						FROM `statistic_players`
 						GROUP BY `server_id`
 					)
-				) AS stats
+				";
+		if ($this->getParentParam())
+		{
+
+			$params = [":service" => $this->getParentParam()];
+			$sql = "
+				SELECT * FROM `server`
+				JOIN (".$innerSql.") AS stats
 				ON stats.`server_id` = `server`.`id`
 				WHERE `server`.`service_id` = :service
 				ORDER BY stats.value DESC
 				";
-			$params = [":service" => $this->getParentParam()];
-			$query = Server::findBySql($sql, $params);
+			$count = \Yii::$app->db->createCommand("SELECT COUNT(*) FROM server JOIN (".$innerSql.") AS stats
+				ON stats.`server_id` = `server`.`id`
+				WHERE `server`.`service_id` = :service
+				", $params);
 		}
 		else
 		{
 			$sql = "
 				SELECT * FROM `server`
-				JOIN (SELECT `date`, `value`, `server_id`
-				FROM `statistic_players`
-					WHERE `statistic_players`.`id` IN (
-						SELECT MAX(`statistic_players`.`id`)
-						FROM `statistic_players`
-						GROUP BY `server_id`
-					)
-				) AS stats
+				JOIN (".$innerSql.") AS stats
 				ON stats.`server_id` = `server`.`id`
 				ORDER BY stats.value DESC
 				";
-			$query = Server::findBySql($sql);
+			$count = \Yii::$app->db->createCommand("SELECT COUNT(*) FROM server JOIN (".$innerSql.") AS stats
+				ON stats.`server_id` = `server`.`id`
+				");
 		}
 
 
-		$dataProvider = new ActiveDataProvider([
-			'query' => $query,
+		$dataProvider = new SqlDataProvider([
+			'sql' => $sql,
+			'params' => $params,
+			'totalCount' => $count->queryScalar(),
 			'pagination' => [
 				'defaultPageSize' => 12,
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
@@ -118,13 +120,7 @@ class ServerController extends ApiController
 		]);
 		$dataProvider->sort->sortParam = true;
 
-		if ($this->getParentParam())
-		{
-			$dataProvider->query = $dataProvider->query->service($this->getParentParam());
-		}
-
-
-		return $dataProvider;
+		return $dataProvider->getModels();
 	}
 
 	public function actionView()
