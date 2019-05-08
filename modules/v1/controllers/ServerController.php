@@ -4,6 +4,7 @@ namespace app\modules\v1\controllers;
 
 use app\components\ApiException;
 use app\controllers\ApiController;
+use app\modules\v1\models\PlayersStat;
 use app\modules\v1\models\Server;
 use app\modules\v1\models\StatusStat;
 use Codeception\Template\Api;
@@ -68,20 +69,23 @@ class ServerController extends ApiController
 	{
 
 		$sql = '
-				SELECT * FROM `server`
-				JOIN (SELECT *
-				FROM `statistic_players`
-					WHERE `statistic_players`.`id` IN (
-						SELECT MAX(`statistic_players`.`id`)
-						FROM `statistic_players`
-						GROUP BY `server_id`
-					)
-				) AS stats
-				ON stats.`server_id` = `server`.`id`
-				ORDER BY stats.value DESC
-			';
+SELECT * FROM `server`
+JOIN (SELECT *
+FROM `statistic_players`
+	WHERE `statistic_players`.`id` IN (
+		SELECT MAX(`statistic_players`.`id`)
+		FROM `statistic_players`
+		GROUP BY `server_id`
+	)
+) AS stats
+ON stats.`server_id` = `server`.`id`
+ORDER BY stats.value DESC
+';
+
+		VarDumper::dump($query = \Yii::$app->db->createCommand($sql)->queryAll());die;
 
 		$query = Server::findBySql($sql);
+
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => $query,
@@ -92,13 +96,6 @@ class ServerController extends ApiController
 			]
 		]);
 		$dataProvider->sort->sortParam = true;
-
-		if (!$this->getParentParam())
-		{
-			return $dataProvider;
-		}
-
-		$dataProvider->query = $dataProvider->query->service($this->getParentParam());
 
 		return $dataProvider;
 	}
