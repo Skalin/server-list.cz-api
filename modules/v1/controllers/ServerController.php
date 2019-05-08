@@ -76,9 +76,9 @@ class ServerController extends ApiController
 						FROM `statistic_players`
 						GROUP BY `server_id`
 					)
-				) AS t
-				ON t.server_id = `server`.`id`
-				ORDER BY t.value DESC
+				) AS stats
+				ON stats.`server_id` = `server`.`id`
+				ORDER BY stats.value DESC
 			';
 
 		$query = Server::findBySql($sql);
