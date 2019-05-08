@@ -69,14 +69,16 @@ class ServerController extends ApiController
 
 		$dataProvider = new SqlDataProvider([
 			'sql' => '
-				SELECT * FROM (SELECT *
-				FROM statistic_players
+				SELECT * FROM `server`
+				JOIN (SELECT *
+				FROM `statistic_players`
 					WHERE id IN (
 						SELECT MAX(id)
 						FROM statistic_players
 						GROUP BY server_id
 					)
 				) AS t
+				ON t.server_id = `server`.id
 				ORDER BY t.value DESC
 			',
 			'pagination' => [
