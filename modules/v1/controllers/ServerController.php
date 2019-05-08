@@ -67,8 +67,7 @@ class ServerController extends ApiController
 	public function actionIndex()
 	{
 
-		$dataProvider = new SqlDataProvider([
-			'sql' => '
+		$sql = '
 				SELECT * FROM `server`
 				JOIN (SELECT *
 				FROM `statistic_players`
@@ -80,7 +79,12 @@ class ServerController extends ApiController
 				) AS t
 				ON t.server_id = `server`.id
 				ORDER BY t.value DESC
-			',
+			';
+
+		$query = Server::findBySql($sql);
+
+		$dataProvider = new ActiveDataProvider([
+			'query' => $query,
 			'pagination' => [
 				'defaultPageSize' => 12,
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
@@ -88,7 +92,6 @@ class ServerController extends ApiController
 			]
 		]);
 		$dataProvider->sort->sortParam = true;
-
 
 		if (!$this->getParentParam())
 		{
