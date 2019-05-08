@@ -8,6 +8,7 @@ use app\modules\v1\models\Server;
 use app\modules\v1\models\StatusStat;
 use Codeception\Template\Api;
 use yii\data\ActiveDataProvider;
+use yii\data\SqlDataProvider;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
@@ -65,12 +66,19 @@ class ServerController extends ApiController
 
 	public function actionIndex()
 	{
-		$dataProvider = new ActiveDataProvider([
-			'query' => Server::find()
-				->distinct(true)
-				->rightJoin('{{statistic_players}} AS ps', 'ps.server_id = server.id')
-				->addOrderBy('ps.date DESC, ps.value DESC')
-				->groupBy('server.id'),
+
+		$dataProvider = new SqlDataProvider([
+			'sql' => '
+				SELECT * FROM (SELECT *
+				FROM statistic_players
+					WHERE id IN (
+						SELECT MAX(id)
+						FROM statistic_players
+						GROUP BY server_id
+					)
+				) AS t
+				ORDER BY t.value DESC
+			',
 			'pagination' => [
 				'defaultPageSize' => 12,
 				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
