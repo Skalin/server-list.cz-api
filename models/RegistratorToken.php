@@ -37,6 +37,9 @@ class RegistratorToken extends BaseToken
 
 		$ipsArray = explode(',', $this->ip_list);
 		$ips = [];
+		if (!count($ipsArray))
+			return true;
+
 		foreach ($ipsArray as $ip)
 		{
 			$val = trim($ip);

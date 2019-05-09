@@ -26,6 +26,7 @@ use yii\helpers\VarDumper;
  * @property integer $query_port
  * @property integer $service_id
  * @property integer $registrator_id
+ * @property integer $use_domain
  * @property integer $user_id
  * @property int $active
  */
@@ -53,7 +54,7 @@ class Server extends BaseModel
     {
         return [
 			[['name', 'service_id', 'ip', 'port'], 'required'],
-			[['service_id', 'query_port', 'port', 'registrator_id', 'user_id'], 'integer', 'integerOnly' => true],
+			[['service_id', 'query_port', 'port', 'registrator_id', 'user_id', 'use_domain'], 'integer', 'integerOnly' => true],
 			[['service_id'], 'validateService'],
 			[['ip'], 'ip'],
 			[['user', 'registrator'], 'safe'],
