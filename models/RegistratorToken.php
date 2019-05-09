@@ -35,6 +35,9 @@ class RegistratorToken extends BaseToken
 	public function checkIPAddress($address)
 	{
 
+		if (!$this->ip_list)
+			return true;
+
 		$ipsArray = explode(',', $this->ip_list);
 		$ips = [];
 		if (!count($ipsArray))
