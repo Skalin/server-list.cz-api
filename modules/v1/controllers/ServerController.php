@@ -4,6 +4,7 @@ namespace app\modules\v1\controllers;
 
 use app\components\ApiException;
 use app\controllers\ApiController;
+use app\models\User;
 use app\modules\v1\models\PlayersStat;
 use app\modules\v1\models\Server;
 use app\modules\v1\models\StatusStat;
@@ -128,10 +129,11 @@ class ServerController extends ApiController
 	public function actionCreate()
 	{
 		$user = $this->validateUser('Server');
+		$registrator = $this->getValidationMethod() == User::API_LOGIN ? $user : 1;
 
 		$server = new Server;
 		$server->attributes = \Yii::$app->request->post("server");
-		$server->registrator_id = 1;
+		$server->registrator_id = $registrator;
 		$server->user_id = $user;
 		if ($server->validate())
 		{
