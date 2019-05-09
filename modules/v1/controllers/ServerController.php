@@ -135,6 +135,7 @@ class ServerController extends ApiController
 		$server->attributes = \Yii::$app->request->post("server");
 		$server->registrator_id = $registrator;
 		$server->user_id = $user;
+		$server->service_id = $this->getParentParam() ?? NULL;
 		if ($server->validate())
 		{
 			$server->save();
