@@ -88,7 +88,7 @@ class QueueController extends Controller
 	private function getStartDate()
 	{
 		$startDate = (new \DateTime());
-		$startDate->add(new \DateInterval("PT2H"));
+		//$startDate->add(new \DateInterval("PT2H"));
 		return $startDate->format('Y-m-d H:i:s');
 	}
 
