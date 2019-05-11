@@ -32,9 +32,7 @@ class QueueController extends Controller
 
 		foreach ($serverChunks as $serverChunk)
 		{
-			$worker = new BackgroundWorker;
-			$worker->setCmd("exec /var/www/server-list.cz-api/yii queue/generate-stats \"{$startDate}\" {$serverChunk['monitoring_chunk']}");
-			$worker->start();
+			exec("nohup /var/www/server-list.cz-api/yii queue/generate-stats \"{$startDate}\" {$serverChunk['monitoring_chunk']} &");
 		}
 
 		return ExitCode::OK;
