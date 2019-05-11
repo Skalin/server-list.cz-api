@@ -292,7 +292,7 @@ class Server extends BaseModel
 	public static function findByChunk($chunk)
 	{
 		$servers = null;
-		$servers = self::findAll(['monitoring_chunk' => $chunk]);
+		$servers = self::findAll(['monitoring_chunk' => $chunk, 'active' => 1]);
 		return $servers;
 
 	}
