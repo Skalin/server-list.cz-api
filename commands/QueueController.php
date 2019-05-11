@@ -32,7 +32,7 @@ class QueueController extends Controller
 
 		foreach ($serverChunks as $serverChunk)
 		{
-			exec("nohup /var/www/server-list.cz-api/yii queue/generate-stats \"{$startDate}\" {$serverChunk['monitoring_chunk']} &");
+			exec("nohup /var/www/server-list.cz-api/yii queue/generate-stats \"{$startDate}\" {$serverChunk['monitoring_chunk']} > /dev/null &");
 		}
 
 		return ExitCode::OK;
