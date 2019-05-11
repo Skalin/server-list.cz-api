@@ -8,8 +8,9 @@
 
 namespace app\commands;
 
+use app\components\BackgroundWorker;
 use app\modules\v1\models\Server;
-use app\modules\v1\models\PingStat;
+use app\modules\v1\models\Service;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\db\Expression;
@@ -18,45 +19,77 @@ use yii\helpers\VarDumper;
 class QueueController extends Controller
 {
 
+	const MAX_SERVER_COUNT = 200;
+
 	public function actionGenerate()
 	{
-		$startDate = (new \DateTime());
-		$startDate->add(new \DateInterval("PT2H"));
-		$startDate = $startDate->format('Y-m-d H:i:s');
-        $servers = Server::find()->all();
-		if (!$servers)
-			return ExitCode::NOINPUT;
+		$serverChunks = Server::find()
+			->select(['monitoring_chunk'])
+			->groupBy(['monitoring_chunk'])
+			->asArray()
+			->all();
+		$startDate = $this->getStartDate();
 
-		$failedServers = [];
+		foreach ($serverChunks as $serverChunk)
+		{
+			$worker = new BackgroundWorker;
+			$worker->setCmd("exec /var/www/server-list.cz-api/yii queue/generate-stats \"{$startDate}\" {$serverChunk['monitoring_chunk']}");
+			$worker->start();
+		}
+
+		return ExitCode::OK;
+	}
+
+	public function actionGenerateStats($date, $serverChunk)
+	{
+
+		$chunk = intval($serverChunk);
+		$servers = Server::findByChunk($chunk);
+
+		$failedServers[0] = [];
 
 		foreach ($servers as $server)
 		{
 			$server->destroyOldStatistics();
 
-			if (!$server->generateStatistics($startDate))
-				$failedServers[] = $server;
+			if (!$server->generateStatistics($date))
+				$failedServers[0][] = $server;
 		}
 
 		echo "Waiting for 120 seconds until another testing of failed servers.\n";
 		sleep(120);
 
-
-		$failedServerArray = [];
-		foreach ($failedServers as $server)
+		$failedServers[1] = [];
+		foreach ($failedServers[0] as $server)
 		{
-			if (!$server->generateStatistics($startDate))
-				$failedServerArray[] = $server;
+			if (!$server->generateStatistics($date))
+				$failedServers[1][] = $server;
 		}
 
 		echo "Waiting for 120 seconds until last testing of failed servers.\n";
 		sleep(120);
 
-		foreach ($failedServerArray as $server)
+		foreach ($failedServers[1] as $server)
 		{
-			$server->generateStatistics($startDate, true);
+			$server->generateStatistics($date, true);
 		}
+		echo "Waiting for 120 seconds until last testing of failed servers.\n";
+	}
 
-		return ExitCode::OK;
+	/**
+	 * @param $servers array
+	 * @return array
+	 */
+	private function splitServersIntoChunks($servers)
+	{
+		return array_chunk($servers, self::MAX_SERVER_COUNT);
+	}
+
+	private function getStartDate()
+	{
+		$startDate = (new \DateTime());
+		$startDate->add(new \DateInterval("PT2H"));
+		return $startDate->format('Y-m-d H:i:s');
 	}
 
 }

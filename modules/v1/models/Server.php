@@ -54,7 +54,7 @@ class Server extends BaseModel
     {
         return [
 			[['name', 'service_id', 'ip', 'port'], 'required'],
-			[['service_id', 'query_port', 'port', 'registrator_id', 'user_id', 'use_domain'], 'integer', 'integerOnly' => true],
+			[['service_id', 'query_port', 'port', 'registrator_id', 'user_id', 'use_domain', 'monitoring_chunk'], 'integer', 'integerOnly' => true],
 			[['service_id'], 'validateService'],
 			[['ip'], 'ip'],
 			[['user', 'registrator', 'domain'], 'safe'],
@@ -287,6 +287,14 @@ class Server extends BaseModel
 			return $server;
 
 		return false;
+	}
+
+	public static function findByChunk($chunk)
+	{
+		$servers = null;
+		$servers = self::findAll(['monitoring_chunk' => $chunk]);
+		return $servers;
+
 	}
 
 	/**
