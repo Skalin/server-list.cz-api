@@ -28,8 +28,9 @@ class QueueController extends Controller
 
 		foreach ($serverChunks as $serverChunk)
 		{
-			var_dump($serverChunk);
-			exec("/var/www/server-list.cz-api/yii queue/generate-stats \"{$startDate}\" {$serverChunk['monitoring_chunk']} >/dev/null 2>&1");
+			$output = null;
+			exec("/var/www/server-list.cz-api/yii queue/generate-stats \"{$startDate}\" {$serverChunk['monitoring_chunk']} >/dev/null 2>&1", $output);
+			var_dump($output);
 		}
 
 		return ExitCode::OK;
