@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0a96147f3ce066809cd97ae6c67ca51",
+    "content-hash": "ce0b49f2154ab5844060df2300d72c66",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -55,7 +55,7 @@
             "version": "3.3.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "9e8ec3d10fad04748176144f108d7355662ae75e"
             },
             "dist": {
@@ -265,6 +265,51 @@
                 "markdown-extra"
             ],
             "time": "2017-05-19T11:16:33+00:00"
+        },
+        {
+            "name": "devmastersbv/pthreads",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/devmastersbv/pthreads.git",
+                "reference": "9bb906f640cec133915918aef66d769acc4e27c9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/devmastersbv/pthreads/zipball/9bb906f640cec133915918aef66d769acc4e27c9",
+                "reference": "9bb906f640cec133915918aef66d769acc4e27c9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pthreads": ">=2.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "devmastersbv\\pthreads\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Julian Rutten",
+                    "email": "julian@devmasters.nl"
+                }
+            ],
+            "description": "Pthreads classes",
+            "keywords": [
+                "autoloader",
+                "composer",
+                "pthreads"
+            ],
+            "time": "2016-04-28T22:03:05+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",

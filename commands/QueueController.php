@@ -8,17 +8,40 @@
 
 namespace app\commands;
 
+use app\components\Monitoring;
+use app\components\Task;
 use app\modules\v1\models\Server;
+use devmastersbv\pthreads\Data;
+use devmastersbv\pthreads\SafeLog;
 use yii\console\Controller;
 use yii\console\ExitCode;
 
 class QueueController extends Controller
 {
 
-	const MAX_SERVER_COUNT = 200;
+	const MAX_SERVER_COUNT = 100;
 
 	public function actionGenerate()
 	{
+
+		$servers = Server::find()
+			->all();
+
+		$serverChunks = array_chunk($servers, self::MAX_SERVER_COUNT);
+
+		$monitorings = [];
+		foreach ($serverChunks as $key => $servers)
+		{
+			$monitorings[$key] = new Monitoring($servers);
+			echo "Test {$key}";
+		}
+
+		foreach ($monitorings as $monitoring)
+		{
+			$monitoring->run();
+		}
+		return ExitCode::OK;
+
 		$serverChunks = Server::find()
 			->select(['monitoring_chunk'])
 			->groupBy(['monitoring_chunk'])
