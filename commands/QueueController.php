@@ -8,13 +8,9 @@
 
 namespace app\commands;
 
-use app\components\BackgroundWorker;
 use app\modules\v1\models\Server;
-use app\modules\v1\models\Service;
 use yii\console\Controller;
 use yii\console\ExitCode;
-use yii\db\Expression;
-use yii\helpers\VarDumper;
 
 class QueueController extends Controller
 {
@@ -32,7 +28,8 @@ class QueueController extends Controller
 
 		foreach ($serverChunks as $serverChunk)
 		{
-			exec("nohup /var/www/server-list.cz-api/yii queue/generate-stats \"{$startDate}\" {$serverChunk['monitoring_chunk']} >/dev/null 2>&1");
+			var_dump($serverChunk);
+			exec("/var/www/server-list.cz-api/yii queue/generate-stats \"{$startDate}\" {$serverChunk['monitoring_chunk']} >/dev/null 2>&1");
 		}
 
 		return ExitCode::OK;
