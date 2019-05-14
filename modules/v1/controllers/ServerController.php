@@ -164,7 +164,7 @@ class ServerController extends ApiController
 			return new ApiException(404);
 		}
 
-		$server->attributes = \Yii::$app->request->post();
+		$server->attributes = \Yii::$app->request->post('server');
 		if ($server->validate())
 		{
 			$server->save();
