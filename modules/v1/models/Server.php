@@ -57,6 +57,7 @@ class Server extends BaseModel
 			[['service_id', 'query_port', 'port', 'registrator_id', 'user_id', 'use_domain', 'monitoring_chunk'], 'integer', 'integerOnly' => true],
 			[['service_id'], 'validateService'],
 			[['ip'], 'ip'],
+			[['port'], 'validatePort'],
 			[['user', 'registrator', 'domain'], 'safe'],
 			[['user_id', 'registrator_id'], 'validateUser'],
 			[['name'], 'string', 'max' => 100],
@@ -89,6 +90,16 @@ class Server extends BaseModel
 		if (($model = self::findByAddress($this->ip, $this->domain, $this->port)) && ($model->id != $this->id))
 		{
 			$this->addError($attribute, 'Server already exists!');
+		}
+	}
+
+	public function validatePort($attribute, $params, $validator)
+	{
+		$port = intval($this->port);
+
+		if (0 > $port && $port > 65535)
+		{
+			$this->addError('Port must be in range 65535');
 		}
 	}
 
