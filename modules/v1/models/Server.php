@@ -268,7 +268,7 @@ class Server extends BaseModel
 	{
 		if (!$this->isNewRecord)
 		{
-			if ($this->oldAttributes->active < $this->active)
+			if ($this->oldAttributes['active'] < $this->active)
 			{
 				$this->timeout = 0;
 			}

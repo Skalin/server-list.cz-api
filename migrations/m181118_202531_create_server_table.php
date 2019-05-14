@@ -22,6 +22,7 @@ class m181118_202531_create_server_table extends Migration
 			'query_port' => $this->integer(5)->null(),
 			'service_id' => $this->integer()->notNull(),
 			'registrator_id' => $this->integer(),
+			'active' => $this->integer(),
         ]);
 
         $this->addForeignKey('fk_server_service', '{{server}}', 'service_id', '{{service}}', 'id', 'CASCADE', 'CASCADE');

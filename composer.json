@@ -25,7 +25,7 @@
         "firebase/php-jwt": "^5.0",
         "nostop8/rest-api-doc": "^1.022",
         "yiisoft/yii2-apidoc": "~2.1.0",
-        "devmastersbv/pthreads": "^1.0"
+        "kriss/yii2-thread": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
