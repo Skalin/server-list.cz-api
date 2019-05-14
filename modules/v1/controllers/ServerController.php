@@ -132,6 +132,11 @@ class ServerController extends ApiController
 		$user = $this->validateUser('Server');
 		$registrator = $this->getValidationMethod() == User::API_LOGIN ? $user : 1;
 
+		if (!\Yii::$app->request->post($this->objectName, null))
+		{
+			throw new ApiException(422, 'Server object is missing in POST data');
+		}
+
 		$server = new Server;
 		$server->attributes = \Yii::$app->request->post($this->objectName);
 		$server->registrator_id = $registrator;
@@ -165,9 +170,9 @@ class ServerController extends ApiController
 			return new ApiException(404);
 		}
 
-		if (!\Yii::$app->request->post($this->objectName))
+		if (!\Yii::$app->request->post($this->objectName, null))
 		{
-			return new ApiException(422, 'Missing server object in post data');
+			throw new ApiException(422, 'Server object is missing in POST data');
 		}
 
 		$server->attributes = \Yii::$app->request->post($this->objectName);
