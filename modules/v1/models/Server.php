@@ -99,7 +99,7 @@ class Server extends BaseModel
 
 		if (0 > $port && $port > 65535)
 		{
-			$this->addError('Port must be in range 65535');
+			$this->addError('Port must be in between of values 0 - 65535');
 		}
 	}
 
