@@ -9,6 +9,7 @@ use app\modules\v1\models\PlayersStat;
 use app\modules\v1\models\Server;
 use app\modules\v1\models\StatusStat;
 use Codeception\Template\Api;
+use DeepCopy\f001\A;
 use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
 use yii\filters\auth\HttpBasicAuth;
@@ -20,8 +21,8 @@ use yii\web\Response;
 class ServerController extends ApiController
 {
 
+	public $objectName = "server";
 	public $modelClass = 'app\modules\v1\models\Server';
-
 
 	public function behaviors()
 	{
@@ -132,7 +133,7 @@ class ServerController extends ApiController
 		$registrator = $this->getValidationMethod() == User::API_LOGIN ? $user : 1;
 
 		$server = new Server;
-		$server->attributes = \Yii::$app->request->post("server");
+		$server->attributes = \Yii::$app->request->post($this->objectName);
 		$server->registrator_id = $registrator;
 		$server->user_id = $user;
 		$server->service_id = $this->getParentParam() ?? NULL;
@@ -164,7 +165,12 @@ class ServerController extends ApiController
 			return new ApiException(404);
 		}
 
-		$server->attributes = \Yii::$app->request->post('server');
+		if (!\Yii::$app->request->post($this->objectName))
+		{
+			return new ApiException(422, 'Missing server object in post data');
+		}
+
+		$server->attributes = \Yii::$app->request->post($this->objectName);
 		if ($server->validate())
 		{
 			$server->save();
