@@ -64,6 +64,7 @@ class ServerController extends ApiController
 		unset($actions['view']);
 		unset($actions['create']);
 		unset($actions['delete']);
+		unset($actions['update']);
 		return $actions;
 	}
 
