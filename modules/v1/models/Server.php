@@ -86,7 +86,7 @@ class Server extends BaseModel
 			$this->addError($attribute, 'At least IP must be filled');
 		}
 
-		if (self::findByAddress($this->ip, $this->domain, $this->port))
+		if (($model = self::findByAddress($this->ip, $this->domain, $this->port)) && ($model->id != $this->id))
 		{
 			$this->addError($attribute, 'Server already exists!');
 		}
