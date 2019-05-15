@@ -74,6 +74,19 @@ return [
 			'' => 'options'
 		],
 		'extraPatterns' => [
+			'POST logoutAll' => 'logoutAll',
+			'OPTIONS logoutAll' => 'logoutAll',
+
+		]
+	],
+	[
+		'class' => 'yii\rest\UrlRule',
+		'controller' => ['v1/user'],
+		'pluralize' => false,
+		'patterns' => [
+			'' => 'options'
+		],
+		'extraPatterns' => [
 			'POST login' => 'login',
 			'OPTIONS login' => 'login',
 
