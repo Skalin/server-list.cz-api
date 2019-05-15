@@ -74,8 +74,8 @@ return [
 			'' => 'options'
 		],
 		'extraPatterns' => [
-			'POST logoutAll' => 'logoutAll',
-			'OPTIONS logoutAll' => 'logoutAll',
+			'POST logout-all' => 'logoutAll',
+			'OPTIONS logout-all' => 'logoutAll',
 
 		]
 	],
