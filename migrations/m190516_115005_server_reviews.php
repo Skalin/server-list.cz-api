@@ -12,8 +12,6 @@ class m190516_115005_server_reviews extends Migration
      */
     public function safeUp()
     {
-		$this->addColumn('{{user}}', 'is_reviewer', $this->integer()->defaultValue(0));
-
 		$this->createTable('{{review}}', [
 			'id' => $this->primaryKey(),
 			'title' => $this->string(),
@@ -32,6 +30,5 @@ class m190516_115005_server_reviews extends Migration
     {
     	$this->dropForeignKey('fk_user_reviews', '{{review}}');
     	$this->dropTable('{{review}}');
-		$this->dropColumn('{{user}}', 'is_reviewer');
     }
 }

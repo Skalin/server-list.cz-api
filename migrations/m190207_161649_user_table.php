@@ -26,6 +26,8 @@ class m190207_161649_user_table extends Migration
 			'surname' => $this->string(),
 			'tos_agreement' => $this->boolean()->defaultValue(0),
 			'gdpr_agreement' => $this->boolean()->defaultValue(0),
+			'is_reviewer' => $this->integer()->defaultValue(0)
+
 		]);
 
     	$this->createTable('{{registrator_token}}', [
