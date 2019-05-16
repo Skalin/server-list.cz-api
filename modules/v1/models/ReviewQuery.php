@@ -52,4 +52,9 @@ class ReviewQuery extends \yii\db\ActiveQuery
 	{
 		return $this->sum('rating');
 	}
+
+	public function server($id)
+	{
+		return $this->andWhere(['server_id' => $id]);
+	}
 }

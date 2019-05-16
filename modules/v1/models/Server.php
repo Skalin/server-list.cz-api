@@ -364,10 +364,12 @@ class Server extends BaseModel
 	public function calculateReviews()
 	{
 		$adminReviewsQuery = Review::find()
+			->server($this->id)
 			->type(1);
 		$adminsRating = $adminReviewsQuery->rating();
 
 		$userReviewsQuery = Review::find()
+			->server($this->id)
 			->type(0);
 		$usersRating = $userReviewsQuery->rating();
 
