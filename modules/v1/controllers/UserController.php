@@ -174,7 +174,7 @@ class UserController extends ApiController
 		throw new ApiException(401, 'Couldn\'t generate login token.');
 	}
 
-	public function actionLogoutAll()
+	public function actionLogoutall()
 	{
 
 		$user = $this->validateUser('User');
