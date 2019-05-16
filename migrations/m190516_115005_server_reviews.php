@@ -18,9 +18,11 @@ class m190516_115005_server_reviews extends Migration
 			'content' => $this->text(),
 			'rating' => $this->integer(4),
 			'user_id' => $this->integer(),
+			'server_id' => $this->integer(),
 		]);
 
 		$this->addForeignKey('fk_user_reviews', '{{review}}','user_id', '{{user}}', 'id', 'CASCADE', 'CASCADE');
+		$this->addForeignKey('fk_server_review', '{{review}}', 'server_id', '{{server}}', 'id', 'CASCADE', 'CASCADE');
 	}
 
     /**
@@ -28,6 +30,7 @@ class m190516_115005_server_reviews extends Migration
      */
     public function safeDown()
     {
+    	$this->dropForeignKey('fk_server_review', '{{review}}');
     	$this->dropForeignKey('fk_user_reviews', '{{review}}');
     	$this->dropTable('{{review}}');
     }
