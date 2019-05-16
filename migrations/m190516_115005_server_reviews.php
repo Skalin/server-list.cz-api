@@ -12,7 +12,7 @@ class m190516_115005_server_reviews extends Migration
      */
     public function safeUp()
     {
-		$this->addColumn('{{user}}', 'is_reviewer', $this->boolean()->defaultValue(0));
+		$this->addColumn('{{user}}', 'is_reviewer', $this->integer()->defaultValue(0));
 
 		$this->createTable('{{review}}', [
 			'id' => $this->primaryKey(),
