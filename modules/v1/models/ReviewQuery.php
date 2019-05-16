@@ -3,6 +3,7 @@
 namespace app\modules\v1\models;
 
 use yii\db\ActiveQuery;
+use yii\helpers\VarDumper;
 
 /**
  * This is the ActiveQuery class for [[Review]].
@@ -40,17 +41,13 @@ class ReviewQuery extends \yii\db\ActiveQuery
 	 */
     public function type($type)
 	{
-		return $this->with(
-			['server' => function(ActiveQuery $query, $type) {
-					$query->andWhere(['is_reviews' => $type]);
-				}
-			]
-		);
+		return $this->leftJoin('{{user}} u', 'user_id = u.id')
+			->andWhere(['u.is_reviewer' => $type]);
 	}
 
 	public function rating()
 	{
-		return $this->sum('rating');
+		return $this->average('rating');
 	}
 
 	public function server($id)
