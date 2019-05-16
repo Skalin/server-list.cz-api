@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\components\ApiException;
 use app\components\BaseModel;
+use app\modules\v1\models\Server;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use yii\helpers\VarDumper;
@@ -187,7 +188,7 @@ class User extends BaseModel implements IdentityInterface
 
 	public function getLoginTokens()
 	{
-		return $this->hasMany(LoginToken::className(), ['user_id' => 'id']);
+		return $this->hasMany(LoginToken::class, ['user_id' => 'id']);
 	}
 
 	public function fullName()

@@ -119,4 +119,9 @@ class LoginToken extends BaseToken
 		$this->expiration = date('Y-m-d h:i:s');
 		return $this->save() ? true : false;
 	}
+
+	public static function find()
+	{
+		return new LoginTokenQuery(get_called_class());
+	}
 }

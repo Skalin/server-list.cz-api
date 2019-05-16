@@ -18,6 +18,7 @@ use app\modules\v1\models\Server;
 use Firebase\JWT\JWT;
 use yii\data\ActiveDataProvider;
 use yii\filters\Cors;
+use yii\helpers\VarDumper;
 use yii\web\Response;
 
 class UserController extends ApiController
@@ -177,13 +178,16 @@ class UserController extends ApiController
 	public function actionLogoutall()
 	{
 
+		if ($this->getValidationMethod() != User::WEB_LOGIN)
+			throw new ApiException(405, 'Not allowed from API requests');
+
 		$user = $this->validateUser('User');
 		if (!$user)
 			throw new ApiException(401, 'User not authorized');
 
-		$user = User::findById($user);
+		$tokens = LoginToken::find()->user($user)->active()->all();
 
-		foreach ($user->loginTokens as $token)
+		foreach ($tokens as $token)
 		{
 			$token->expire();
 		}
