@@ -18,7 +18,6 @@ use app\modules\v1\models\Server;
 use Firebase\JWT\JWT;
 use yii\data\ActiveDataProvider;
 use yii\filters\Cors;
-use yii\helpers\VarDumper;
 use yii\web\Response;
 
 class UserController extends ApiController
@@ -152,7 +151,6 @@ class UserController extends ApiController
 	{
 		$token = JWT::decode($this->getValidationData(), LoginToken::LOGIN_TOKEN_KEY, array("HS256"));
 
-
 		$model = User::findAccessToken($this->getValidationMethod(), $token->token);
 		if ($model->isExpired())
 			throw new ApiException(403, 'Token expired');
@@ -163,7 +161,6 @@ class UserController extends ApiController
 
 	public function actionRelogin()
 	{
-
 		$user = $this->validateUser('Server');
 		if (!$user)
 			throw new ApiException(401, 'User not authorized.');

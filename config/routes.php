@@ -131,5 +131,10 @@ return [
 		'controller' => ['stats' => 'v1/stats'],
 		'prefix' => 'v1/services/<service_id:\d+>/servers/<parent:\d+>',
 	],
+	[
+		'class' => 'yii\rest\UrlRule',
+		'controller' => ['reviews' => 'v1/review'],
+		'prefix' => 'v1/services/<service_id:\d+>/servers/<parent:\d+>',
+	],
 	'<controller>/<action>' => '<controller>/<action>',
 ];

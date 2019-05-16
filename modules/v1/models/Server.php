@@ -11,6 +11,7 @@ use phpDocumentor\Reflection\Types\This;
 use app\models\UserNotification;
 use Codeception\Lib\Notification;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\helpers\VarDumper;
 
@@ -357,5 +358,28 @@ class Server extends BaseModel
 			if (!empty($changedAttributes))
 				UserNotification::notify([], $title, $message, $data);
 		/*}*/
+	}
+
+
+	public function calculateReviews()
+	{
+		$adminReviewsQuery = Review::find()
+			->type(1);
+		$adminsRating = $adminReviewsQuery->rating();
+
+		$userReviewsQuery = Review::find()
+			->type(0);
+		$usersRating = $userReviewsQuery->rating();
+
+		return [
+			'admins' => [
+				'rating' => $adminsRating,
+				'reviews' => $adminReviewsQuery->all(),
+			],
+			'users' => [
+				'rating' => $usersRating,
+				'reviews' => $userReviewsQuery->all(),
+			]
+		];
 	}
 }

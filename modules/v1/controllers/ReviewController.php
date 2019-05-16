@@ -2,8 +2,8 @@
 /**
  * Project: serverlist-api
  * User: Dominik
- * Date: 03.12.2018
- * Time: 20:36
+ * Date: 16.05.2019
+ * Time: 21:13
  */
 
 namespace app\modules\v1\controllers;
@@ -11,22 +11,15 @@ namespace app\modules\v1\controllers;
 
 use app\components\ApiException;
 use app\controllers\ApiController;
-use app\modules\admin\modules\FileModule\models\File;
 use app\modules\v1\models\Server;
-use Codeception\Template\Api;
 use yii\filters\Cors;
-use yii\helpers\FileHelper;
+use yii\helpers\VarDumper;
 use yii\web\Response;
 
-/**
- * @internal Find a way how to get only certain statistics for a given game because not all games will support all statistics
- */
-class StatsController extends ApiController
+class ReviewController extends ApiController
 {
 
-	public $statModels;
-
-	public $modelClass = 'app\models\StatModel';
+	public $modelClass = 'app\modules\v1\models\Review';
 
 	public function behaviors()
 	{
@@ -58,24 +51,26 @@ class StatsController extends ApiController
 	public function actions()
 	{
 		$actions = parent::actions();
-		unset($actions['create']);
 		unset($actions['index']);
+		unset($actions['view']);
+		unset($actions['create']);
 		unset($actions['update']);
 		unset($actions['delete']);
 		return $actions;
-
 	}
 
 	public function actionIndex()
 	{
+
 		$parentParam = $this->getParentParam();
 		if (!$parentParam)
-			throw new ApiException(400);
+			throw new ApiException(400, 'Incorrect API call!');
+
 
 		if (!$server = Server::findById($parentParam))
-			throw new ApiException(404);
+			throw new ApiException(404, 'Server not found!');
 
-		return $server->getAllStats();
+		return $server->calculateReviews();
 	}
 
 
