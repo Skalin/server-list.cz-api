@@ -13,6 +13,7 @@ use Yii;
  * @property string $content
  * @property int $rating
  * @property int $user_id
+ * @property int $server_id
  *
  * @property User $user
  */
@@ -51,6 +52,7 @@ class Review extends \yii\db\ActiveRecord
             'content' => Yii::t('app', 'Content'),
             'rating' => Yii::t('app', 'Rating'),
             'user_id' => Yii::t('app', 'User ID'),
+			'server_id' => Yii::t('app', 'Server ID'),
         ];
     }
 
