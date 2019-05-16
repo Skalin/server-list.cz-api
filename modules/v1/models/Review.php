@@ -35,7 +35,8 @@ class Review extends \yii\db\ActiveRecord
             [['content'], 'string'],
             [['rating', 'user_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+			[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+			[['server_id'], 'exist', 'skipOnError' => true, 'targetClass' => Server::className(), 'targetAttribute' => ['server_id' => 'id']],
         ];
     }
 
@@ -53,15 +54,24 @@ class Review extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
-    }
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getUser()
+	{
+		return $this->hasOne(User::class, ['id' => 'user_id']);
+	}
 
-    /**
+
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getServer()
+	{
+		return $this->hasOne(Server::class, ['id' => 'server_id']);
+	}
+
+	/**
      * {@inheritdoc}
      * @return ReviewQuery the active query used by this AR class.
      */
