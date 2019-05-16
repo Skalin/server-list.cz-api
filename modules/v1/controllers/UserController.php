@@ -154,6 +154,9 @@ class UserController extends ApiController
 
 
 		$model = User::findAccessToken($this->getValidationMethod(), $token->token);
+		if ($model->isExpired())
+			throw new ApiException(403, 'Token expired');
+
 		if (!$model->expire())
 			throw new ApiException(500, 'Something went wrong at saving tokens');
 	}
