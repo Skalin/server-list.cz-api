@@ -11,6 +11,7 @@ namespace app\modules\v1\controllers;
 
 use app\components\ApiException;
 use app\controllers\ApiController;
+use app\modules\v1\models\Review;
 use app\modules\v1\models\Server;
 use yii\filters\Cors;
 use yii\helpers\VarDumper;
@@ -19,19 +20,22 @@ use yii\web\Response;
 class ReviewController extends ApiController
 {
 
+	public $objectName = 'review';
 	public $modelClass = 'app\modules\v1\models\Review';
 
 	public function behaviors()
 	{
 		$behaviors = parent::behaviors();
+		$auth = $behaviors['authenticator'];
 		unset($behaviors['authenticator']);
+
 		$behaviors['corsFilter'] = [
 			'class' => Cors::className(),
 			'cors' => [
 				'Origin' => static::allowedDomains(),
-				'Access-Control-Request-Method' => ['GET', 'HEAD'],
-				'Access-Control-Request-Headers' => ['*'],
+				'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS', 'DELETE'],
 				'Access-Control-Allow-Credentials' => true,
+				'Access-Control-Request-Headers' => ['x-requested-with', 'content-type'],
 			],
 		];
 
@@ -40,11 +44,12 @@ class ReviewController extends ApiController
 			'formats' => [
 				'application/json' => Response::FORMAT_JSON,
 			]
-		];/*
-		$behaviors['authenticator'] = [
-				'class' => HttpBasicAuth::className(),
 		];
-*/
+		// re-add authentication filter
+		$behaviors['authenticator'] = $auth;
+		// avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
+		$behaviors['authenticator']['except'] = ['options'];
+
 		return $behaviors;
 	}
 
@@ -71,6 +76,26 @@ class ReviewController extends ApiController
 			throw new ApiException(404, 'Server not found!');
 
 		return $server->calculateReviews();
+	}
+
+
+	public function actionCreate()
+	{
+
+		$user = $this->validateUser('Server');
+
+		if (!\Yii::$app->request->post($this->objectName, null))
+		{
+			throw new ApiException(422, 'Server object is missing in POST data');
+		}
+
+		$review = new Review;
+		$review->attributes = \Yii::$app->request->post($this->objectName);
+		$review->user_id = $user;
+		if ($review->save())
+			return $review;
+
+		throw new ApiException(500, 'Something went wrong during saving review.');
 	}
 
 
