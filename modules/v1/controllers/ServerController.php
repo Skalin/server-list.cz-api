@@ -85,9 +85,9 @@ class ServerController extends ApiController
 		$dataProvider = new ActiveDataProvider([
 			'query' => $query,
 			'pagination' => [
-				'defaultPageSize' => 12,
-				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
-				'pageSizeLimit' => [2, 24], //to set range for pageSize
+				'defaultPageSize' => 6,
+				'pageSize' => 6, //to set count items on one page, if not set will be set from defaultPageSize
+				'pageSizeLimit' => [2, 6], //to set range for pageSize
 			]
 		]);
 		$dataProvider->sort->sortParam = true;
