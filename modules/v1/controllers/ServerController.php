@@ -74,13 +74,12 @@ class ServerController extends ApiController
 			->select(['MAX(id)'])
 			->groupBy('server_id');
 
-
 		$subQuery = PlayersStat::find()
 			->select(['date', 'value', 'server_id'])
-			->where(['id' => $subSubQuery]);
+			->andWhere(['id' => $subSubQuery]);
 
 		$query = Server::find()
-			->leftJoin(['s' => $subQuery], 'id = s.server_id')
+			->rightJoin(['s' => $subQuery], 's.server_id = id')
 			->orderBy('s.value DESC');
 
 		$dataProvider = new ActiveDataProvider([
