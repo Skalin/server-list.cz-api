@@ -19,6 +19,7 @@ class InternalSourceQuery extends BaseQuery
 		$query = new SourceQuery();
 		$info = null;
 		$ping = null;
+		$time = microtime(true);
 
 		$queryResult = [];
 
@@ -38,6 +39,9 @@ class InternalSourceQuery extends BaseQuery
 		}
 		finally
 		{
+			$finishTime = microtime(true);
+			$finishTime -= $time;
+			$queryResult['ping'] = round($finishTime*100);
 			if (isset($info['Players']))
 			{
 				$queryResult['players'] = $info['Players'];
