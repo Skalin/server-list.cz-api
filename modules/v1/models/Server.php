@@ -381,9 +381,9 @@ class Server extends BaseModel
 		/*}*/
 	}
 
-	public function beforeDelete()
+	public function beforeDelete($event)
     {
-        parent::beforeDelete();
+        return parent::beforeDelete($event);
     }
 
 
