@@ -266,7 +266,7 @@ class Server extends BaseModel
 				\Yii::debug("Stat: {$stat} could not be generated for server {$this->id}: {$this->name} because server is OFFLINE.");
 				return false;
 			}
-			else if (is_null($status = $className::generateStat($startDate, $this->id, $result)))
+			else if (is_null($className::generateStat($startDate, $this->id, $result))
 			{
 				\Yii::debug("Stat: {$stat} could not be generated for server {$this->id}: {$this->name}");
 				$failedGeneration++;

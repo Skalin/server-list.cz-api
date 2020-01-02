@@ -12,7 +12,7 @@ class ServerQuery extends \yii\db\ActiveQuery
 
     public function loggable()
     {
-        return $this->andWhere(['state', 'in', [Server::STATE_ACTIVE, Server::STATE_LOGGING_ONLY]]);
+        return $this->andWhere(['state' => [Server::STATE_ACTIVE, Server::STATE_LOGGING_ONLY]]);
     }
 
     public function chunk($chunk)
