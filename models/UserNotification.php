@@ -19,6 +19,8 @@ use yii\helpers\VarDumper;
  * @property string $content
  * @property string $objectArray
  */
+
+
 class UserNotification extends \yii\db\ActiveRecord
 {
     /**

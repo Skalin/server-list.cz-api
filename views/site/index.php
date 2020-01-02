@@ -2,15 +2,15 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Server-list.cz API dokumentace';
 ?>
 
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Server-list.cz API</h1>
+        <h1>Server-list.cz API dokumentace</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Níže je rozpesána dokumentace aplikačního rozhraní. Přesný popis tvorby účtu a správa jednotlivých serverů přes aplikační rozhraní.</p>
 
     </div>
 
@@ -43,15 +43,8 @@ $this->title = 'My Yii Application';
                         <a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Services</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
                         <div id="subPages2" class="collapse ">
                             <ul class="nav">
-                                <li><a href="#" class="">Register &nbsp; <span class="label label-success">POST</span></a></li>
-                                <li><a href="#" class="">Login&nbsp; <span class="label label-primary">POST</span></a></li>
-                                <li><a href="#" class="">Relogin&nbsp; <span class="label label-primary">POST</span></a></li>
-                                <li><a href="#" class="">Logout&nbsp; <span class="label label-primary">POST</span></a></li>
-                                <li><a href="#" class="">Servers&nbsp; <span class="label label-primary">POST</span></a></li>
-                                <li><a href="#" class="">Server/<id>&nbsp; <span class="label label-primary">POST</span></a></li>
-                                <li><a href="#" class="">Notifications &nbsp; <span class="label label-primary">POST</span></a></li>
-                                <li><a href="#" class="">Refresh Token &nbsp; <span class="label label-warning">PUT</span></a></li>
-                                <li><a href="#" class="">Delete Token &nbsp; <span class="label label-danger">DELETE</span></a></li>
+                                <li><a href="#" class="">Services &nbsp; <span class="label label-success">GET</span></a></li>
+                                <li><a href="#" class="">Servers &nbsp; <span class="label label-success">GET</span></a></li>
                             </ul>
                         </div>
                     </li>

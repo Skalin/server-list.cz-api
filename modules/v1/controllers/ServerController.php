@@ -80,7 +80,8 @@ class ServerController extends ApiController
 
 		$query = Server::find()
 			->rightJoin(['s' => $subQuery], 's.server_id = id')
-			->orderBy('s.value DESC');
+			->orderBy('s.value DESC')
+		    ->andWhere(['state' => Server::STATE_ACTIVE]);
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => $query,

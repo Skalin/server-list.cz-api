@@ -27,9 +27,9 @@ use yii\helpers\VarDumper;
  * @property integer $query_port
  * @property integer $service_id
  * @property integer $registrator_id
- * @property integer $use_domain
+ * @property integer $show_port
  * @property integer $user_id
- * @property int $active
+ * @property string $state
  */
 class Server extends BaseModel
 {
@@ -39,6 +39,16 @@ class Server extends BaseModel
 
 	const MC = 1;
 	const CSGO = 2;
+
+	const STATE_DISABLED = 0;
+	const STATE_ACTIVE = 1;
+	const STATE_LOGGING_ONLY = 2;
+
+	public static $states = [
+	    self::STATE_ACTIVE => 'Active',
+        self::STATE_DISABLED => 'Disabled',
+        self::STATE_LOGGING_ONLY => 'Logging Only',
+    ];
 
     /**
      * {@inheritdoc}
@@ -55,7 +65,7 @@ class Server extends BaseModel
     {
         return [
 			[['name', 'service_id', 'ip', 'port'], 'required'],
-			[['service_id', 'query_port', 'port', 'registrator_id', 'user_id', 'use_domain', 'monitoring_chunk'], 'integer', 'integerOnly' => true],
+			[['service_id', 'query_port', 'port', 'registrator_id', 'user_id', 'show_port', 'monitoring_chunk', 'players_value'], 'integer', 'integerOnly' => true],
 			[['service_id'], 'validateService'],
 			[['ip'], 'ip'],
 			[['port'], 'validatePort'],
@@ -122,7 +132,7 @@ class Server extends BaseModel
             'id' => 'ID',
             'name' => 'Name',
             'description' => 'Description',
-            'active' => 'Active',
+            'state' => 'Status',
 			'domain' => 'Domain',
 			'ip' => 'Ip',
 			'password' => 'Password',
@@ -242,6 +252,7 @@ class Server extends BaseModel
 		$failedGeneration = 0;
 
 
+
 		foreach ($stats as $stat)
 		{
 			$className = $this->getClassPath().$stat;
@@ -267,7 +278,7 @@ class Server extends BaseModel
 		$this->timeout += $timeout;
 		if ($timeout > $this->maximumTimeouts)
 		{
-			$this->active = 0;
+			$this->state = 0;
 		}
 	}
 
@@ -280,7 +291,7 @@ class Server extends BaseModel
 	{
 		if (!$this->isNewRecord)
 		{
-			if ($this->oldAttributes['active'] < $this->active)
+			if ($this->oldAttributes['state'] < $this->state)
 			{
 				$this->timeout = 0;
 			}
@@ -304,7 +315,7 @@ class Server extends BaseModel
 	public static function findByChunk($chunk)
 	{
 		$servers = null;
-		$servers = self::findAll(['monitoring_chunk' => $chunk, 'active' => 1]);
+		$servers = self::findAll(['monitoring_chunk' => $chunk, 'state' => 1]);
 		return $servers;
 
 	}
@@ -354,11 +365,16 @@ class Server extends BaseModel
 			else
 				$message = "Server {$this->name} byl právě přidán! Mrkněte oč se jedná!";
 
-			$data = "{\"services\": {$this->service_id}, \"servers\": {$this->id}}";
+			$data = "{\"service\": {$this->service_id}, \"server\": {$this->id}}";
 			if (!empty($changedAttributes))
 				UserNotification::notify([], $title, $message, $data);
 		/*}*/
 	}
+
+	public function beforeDelete()
+    {
+        parent::beforeDelete();
+    }
 
 
 	public function calculateReviews()

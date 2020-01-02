@@ -26,7 +26,7 @@ class QueueController extends Controller
 	public function actionGenerate()
 	{
 		$startDate = $this->getStartDate();
-		$servers = Server::find()->all();
+		$servers = Server::find()->loggable()->all();
 		if (!$servers)
 			return ExitCode::NOINPUT;
 
