@@ -381,10 +381,6 @@ class Server extends BaseModel
 		/*}*/
 	}
 
-	public function beforeDelete($event)
-    {
-        return parent::beforeDelete($event);
-    }
 
 
 	public function calculateReviews()
