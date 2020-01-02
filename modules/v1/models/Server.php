@@ -34,11 +34,15 @@ use yii\helpers\VarDumper;
 class Server extends BaseModel
 {
 
+    private $timeouts;
+
 	public $stats;
 	public $imageUrl;
 
 	const MC = 1;
 	const CSGO = 2;
+
+	const MAX_TIMEOUTS = 3;
 
 	const STATE_DISABLED = 0;
 	const STATE_ACTIVE = 1;
@@ -268,6 +272,8 @@ class Server extends BaseModel
 				$failedGeneration++;
 			}
 		}
+
+		$this->timeouts++;
 		if ($failedGeneration == count($stats))
 			return false;
 		return true;
@@ -275,8 +281,8 @@ class Server extends BaseModel
 
 	public function setTimeouts($timeout)
 	{
-		$this->timeout += $timeout;
-		if ($timeout > $this->maximumTimeouts)
+		$this->timeout = $timeout;
+        if ($timeout >= self::MAX_TIMEOUTS)
 		{
 			$this->state = 0;
 		}
