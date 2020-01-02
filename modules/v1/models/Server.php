@@ -297,7 +297,7 @@ class Server extends BaseModel
 	{
 	    if ($this->isNewRecord && is_nulL($this->state))
         {
-            $this->state = 1;
+            $this->state = self::STATE_ACTIVE;
         }
 		if (!$this->isNewRecord)
 		{
