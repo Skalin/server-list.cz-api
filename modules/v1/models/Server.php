@@ -295,6 +295,10 @@ class Server extends BaseModel
 
 	public function beforeSave($insert)
 	{
+	    if ($this->isNewRecord && is_nulL($this->state))
+        {
+            $this->state = 1;
+        }
 		if (!$this->isNewRecord)
 		{
 			if ($this->oldAttributes['state'] < $this->state)
