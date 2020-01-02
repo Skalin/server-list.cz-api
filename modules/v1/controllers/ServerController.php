@@ -86,7 +86,7 @@ class ServerController extends ApiController
 			'query' => $query,
 			'pagination' => [
 				'defaultPageSize' => 12,
-				'pageSize' => 12, //to set count items on one page, if not set will be set from defaultPageSize
+				'pageSize' => 9, //to set count items on one page, if not set will be set from defaultPageSize
 				'pageSizeLimit' => [2, 6], //to set range for pageSize
 			]
 		]);

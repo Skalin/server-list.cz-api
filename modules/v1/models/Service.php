@@ -71,10 +71,12 @@ class Service extends BaseModel
 		unset($fields['thumbnail_image_url']);
 		$fields['serverCount'] = function ($model)
 		{
-			return count($model->servers);
+			return Server::find()->service($this->id)->loggable()->count();
 		};
 		return $fields;
 	}
+
+
 
 	public function getServers()
 	{

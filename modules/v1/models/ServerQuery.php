@@ -25,6 +25,11 @@ class ServerQuery extends \yii\db\ActiveQuery
         return $this->andWhere(['state' => $state]);
     }
 
+    public function count()
+    {
+        return count($this->asArray());
+    }
+
 	public function service($service_id)
 	{
 		return $this->andWhere(['service_id' => $service_id]);
