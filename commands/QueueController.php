@@ -20,13 +20,19 @@ use yii\console\ExitCode;
 class QueueController extends Controller
 {
 
+    public $chunk;
+
 	const MAX_SERVER_COUNT = 1;
 
 
 	public function actionGenerate()
 	{
 		$startDate = $this->getStartDate();
-		$servers = Server::find()->loggable()->all();
+
+		if ($this->chunk)
+            $servers = Server::find()->loggable()->chunk($this->chunk)->all();
+		else
+            $servers = Server::find()->loggable()->all();
 		if (!$servers)
 			return ExitCode::NOINPUT;
 

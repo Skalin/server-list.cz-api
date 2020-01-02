@@ -15,6 +15,10 @@ class ServerQuery extends \yii\db\ActiveQuery
         return $this->andWhere(['state', 'in', [Server::STATE_ACTIVE, Server::STATE_LOGGING_ONLY]]);
     }
 
+    public function chunk($chunk)
+    {
+        return $this->andWhere(['monitoring_chunk', $chunk]);
+    }
 
     public function active($state = Server::STATE_ACTIVE)
     {
