@@ -13,6 +13,7 @@ use Codeception\Lib\Notification;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
+use yii\helpers\HtmlPurifier;
 use yii\helpers\VarDumper;
 
 /**
@@ -22,6 +23,7 @@ use yii\helpers\VarDumper;
  * @property string $name
  * @property string $ip
  * @property string $domain
+ * @property string $description
  * @property string $image_url
  * @property integer $port
  * @property integer $query_port
@@ -295,7 +297,9 @@ class Server extends BaseModel
 
 	public function beforeSave($insert)
 	{
-	    if ($this->isNewRecord && is_nulL($this->state))
+	    $this->description = HtmlPurifier::process($this->description);
+
+	    if ($this->isNewRecord && is_null($this->state))
         {
             $this->state = self::STATE_ACTIVE;
         }
