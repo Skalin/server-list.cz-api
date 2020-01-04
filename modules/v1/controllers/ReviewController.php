@@ -89,7 +89,7 @@ class ReviewController extends ApiController
 			throw new ApiException(422, 'Server object is missing in POST data');
 		}
 
-		$review = Review::find()->user($user->id)->server(\Yii::$app->request->post('server_id'))->one();
+		$review = Review::find()->user($user)->server(\Yii::$app->request->post('server_id'))->one();
 		if ($review)
             throw new ApiException(412, 'User has already reviewed this server.');
 
