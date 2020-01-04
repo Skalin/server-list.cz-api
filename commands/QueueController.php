@@ -79,7 +79,7 @@ class QueueController extends Controller
 
 	private function getStartDate()
 	{
-		$startDate = (new \DateTime("now", new DateTimeZone('Europe/Prague')));
+		$startDate = (new \DateTime("now", new \DateTimeZone('Europe/Prague')));
 		return $startDate->format('Y-m-d H:i:s');
 	}
 
