@@ -35,7 +35,7 @@ class Review extends \yii\db\ActiveRecord
         return [
             [['content'], 'string'],
             [['rating', 'user_id', 'server_id'], 'integer'],
-            [['rating', 'integer', 'min' => 0, 'max' => 100]],
+            [['rating'], 'integer', 'min' => 0, 'max' => 100],
             [['title'], 'string', 'max' => 255],
 			[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
 			[['server_id'], 'exist', 'skipOnError' => true, 'targetClass' => Server::className(), 'targetAttribute' => ['server_id' => 'id']],
