@@ -27,11 +27,7 @@ class InternalSourceQuery extends BaseQuery
 		{
 			$query->Connect($server->ip, $server->port, 5);
 
-			$ping = $query->Ping();
-			if ($ping)
-			{
-				$info = $query->GetInfo();
-			}
+            $info = $query->GetInfo();
 		}
 		catch ( Exception $e)
 		{
