@@ -54,4 +54,9 @@ class ReviewQuery extends \yii\db\ActiveQuery
 	{
 		return $this->andWhere(['server_id' => $id]);
 	}
+
+	public function user($id)
+    {
+        return $this->andWhere(['user_id' => $id]);
+    }
 }
