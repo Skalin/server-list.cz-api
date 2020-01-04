@@ -46,7 +46,7 @@ class InternalSourceQuery extends BaseQuery
 			{
 				$queryResult['max_players'] = $info['MaxPlayers'];
 			}
-			$queryResult['status'] = $ping ? 1 : 0;
+			$queryResult['status'] = isset($queryResult['players']) ? 1 : 0;
 
 			$query->Disconnect();
 		}
