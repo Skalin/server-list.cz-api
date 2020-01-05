@@ -379,7 +379,7 @@ class Server extends BaseModel
 			else
 				$message = "Server {$this->name} byl právě přidán! Mrkněte oč se jedná!";
 
-			$data = "{\"service\": {$this->service_id}, \"server\": {$this->id}}";
+			$data = "{\"services\": {$this->service_id}, \"servers\": {$this->id}}";
 			if (!empty($changedAttributes))
 				UserNotification::notify([], $title, $message, $data);
 		/*}*/
