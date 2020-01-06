@@ -196,18 +196,18 @@ class ServerController extends ApiController
 
 		if (!$id)
 		{
-			throw new ApiException(400);
+			return new ApiException(400);
 		}
 
 		if (!($server = Server::findById($id)))
 		{
-			throw new ApiException(404);
+            return new ApiException(404);
 		}
 
 		if ($server->delete())
 		{
 			return true;
 		}
-		throw new ApiException(400);
+        return new ApiException(400);
 	}
 }
