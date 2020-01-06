@@ -172,6 +172,8 @@ class Server extends BaseModel
 		};
 		unset($fields['updated_at']);
 
+        unset($fields['updatedAt']);
+
 		if ($this->image_url)
 			$fields['imageUrl'] = function($model) {
 				return $model->image_url;
