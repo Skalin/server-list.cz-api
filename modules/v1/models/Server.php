@@ -158,6 +158,8 @@ class Server extends BaseModel
 		unset($fields['password']);
 		unset($fields['user_id']);
 		unset($fields['registrator_id']);
+		unset($fields['state']);
+        unset($fields['monitoring_chunk']);
 
 		$fields['createdAt'] = function($model) {
 				return $model->created_at;
