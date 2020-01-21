@@ -20,6 +20,12 @@ class UserNotificationQuery extends \yii\db\ActiveQuery
 	}
 
 
+    public function service($service)
+    {
+        return $this->andWhere(['like', 'objectArray', "\"services\": {$service}"]);
+    }
+
+
 	public function server($server)
     {
         return $this->andWhere(['like', 'objectArray', "\"servers\": {$server}"]);
