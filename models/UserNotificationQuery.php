@@ -22,7 +22,7 @@ class UserNotificationQuery extends \yii\db\ActiveQuery
 
 	public function server($server)
     {
-        return $this->andWhere(['like', 'objectArray', "{\"servers\": {$server}}"]);
+        return $this->andWhere(['like', 'objectArray', "\"servers\": {$server}"]);
     }
 
     /**
