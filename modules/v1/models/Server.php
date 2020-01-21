@@ -391,6 +391,15 @@ class Server extends BaseModel
 	}
 
 
+	public function afterDelete()
+    {
+        parent::afterDelete();
+        $notifications = UserNotification::find()->server($this->id)->all();
+        foreach ($notifications as $notification)
+            $notification->delete();
+        return true;
+    }
+
 
 	public function calculateReviews()
 	{
