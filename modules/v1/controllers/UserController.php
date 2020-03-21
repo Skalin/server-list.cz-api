@@ -39,7 +39,7 @@ class UserController extends ApiController
 			'cors'  => [
 				// restrict access to domains:
 				'Origin' => static::allowedDomains(),
-				'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'OPTIONS'],
+				'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS'],
 				'Access-Control-Allow-Credentials' => true,
 				'Access-Control-Request-Headers' => ['x-requested-with', 'content-type'],
 				'Access-Control-Max-Age' => 0, // Cache (seconds)
