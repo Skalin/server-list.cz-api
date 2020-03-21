@@ -42,7 +42,7 @@ class UserController extends ApiController
                 'Origin' => static::allowedDomains(),
                 'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS'],
                 'Access-Control-Allow-Credentials' => true,
-                'Access-Control-Request-Headers' => ['x-requested-with', 'content-type'],
+                'Access-Control-Request-Headers' => ['*'],
                 'Access-Control-Max-Age' => 0, // Cache (seconds)
             ],
         ];
@@ -238,7 +238,10 @@ class UserController extends ApiController
             throw new ApiException(401, 'User not authorized.');
 
         $user = User::findById($user);
-        $user->attributes = \Yii::$app->request->post('user');
+        $userData = \Yii::$app->request->post('user');
+        unset($userData['tos_agreement']);
+        unset($userData['is_reviewer']);
+        $user->attributes = $userData;
         if (!$user->validate()) {
             throw new ApiException(400, $user->errors);
         }

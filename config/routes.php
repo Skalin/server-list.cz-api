@@ -15,18 +15,6 @@ return [
             'OPTIONS account' => 'account',
         ]
     ],
-    [
-        'class' => 'yii\rest\UrlRule',
-        'controller' => ['v1/user'],
-        'pluralize' => false,
-        'patterns' => [
-            '' => 'options'
-        ],
-        'extraPatterns' => [
-            'POST update' => 'update',
-            'OPTIONS update' => 'update',
-        ]
-    ],
 	[
 		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/user'],
@@ -144,6 +132,10 @@ return [
 		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/service'],
 	],
+    [
+        'class' => 'yii\rest\UrlRule',
+        'controller' => ['v1/user'],
+    ],
 	[
 		'class' => 'yii\rest\UrlRule',
 		'controller' => ['servers' => 'v1/server'],
