@@ -11,8 +11,8 @@ return [
             '' => 'options'
         ],
         'extraPatterns' => [
-            'POST view' => 'view',
-            'OPTIONS view' => 'view',
+            'POST account' => 'account',
+            'OPTIONS account' => 'account',
         ]
     ],
     [

@@ -47,13 +47,6 @@ class UserController extends ApiController
             ],
         ];
 
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
-            'actions' => [
-                'update' => ['POST'],
-                'view' => ['POST'],
-            ],
-        ];
         $behaviors['contentNegotiator'] = [
             'class' => 'yii\filters\ContentNegotiator',
             'formats' => [
@@ -254,7 +247,7 @@ class UserController extends ApiController
         return $user;
     }
 
-    public function actionView()
+    public function actionAccount()
     {
 
         $user = $this->validateUser('Server');
