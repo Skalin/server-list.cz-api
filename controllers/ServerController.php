@@ -26,6 +26,7 @@ class ServerController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
+                    'update' => ['POST'],
                     'delete' => ['POST'],
                 ],
             ],
