@@ -116,6 +116,10 @@ return [
 			'OPTIONS relogin' => 'relogin',
 		]
 	],
+    [
+        'class' => 'yii\rest\UrlRule',
+        'controller' => ['v1/user'],
+    ],
 	[
 		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/service'],
