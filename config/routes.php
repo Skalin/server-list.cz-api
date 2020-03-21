@@ -3,6 +3,30 @@
 
 return [
 	'' => '/',
+    [
+        'class' => 'yii\rest\UrlRule',
+        'controller' => ['v1/user'],
+        'pluralize' => false,
+        'patterns' => [
+            '' => 'options'
+        ],
+        'extraPatterns' => [
+            'GET view' => 'view',
+            'OPTIONS view' => 'view',
+        ]
+    ],
+    [
+        'class' => 'yii\rest\UrlRule',
+        'controller' => ['v1/user'],
+        'pluralize' => false,
+        'patterns' => [
+            '' => 'options'
+        ],
+        'extraPatterns' => [
+            'POST update' => 'update',
+            'OPTIONS update' => 'update',
+        ]
+    ],
 	[
 		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/user'],
@@ -116,10 +140,6 @@ return [
 			'OPTIONS relogin' => 'relogin',
 		]
 	],
-    [
-        'class' => 'yii\rest\UrlRule',
-        'controller' => ['v1/user'],
-    ],
 	[
 		'class' => 'yii\rest\UrlRule',
 		'controller' => ['v1/service'],
