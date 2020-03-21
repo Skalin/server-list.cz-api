@@ -11,7 +11,7 @@ return [
             '' => 'options'
         ],
         'extraPatterns' => [
-            'GET view' => 'view',
+            'POST view' => 'view',
             'OPTIONS view' => 'view',
         ]
     ],
