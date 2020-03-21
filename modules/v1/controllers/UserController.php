@@ -39,7 +39,7 @@ class UserController extends ApiController
 			'cors'  => [
 				// restrict access to domains:
 				'Origin' => static::allowedDomains(),
-				'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
+				'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'OPTIONS'],
 				'Access-Control-Allow-Credentials' => true,
 				'Access-Control-Request-Headers' => ['x-requested-with', 'content-type'],
 				'Access-Control-Max-Age' => 0, // Cache (seconds)
@@ -64,7 +64,9 @@ class UserController extends ApiController
 	{
 		$actions = parent::actions();
 		unset($actions['create']);
+		unset($actions['update']);
 		unset($actions['index']);
+		unset($actions['view']);
 		return $actions;
 	}
 
@@ -104,6 +106,7 @@ class UserController extends ApiController
 			return $loginToken->getAsJWTToken();
 		throw new ApiException(401, 'Couldn\'t generate login token.');
 	}
+
 
 	public function actionServer($id)
 	{
@@ -233,5 +236,34 @@ class UserController extends ApiController
 			return $notification;
 		return $notification->errors;
 	}
+
+	public function actionUpdate()
+    {
+
+        $user = $this->validateUser('Server');
+        if (!$user)
+            throw new ApiException(401, 'User not authorized.');
+
+        $user = User::findById($user);
+        $user->attributes = \Yii::$app->request->post('user');
+        if (!$user->validate())
+        {
+            throw new ApiException(400, $user->errors);
+        }
+
+        $user->save();
+        return $user;
+    }
+
+    public function actionView()
+    {
+
+        $user = $this->validateUser('Server');
+        if (!$user)
+            throw new ApiException(401, 'User not authorized.');
+
+        $user = User::findById($user);
+        return $user;
+    }
 
 }
