@@ -40,9 +40,9 @@ class UserController extends ApiController
             'cors' => [
                 // restrict access to domains:
                 'Origin' => static::allowedDomains(),
-                'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS'],
+                'Access-Control-Request-Method' => ['PUT', 'POST', 'OPTIONS'],
                 'Access-Control-Allow-Credentials' => true,
-                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Request-Headers' => ['x-requested-with', 'content-type'],
                 'Access-Control-Max-Age' => 0, // Cache (seconds)
             ],
         ];
@@ -249,6 +249,7 @@ class UserController extends ApiController
         $user->save();
         return $user;
     }
+
 
     public function actionAccount()
     {
